@@ -22,7 +22,7 @@ if (form instanceof HTMLFormElement) {
             },
             body: JSON.stringify({
                 name: inputName.value,
-                price: Number(price.value),
+                price: Number(price.value) + 0.99,
                 description: description.value,
                 category: category.value,
                 urlimg: urlimg.value
