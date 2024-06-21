@@ -11,7 +11,7 @@ const category = document.getElementById("category") as HTMLSelectElement;
 const urlimg = document.getElementById("product-img") as HTMLInputElement;
 const discardButton = document.getElementById("discard-button");
 const buttonsContainer = document.getElementById("buttons-container") as HTMLDivElement;
-const server = "https://d-kanto-backend.onrender.com";
+/* const server = "https://d-kanto-backend.onrender.com"; */
 
 if (form instanceof HTMLFormElement) {
     form.addEventListener("submit", async event => {
