@@ -9,6 +9,7 @@
     <script type="module" src="../../node_modules/flowbite/dist/flowbite.min.js"></script>
     <script type="module" src="../ts/theme.ts"></script>
     <script type="module" src="../ts/addProduct.ts"></script>
+    <script type="module" src="../ts/deleteProduct.ts"></script>
 </head>
 
 <body class="antialiased bg-gray-50 dark:bg-gray-900">
@@ -963,10 +964,10 @@
                                 </tr>
                             </thead>
                             <tbody id="product-box">
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <tr name="product-container" class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
@@ -974,7 +975,7 @@
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
                                             <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
                                                 alt="iMac Front Image" class="h-8 w-auto mr-3">
                                             Apple iMac 20&#34;
@@ -1066,7 +1067,7 @@
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1079,10 +1080,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <tr name="product-container" class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
@@ -1090,7 +1091,7 @@
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
                                             <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/apple-iphone-14.png"
                                                 alt="iMac Front Image" class="h-8 w-auto mr-3">
                                             Apple iPhone 14
@@ -1182,7 +1183,7 @@
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1195,10 +1196,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <tr name="product-container" class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
@@ -1206,7 +1207,7 @@
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
                                             <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/apple-ipad-air.png"
                                                 alt="iMac Front Image" class="h-8 w-auto mr-3">
                                             Apple iPad Air
@@ -1298,7 +1299,7 @@
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1311,10 +1312,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <tr name="product-container" class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
@@ -1322,7 +1323,7 @@
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
                                             <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/xbox-series-s.png"
                                                 alt="iMac Front Image" class="h-8 w-auto mr-3">
                                             Xbox Series S
@@ -1413,7 +1414,7 @@
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1426,10 +1427,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <tr name="product-container" class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
@@ -1437,7 +1438,7 @@
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
                                             <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/playstation-5.png"
                                                 alt="iMac Front Image" class="h-8 w-auto mr-3">
                                             PlayStation 5
@@ -1529,7 +1530,7 @@
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1542,10 +1543,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <tr name="product-container" class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
@@ -1553,7 +1554,7 @@
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="flex items-center mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
                                             <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/xbox-series-x.png"
                                                 alt="iMac Front Image" class="h-8 w-auto mr-3">
                                             Xbox Series X
@@ -1644,7 +1645,7 @@
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -2311,7 +2312,7 @@
                         </svg>
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to
                             delete this product?</h3>
-                        <button data-modal-toggle="delete-modal" type="button"
+                        <button id="confirm-delete-button" data-modal-toggle="delete-modal" type="button"
                             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">Yes,
                             I'm sure</button>
                         <button data-modal-toggle="delete-modal" type="button"

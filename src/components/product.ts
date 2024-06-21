@@ -1,13 +1,14 @@
 export interface Product {
-    name: string,
-    price: number,
-    description: string,
-    category: string,
-    urlimg: string,
-    rating: string
+    name: string;
+    price: number;
+    description: string;
+    category: string;
+    urlimg: string;
+    rating: string;
 }
 
 function setClasses(element: HTMLTableRowElement) {
+    element.setAttribute("name", "product-container");
     element.classList.add(
         "border-b",
         "dark:border-gray-600",
@@ -16,40 +17,37 @@ function setClasses(element: HTMLTableRowElement) {
     );
 }
 
-function insertData(
-    element: HTMLTableRowElement,
-    data: Product
-) {
-    element.innerHTML = ` <td class="p-4 w-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox"
+function insertData(element: HTMLTableRowElement, data: Product) {
+    element.innerHTML = `<td class="p-4 w-4">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                            </td>
-                            <th scope="row"
+                                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                        </div>
+                                    </td>
+                                    <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <div class="flex items-center mr-3">
-                                    <img src="${data.urlimg}"
-                                                alt="product image" class="h-8 w-auto mr-3">
+                                        <div class="flex items-center mr-3" name="product-name">
+                                            <img src="${data.urlimg}"
+                                                alt="Product image" class="h-8 w-auto mr-3">
                                             ${data.name}
-                                    </div>
-                            </th>
+                                        </div>
+                                    </th>
                                     <td class="px-4 py-3">
                                         <span
                                             class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">${data.category}</span>
                                     </td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center">
-                                            <div class="h-4 w-4 rounded-full inline-block mr-2 bg-red-700"></div>
-                                            95
+                                            <div class="h-4 w-4 rounded-full inline-block mr-2 bg-orange-500"></div>
+                                            235
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        1.47</td>
+                                        7.09</td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        0.47</td>
+                                        3.32</td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center">
                                             <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor"
@@ -88,10 +86,10 @@ function insertData(
                                                 <path
                                                     d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
                                             </svg>
-                                            1.6M
+                                            989K
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3">$3.2M</td>
+                                    <td class="px-4 py-3">$2.27M</td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center space-x-4">
                                             <button type="button" data-drawer-target="drawer-update-product"
@@ -121,7 +119,7 @@ function insertData(
                                                 Preview
                                             </button>
                                             <button type="button" data-modal-target="delete-modal"
-                                                data-modal-toggle="delete-modal"
+                                                data-modal-toggle="delete-modal" name="delete-product"
                                                 class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
                                                     viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -132,7 +130,7 @@ function insertData(
                                                 Delete
                                             </button>
                                         </div>
-                                </td>`;
+                                    </td>`;
 }
 
 export function createProduct(productData: Product) {

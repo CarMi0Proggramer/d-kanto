@@ -11,11 +11,12 @@ const category = document.getElementById("category") as HTMLSelectElement;
 const urlimg = document.getElementById("product-img") as HTMLInputElement;
 const discardButton = document.getElementById("discard-button");
 const buttonsContainer = document.getElementById("buttons-container") as HTMLDivElement;
+const server = "https://d-kanto-backend.onrender.com";
 
 if (form instanceof HTMLFormElement) {
     form.addEventListener("submit", async event => {
         event.preventDefault();
-        await fetch("https://d-kanto-backend.onrender.com/create-product", {
+        await fetch("http://localhost:3000/create-product", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
