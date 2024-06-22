@@ -1,7 +1,6 @@
 import { Product } from "../components/product";
 import { updateListProduct } from "../ts/updateListProduct";
 import { showSuccessMessage } from "../ts/successMessage";
-import { initFlowbite } from "flowbite";
 
 const closeModalButton = document.getElementById("close-add-product");
 const form = document.getElementById("add-product-form");
@@ -36,7 +35,6 @@ if (form instanceof HTMLFormElement) {
                 updateListProduct(product);
                 clearData();
                 showSuccessMessage();
-                initFlowbite();
             }
             else if (res.status === 400 ) {
                 return res.json().then(errorData => {

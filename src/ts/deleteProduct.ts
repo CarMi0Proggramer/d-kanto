@@ -18,39 +18,36 @@ if (confirmDeleteButton instanceof HTMLButtonElement) {
 function validateDelete(container: HTMLTableRowElement) {
     const checkbox = container.querySelector(`input[name="product-checkbox"]`);
     const productName = container.querySelector(
-        `input[name="product-name"]`
+        `div[name="product-name"]`
     ) as HTMLDivElement;
     if (checkbox instanceof HTMLInputElement && checkbox.checked) {
-        fetch(
-            `https://d-kanto-backend.onrender.com/delete-product/${productName}`,
-            {
-                method: "DELETE",
+        fetch(`http://localhost:3000/delete-product/${productName.innerText}`, {
+            method: "DELETE",
+        })
+        .then(async (res) => {
+            if (res.ok) {
+                container.remove();
+                /* IF IT'S A MASSIVVE DELETE */
+                if (
+                    checkboxAll instanceof HTMLInputElement &&
+                    checkboxAll.checked
+                ) {
+                    checkboxAll.checked = false;
+                }
+            } else if (res.status === 404) {
+                location.href = window.origin + "/src/pages/404.html";
+            } else {
+                const error: {
+                    message: string;
+                } = await res.json();
+                throw new Error(error.message);
             }
-        )
-            .then(async (res) => {
-                if (res.ok) {
-                    container.remove();
-                    /* IF IT'S A MASSIVVE DELETE */
-                    if (
-                        checkboxAll instanceof HTMLInputElement &&
-                        checkboxAll.checked
-                    ) {
-                        checkboxAll.checked = false;
-                    }
-                } else if (res.status === 404) {
-                    location.href = window.origin + "/src/pages/404.html";
-                } else {
-                    const error: {
-                        message: string;
-                    } = await res.json();
-                    throw new Error(error.message);
-                }
-            })
-            .catch((err) => {
-                if (err) {
-                    location.href = window.origin + "/src/pages/500.html";
-                }
-            });
+        })
+        .catch((err) => {
+            if (err) {
+                location.href = window.origin + "/src/pages/500.html";
+            }
+        });
     }
 }
 
