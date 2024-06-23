@@ -1,6 +1,6 @@
 import { Product } from "../components/product";
 import { updateListProduct } from "../ts/updateListProduct";
-import { showAddSuccessMessage } from "./createProductSuccessMessage";
+import { showAddSuccessMessage } from "./successMessages";
 import { updateModals } from "./flowbiteModals";
 
 const closeModalButton = document.getElementById("close-add-product");
@@ -55,8 +55,8 @@ if (form instanceof HTMLFormElement) {
                     err_messages.push(err.message)
                 }
 
-                clearErrors();
-                showErrors(err_messages);
+                clearErrors("errors-container");
+                showErrors(err_messages, "errors-container", form, buttonsContainer);
             } catch (err) {
                 location.href = window.origin + "/src/pages/500.html";
             }
@@ -64,9 +64,9 @@ if (form instanceof HTMLFormElement) {
     })
 }
 
-function showErrors(errors: string[]) {
+export function showErrors(errors: string[], idElement: string, fatherElement: HTMLElement, beforeElement: HTMLElement) {
     const errorsContainer = document.createElement("div");
-    errorsContainer.id = "errors-container";
+    errorsContainer.id = idElement;
     errorsContainer.classList.add("mb-4", "text-sm", "font-medium", "sm:col-span-2", "text-red-500");
     for (const err of errors) {
         const p = document.createElement("p");
@@ -74,20 +74,18 @@ function showErrors(errors: string[]) {
         p.innerHTML = err;
         errorsContainer.appendChild(p);
     }
-    if (form instanceof HTMLFormElement) {
-        form.insertBefore(errorsContainer, buttonsContainer);
-    }
+    fatherElement.insertBefore(errorsContainer, beforeElement);
 }
 
-function clearErrors() {
-    const errorsContainer = document.getElementById("errors-container");
+export function clearErrors(idElement:string) {
+    const errorsContainer = document.getElementById(idElement);
     if (errorsContainer instanceof HTMLDivElement) {
         errorsContainer.remove();
     }
 }
 
 if (discardButton instanceof HTMLButtonElement) {
-    discardButton.addEventListener("click", clearErrors);
+    discardButton.addEventListener("click", () => clearErrors("errors-container"));
 }
 
 function clearData() {

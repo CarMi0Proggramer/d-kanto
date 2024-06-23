@@ -1,5 +1,7 @@
 /* DELETE MODAL */
 import { Drawer, Modal } from "flowbite";
+import { updateEditData } from "./updateEditData";
+import { clearErrors } from "./addProduct";
 
 const targetEl = document.getElementById("delete-modal") as HTMLDivElement;
 const deleteModal = new Modal(targetEl);
@@ -24,43 +26,62 @@ function updateDeleteButtons() {
 const drawerEl = document.getElementById(
     "drawer-update-product"
 ) as HTMLFormElement;
-const editDrawer = new Drawer(drawerEl);
+export const editDrawer = new Drawer(drawerEl);
 
-const xBtn = drawerEl.getElementsByTagName("button")[0];
+export const xBtn = drawerEl.getElementsByTagName("button")[0];
 xBtn.addEventListener("click", () => {
     editDrawer.hide();
+    clearErrors("drawer-errors-container");
 });
-const drawerDeleteBtn = document.getElementById("drawer-delete-button") as HTMLButtonElement;
+const drawerDeleteBtn = document.getElementById(
+    "drawer-delete-button"
+) as HTMLButtonElement;
 drawerDeleteBtn.addEventListener("click", () => {
     deleteModal.show();
 });
 
 function updateEditButtons() {
-    const editBtns = document.getElementsByName("edit-product");
-    editBtns.forEach((element) => {
-        element.addEventListener("click", () => {
-            editDrawer.show();
-        });
-    });
+    const productContainers = document.querySelectorAll(
+        `tr[name="product-container"]`
+    );
+    for (const container of productContainers) {
+        const editBtn = container.querySelector(`button[name="edit-product"]`);
+        if (editBtn instanceof HTMLButtonElement) {
+            editBtn.addEventListener("click", async () => {
+                editDrawer.show();
+                if (container instanceof HTMLTableRowElement) {
+                    await updateEditData(container);
+                }
+            });
+        }
+    }
 }
 
 /* PREVIEW MODAL */
 
-const previewDrawerEl = document.getElementById("drawer-read-product-advanced") as HTMLDivElement;
+const previewDrawerEl = document.getElementById(
+    "drawer-read-product-advanced"
+) as HTMLDivElement;
 const previewDrawer = new Drawer(previewDrawerEl);
 
-const previewDrawerCloseBtn  = document.getElementById("preview-close-button") as HTMLButtonElement;
+const previewDrawerCloseBtn = document.getElementById(
+    "preview-close-button"
+) as HTMLButtonElement;
 previewDrawerCloseBtn.addEventListener("click", () => {
     previewDrawer.hide();
 });
 
-const previewEditButton = document.getElementById("preview-edit-button") as HTMLButtonElement;
+const previewEditButton = document.getElementById(
+    "preview-edit-button"
+) as HTMLButtonElement;
 previewEditButton.addEventListener("click", () => {
     previewDrawer.hide();
     editDrawer.show();
 });
 
-const previewDeleteButton = document.getElementById("preview-delete-button") as HTMLButtonElement;
+const previewDeleteButton = document.getElementById(
+    "preview-delete-button"
+) as HTMLButtonElement;
 previewDeleteButton.addEventListener("click", () => {
     deleteModal.show();
 });
@@ -71,7 +92,7 @@ function updatePreviewButtons() {
         element.addEventListener("click", () => {
             previewDrawer.show();
         });
-    })
+    });
 }
 
 export function updateModals() {

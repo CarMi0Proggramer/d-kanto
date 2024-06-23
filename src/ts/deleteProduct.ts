@@ -1,4 +1,4 @@
-import { showDeleteSuccessMessage } from "./deleteProductSuccessMessage";
+import { showDeleteSuccessMessage } from "./successMessages";
 
 const confirmDeleteButton = document.getElementById("confirm-delete-button");
 const checkboxAll = document.getElementById("checkbox-all");
@@ -23,34 +23,7 @@ function validateDelete(container: HTMLTableRowElement) {
         `div[name="product-name"]`
     ) as HTMLDivElement;
     if (checkbox instanceof HTMLInputElement && checkbox.checked) {
-        fetch(`http://localhost:3000/delete-product/${productName.innerText}`, {
-            method: "DELETE",
-        })
-        .then(async (res) => {
-            if (res.ok) {
-                container.remove();
-                showDeleteSuccessMessage();
-                /* IF IT'S A MASSIVVE DELETE */
-                if (
-                    checkboxAll instanceof HTMLInputElement &&
-                    checkboxAll.checked
-                ) {
-                    checkboxAll.checked = false;
-                }
-            } else if (res.status === 404) {
-                location.href = window.origin + "/src/pages/404.html";
-            } else {
-                const error: {
-                    message: string;
-                } = await res.json();
-                throw new Error(error.message);
-            }
-        })
-        .catch((err) => {
-            if (err) {
-                location.href = window.origin + "/src/pages/500.html";
-            }
-        });
+        deleteProduct(productName.innerText, container);
     }
 }
 
@@ -85,4 +58,40 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
     }
 
     return productCheckboxs;
+}
+
+export function deleteProduct(name: string, container: HTMLTableRowElement) {
+    fetch(`http://localhost:3000/delete-product/${name}`, {
+        method: "DELETE",
+    })
+    .then(async (res) => {
+        if (res.ok) {
+            container.remove();
+            showDeleteSuccessMessage();
+            /* IF IT'S A MASSIVVE DELETE */
+            if (checkboxAll instanceof HTMLInputElement) {
+                checkboxAll.checked = false;
+                const checkboxs = document.querySelectorAll(
+                    `input[name="product-checkbox"]`
+                );
+                checkboxs.forEach(element => {
+                    if (element instanceof HTMLInputElement) {
+                        element.checked = false;
+                    }
+                });
+            }
+        } else if (res.status === 404) {
+            location.href = window.origin + "/src/pages/404.html";
+        } else {
+            const error: {
+                message: string;
+            } = await res.json();
+            throw new Error(error.message);
+        }
+    })
+    .catch((err) => {
+        if (err) {
+            location.href = window.origin + "/src/pages/500.html";
+        }
+    });
 }

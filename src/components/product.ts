@@ -35,7 +35,7 @@ function insertData(element: HTMLTableRowElement, data: Product) {
                                         </div>
                                     </th>
                                     <td class="px-4 py-3">
-                                        <span
+                                        <span name="span-product-category"
                                             class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">${data.category}</span>
                                     </td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
