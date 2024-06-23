@@ -92,8 +92,7 @@ function insertData(element: HTMLTableRowElement, data: Product) {
                                     <td class="px-4 py-3">$2.27M</td>
                                     <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center space-x-4">
-                                            <button type="button" data-drawer-target="drawer-update-product"
-                                                data-drawer-show="drawer-update-product"
+                                            <button type="button" name="edit-product"
                                                 aria-controls="drawer-update-product"
                                                 class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5"
@@ -106,8 +105,7 @@ function insertData(element: HTMLTableRowElement, data: Product) {
                                                 </svg>
                                                 Edit
                                             </button>
-                                            <button type="button" data-drawer-target="drawer-read-product-advanced"
-                                                data-drawer-show="drawer-read-product-advanced"
+                                            <button type="button" name="preview-product"
                                                 aria-controls="drawer-read-product-advanced"
                                                 class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"

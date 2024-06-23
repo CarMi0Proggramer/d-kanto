@@ -1,6 +1,7 @@
 import { Product } from "../components/product";
 import { updateListProduct } from "../ts/updateListProduct";
 import { showSuccessMessage } from "../ts/successMessage";
+import { updateModals } from "./flowbiteModals";
 
 const closeModalButton = document.getElementById("close-add-product");
 const form = document.getElementById("add-product-form");
@@ -35,6 +36,7 @@ if (form instanceof HTMLFormElement) {
                 updateListProduct(product);
                 clearData();
                 showSuccessMessage();
+                updateModals();
             }
             else if (res.status === 400 ) {
                 return res.json().then(errorData => {
