@@ -1,3 +1,5 @@
+import { showDeleteSuccessMessage } from "./deleteProductSuccessMessage";
+
 const confirmDeleteButton = document.getElementById("confirm-delete-button");
 const checkboxAll = document.getElementById("checkbox-all");
 
@@ -27,6 +29,7 @@ function validateDelete(container: HTMLTableRowElement) {
         .then(async (res) => {
             if (res.ok) {
                 container.remove();
+                showDeleteSuccessMessage();
                 /* IF IT'S A MASSIVVE DELETE */
                 if (
                     checkboxAll instanceof HTMLInputElement &&

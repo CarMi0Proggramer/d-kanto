@@ -1,6 +1,6 @@
 import { Product } from "../components/product";
 import { updateListProduct } from "../ts/updateListProduct";
-import { showSuccessMessage } from "../ts/successMessage";
+import { showAddSuccessMessage } from "./createProductSuccessMessage";
 import { updateModals } from "./flowbiteModals";
 
 const closeModalButton = document.getElementById("close-add-product");
@@ -35,7 +35,7 @@ if (form instanceof HTMLFormElement) {
                 const product: Product = await res.json();
                 updateListProduct(product);
                 clearData();
-                showSuccessMessage();
+                showAddSuccessMessage();
                 updateModals();
             }
             else if (res.status === 400 ) {
