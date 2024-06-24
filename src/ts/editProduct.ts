@@ -39,10 +39,12 @@ function updateProduct() {
             const productContainers = document.querySelectorAll(
                 `tr[name="product-container"]`
             );
-            const productContainer = getProductContainer(productContainers, currentProductName);
+            const containers = getProductContainers(productContainers, currentProductName);
 
-            if (productContainer instanceof HTMLTableRowElement) {
-                updateProductContainer(productContainer, data);
+            for (const productContainer of containers) {
+                if (productContainer instanceof HTMLTableRowElement) {
+                    updateProductContainer(productContainer, data);
+                }
             }
             
             xBtn.click();
@@ -74,14 +76,17 @@ function updateProduct() {
     });
 }
 
-export function getProductContainer(containers: NodeListOf<Element>, name:string) {
+export function getProductContainers(containers: NodeListOf<Element>, name:string) {
+    let productContainers = [];
     for (const container of containers) {
         const productNameEl = container.querySelector(
         `div[name="product-name"]`)
         if (productNameEl instanceof HTMLDivElement && productNameEl.innerText === name) {
-            return container;
+            productContainers.push(container);
         }
     }
+
+    return productContainers;
 }
 
 function updateProductContainer(container: HTMLTableRowElement, newData: Product) {
@@ -98,13 +103,7 @@ function updateProductContainer(container: HTMLTableRowElement, newData: Product
 drawerDeleteButton.addEventListener("click", () => {
     if (confirmDeleteButton instanceof HTMLButtonElement) {
         confirmDeleteButton.addEventListener("click", () => {
-            const productContainers = document.querySelectorAll(
-                `tr[name="product-container"]`
-            );
-            const container = getProductContainer(productContainers, currentProductName);
-            if (container instanceof HTMLTableRowElement) {
-                deleteProduct(currentProductName, container)
-            }
+            deleteProduct(currentProductName);
             editDrawer.hide();
         })
     }

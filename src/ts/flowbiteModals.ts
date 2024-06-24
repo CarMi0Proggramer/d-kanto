@@ -3,7 +3,6 @@ import { Drawer, Modal } from "flowbite";
 import { findCategory, updateEditPreviewData } from "./updateEditPreviewData";
 import { clearErrors } from "./addProduct";
 import { confirmDeleteButton, deleteProduct } from "./deleteProduct";
-import { getProductContainer } from "./editProduct";
 
 const drawerName = document.getElementById("drawer-name") as HTMLInputElement;
 const drawerUrlImage = document.getElementById(
@@ -119,13 +118,7 @@ previewDeleteButton.addEventListener("click", () => {
 previewDeleteButton.addEventListener("click", () => {
     if (confirmDeleteButton instanceof HTMLButtonElement) {
         confirmDeleteButton.addEventListener("click", () => {
-            const productContainers = document.querySelectorAll(
-                `tr[name="product-container"]`
-            );
-            const container = getProductContainer(productContainers, previewName.innerText);
-            if (container instanceof HTMLTableRowElement) {
-                deleteProduct(previewName.innerText, container)
-            }
+            deleteProduct(previewName.innerText);
             previewDrawer.hide();
         })
     }

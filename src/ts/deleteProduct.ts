@@ -1,6 +1,9 @@
+import { getProductContainers } from "./editProduct";
 import { showDeleteSuccessMessage } from "./successMessages";
 
-export const confirmDeleteButton = document.getElementById("confirm-delete-button");
+export const confirmDeleteButton = document.getElementById(
+    "confirm-delete-button"
+);
 const checkboxAll = document.getElementById("checkbox-all");
 
 if (confirmDeleteButton instanceof HTMLButtonElement) {
@@ -8,22 +11,39 @@ if (confirmDeleteButton instanceof HTMLButtonElement) {
         const productContainers = document.querySelectorAll(
             `tr[name="product-container"]`
         );
-        for (const productContainer of productContainers) {
-            if (productContainer instanceof HTMLTableRowElement) {
-                validateDelete(productContainer);
-            }
-        }
+        validateDelete(productContainers);
     });
 }
 
-/* DELETE PRODUCT FUNCTION */
-function validateDelete(container: HTMLTableRowElement) {
-    const checkbox = container.querySelector(`input[name="product-checkbox"]`);
-    const productName = container.querySelector(
-        `div[name="product-name"]`
-    ) as HTMLDivElement;
-    if (checkbox instanceof HTMLInputElement && checkbox.checked) {
-        deleteProduct(productName.innerText, container);
+/* Validate PRODUCT FUNCTION */
+function validateDelete(containers: NodeListOf<Element>) {
+    let validElements: string[] = [];
+
+    /* getting valid elements */
+    for (const container of containers) {
+        if (container instanceof HTMLTableRowElement) {
+            /* getting checkboxs */
+            const checkbox = container.querySelector(
+                `input[name="product-checkbox"]`
+            );
+            /* getting names */
+            const productName = container.querySelector(
+                `div[name="product-name"]`
+            ) as HTMLDivElement;
+
+            if (checkbox instanceof HTMLInputElement && checkbox.checked) {
+                const validElement = productName.innerText
+                validElements.push(validElement);
+            }
+        }
+    }
+
+    const filteredNames = validElements.filter((item, index) => {
+        return validElements.indexOf(item) === index
+    });
+
+    for (const name of filteredNames) {
+        deleteProduct(name)
     }
 }
 
@@ -60,38 +80,48 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
     return productCheckboxs;
 }
 
-export function deleteProduct(name: string, container: HTMLTableRowElement) {
+export function deleteProduct(name: string) {
     fetch(`http://localhost:3000/products/${name}`, {
         method: "DELETE",
     })
-    .then(async (res) => {
-        if (res.ok) {
-            container.remove();
-            showDeleteSuccessMessage();
-            /* IF IT'S A MASSIVVE DELETE */
-            if (checkboxAll instanceof HTMLInputElement) {
-                checkboxAll.checked = false;
-                const checkboxs = document.querySelectorAll(
-                    `input[name="product-checkbox"]`
+        .then(async (res) => {
+            if (res.ok) {
+                const productContainers = document.querySelectorAll(
+                    `tr[name="product-container"]`
                 );
-                checkboxs.forEach(element => {
-                    if (element instanceof HTMLInputElement) {
-                        element.checked = false;
+                const containers = getProductContainers(productContainers, name);
+                console.log(containers)
+                for (const container of containers) {
+                    if (container instanceof HTMLTableRowElement) {
+                        container.remove();
                     }
-                });
+                }
+
+                showDeleteSuccessMessage();
+                /* IF IT'S A MASSIVVE DELETE */
+                if (checkboxAll instanceof HTMLInputElement) {
+                    checkboxAll.checked = false;
+                    const checkboxs = document.querySelectorAll(
+                        `input[name="product-checkbox"]`
+                    );
+                    checkboxs.forEach((element) => {
+                        if (element instanceof HTMLInputElement) {
+                            element.checked = false;
+                        }
+                    });
+                }
+            } else if (res.status === 404) {
+                location.href = window.origin + "/src/pages/404.html";
+            } else {
+                const error: {
+                    message: string;
+                } = await res.json();
+                throw new Error(error.message);
             }
-        } else if (res.status === 404) {
-            location.href = window.origin + "/src/pages/404.html";
-        } else {
-            const error: {
-                message: string;
-            } = await res.json();
-            throw new Error(error.message);
-        }
-    })
-    .catch((err) => {
-        if (err) {
-            location.href = window.origin + "/src/pages/500.html";
-        }
-    });
+        })
+        .catch((err) => {
+            if (err) {
+                location.href = window.origin + "/src/pages/500.html";
+            }
+        });
 }
