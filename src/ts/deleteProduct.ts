@@ -1,6 +1,6 @@
 import { showDeleteSuccessMessage } from "./successMessages";
 
-const confirmDeleteButton = document.getElementById("confirm-delete-button");
+export const confirmDeleteButton = document.getElementById("confirm-delete-button");
 const checkboxAll = document.getElementById("checkbox-all");
 
 if (confirmDeleteButton instanceof HTMLButtonElement) {
@@ -61,7 +61,7 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
 }
 
 export function deleteProduct(name: string, container: HTMLTableRowElement) {
-    fetch(`http://localhost:3000/delete-product/${name}`, {
+    fetch(`http://localhost:3000/products/${name}`, {
         method: "DELETE",
     })
     .then(async (res) => {

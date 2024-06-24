@@ -2,8 +2,8 @@ import { Product } from "../components/product";
 import { showUpdateSuccessMessage } from "../ts/successMessages";
 import { clearErrors, showErrors } from "./addProduct";
 import { xBtn, editDrawer } from "./flowbiteModals";
-import { currentProductName } from "./updateEditData";
-import { deleteProduct } from "./deleteProduct";
+import { currentProductName } from "./updateEditPreviewData";
+import { confirmDeleteButton, deleteProduct } from "./deleteProduct";
 
 const editForm = document.getElementById("drawer-update-product") as HTMLFormElement;
 const drawerName = document.getElementById("drawer-name") as HTMLInputElement;
@@ -20,7 +20,7 @@ editForm.addEventListener("submit", async event => {
 });
 
 function updateProduct() {
-    fetch(`http://localhost:3000/update-product/${currentProductName}`,{
+    fetch(`http://localhost:3000/products/${currentProductName}`,{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"
@@ -74,7 +74,7 @@ function updateProduct() {
     });
 }
 
-function getProductContainer(containers: NodeListOf<Element>, name:string) {
+export function getProductContainer(containers: NodeListOf<Element>, name:string) {
     for (const container of containers) {
         const productNameEl = container.querySelector(
         `div[name="product-name"]`)
@@ -96,12 +96,16 @@ function updateProductContainer(container: HTMLTableRowElement, newData: Product
 }
 
 drawerDeleteButton.addEventListener("click", () => {
-    const productContainers = document.querySelectorAll(
-        `tr[name="product-container"]`
-    );
-    const container = getProductContainer(productContainers, currentProductName);
-    if (container instanceof HTMLTableRowElement) {
-        deleteProduct(currentProductName, container)
+    if (confirmDeleteButton instanceof HTMLButtonElement) {
+        confirmDeleteButton.addEventListener("click", () => {
+            const productContainers = document.querySelectorAll(
+                `tr[name="product-container"]`
+            );
+            const container = getProductContainer(productContainers, currentProductName);
+            if (container instanceof HTMLTableRowElement) {
+                deleteProduct(currentProductName, container)
+            }
+            editDrawer.hide();
+        })
     }
-    editDrawer.hide();
 });

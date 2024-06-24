@@ -17,7 +17,7 @@ const buttonsContainer = document.getElementById("buttons-container") as HTMLDiv
 if (form instanceof HTMLFormElement) {
     form.addEventListener("submit", async event => {
         event.preventDefault();
-        await fetch("http://localhost:3000/create-product", {
+        await fetch("http://localhost:3000/products/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

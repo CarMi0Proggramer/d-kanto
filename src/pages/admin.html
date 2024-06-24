@@ -2117,7 +2117,7 @@
             <div>
                 <h4 id="read-drawer-label"
                     class="mb-1.5 leading-none text-xl font-semibold text-gray-900 dark:text-white">Apple iMac 25"</h4>
-                <h5 class="mb-5 text-xl font-bold text-gray-900 dark:text-white">$2999</h5>
+                <h5 id="preview-price" class="mb-5 text-xl font-bold text-gray-900 dark:text-white">$2999</h5>
             </div>
             <button type="button" id="preview-close-button" aria-controls="drawer-read-product-advanced"
                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -2129,35 +2129,15 @@
                 </svg>
                 <span class="sr-only">Close menu</span>
             </button>
-            <div class="grid grid-cols-3 gap-4 mb-4 sm:mb-5 w-full">
-                <div class="p-2 w-auto bg-gray-100 rounded-lg dark:bg-gray-700">
-                    <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-side-image.png"
-                        alt="iMac Side Image">
-                </div>
-                <div class="p-2 w-auto bg-gray-100 rounded-lg dark:bg-gray-700">
-                    <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
-                        alt="iMac Front Image">
-                </div>
-                <div class="p-2 w-auto bg-gray-100 rounded-lg dark:bg-gray-700">
-                    <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-back-image.png"
-                        alt="iMac Back Image">
-                </div>
-                <div class="p-2 w-auto bg-gray-100 rounded-lg dark:bg-gray-700">
-                    <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-side-image.png"
-                        alt="iMac Back Image">
-                </div>
-                <div class="p-2 w-auto bg-gray-100 rounded-lg dark:bg-gray-700">
-                    <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-back-image.png"
-                        alt="iMac Front Image">
-                </div>
-                <div class="p-2 w-auto bg-gray-100 rounded-lg dark:bg-gray-700">
-                    <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-side-image.png"
-                        alt="iMac Side Image">
+            <div class="grid grid-cols-1 gap-4 mb-4 sm:mb-5 w-full">
+                <div class="p-2 w-full bg-gray-100 rounded-lg dark:bg-gray-700">
+                    <img class="mx-auto rounded-lg" id="preview-image" src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-side-image.png"
+                        alt="product image">
                 </div>
             </div>
             <dl class="sm:mb-5">
                 <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Details</dt>
-                <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">Standard glass ,3.8GHz 8-core
+                <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400" id="preview-description">Standard glass ,3.8GHz 8-core
                     10th-generation Intel Core i7 processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory, Radeon
                     Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage, Gigabit Ethernet, Magic Mouse 2, Magic
                     Keyboard - US.</dd>
@@ -2204,23 +2184,15 @@
                 </div>
                 <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Sold by</dt>
-                    <dd class="text-gray-500 dark:text-gray-400">Flowbite</dd>
+                    <dd class="text-gray-500 dark:text-gray-400">D-Kanto</dd>
                 </div>
                 <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Ships from</dt>
-                    <dd class="text-gray-500 dark:text-gray-400">Flowbite</dd>
+                    <dd class="text-gray-500 dark:text-gray-400">D-Kanto</dd>
                 </div>
                 <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Brand</dt>
-                    <dd class="text-gray-500 dark:text-gray-400">Apple</dd>
-                </div>
-                <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dimensions (cm)</dt>
-                    <dd class="text-gray-500 dark:text-gray-400">105 x 15 x 23</dd>
-                </div>
-                <div class="p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Item weight</dt>
-                    <dd class="text-gray-500 dark:text-gray-400">12kg</dd>
+                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Category</dt>
+                    <dd id="preview-category" class="text-gray-500 dark:text-gray-400"></dd>
                 </div>
             </dl>
             <div class="flex bottom-0 left-0 justify-center pb-4 space-x-4 w-full">

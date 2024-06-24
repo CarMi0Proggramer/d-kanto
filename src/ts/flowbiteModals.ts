@@ -1,7 +1,23 @@
 /* DELETE MODAL */
 import { Drawer, Modal } from "flowbite";
-import { updateEditData } from "./updateEditData";
+import { findCategory, updateEditPreviewData } from "./updateEditPreviewData";
 import { clearErrors } from "./addProduct";
+import { confirmDeleteButton, deleteProduct } from "./deleteProduct";
+import { getProductContainer } from "./editProduct";
+
+const drawerName = document.getElementById("drawer-name") as HTMLInputElement;
+const drawerUrlImage = document.getElementById(
+    "update-product-img"
+) as HTMLInputElement;
+const drawerCategory = document.getElementById(
+    "drawer-category"
+) as HTMLSelectElement;
+const drawerPrice = document.getElementById(
+    "update-product-price"
+) as HTMLInputElement;
+const drawerDescription = document.getElementById(
+    "drawer-description"
+) as HTMLTextAreaElement;
 
 const targetEl = document.getElementById("delete-modal") as HTMLDivElement;
 const deleteModal = new Modal(targetEl);
@@ -50,7 +66,14 @@ function updateEditButtons() {
             editBtn.addEventListener("click", async () => {
                 editDrawer.show();
                 if (container instanceof HTMLTableRowElement) {
-                    await updateEditData(container);
+                    await updateEditPreviewData(
+                        container,
+                        drawerName,
+                        drawerUrlImage,
+                        drawerCategory,
+                        drawerPrice,
+                        drawerDescription
+                    );
                 }
             });
         }
@@ -77,6 +100,12 @@ const previewEditButton = document.getElementById(
 previewEditButton.addEventListener("click", () => {
     previewDrawer.hide();
     editDrawer.show();
+
+    drawerName.value = previewName.innerText;
+    drawerUrlImage.value = previewImage.src;
+    drawerCategory.value = findCategory(previewCategory.innerText, true);
+    drawerPrice.value = previewPrice.innerText.replace("\.99","");
+    drawerDescription.value = previewDescription.innerText;
 });
 
 const previewDeleteButton = document.getElementById(
@@ -86,13 +115,50 @@ previewDeleteButton.addEventListener("click", () => {
     deleteModal.show();
 });
 
+/* WHEN YOU WANT TO DELETE FROM PREVIEW DRAWER COMPONENT */
+previewDeleteButton.addEventListener("click", () => {
+    if (confirmDeleteButton instanceof HTMLButtonElement) {
+        confirmDeleteButton.addEventListener("click", () => {
+            const productContainers = document.querySelectorAll(
+                `tr[name="product-container"]`
+            );
+            const container = getProductContainer(productContainers, previewName.innerText);
+            if (container instanceof HTMLTableRowElement) {
+                deleteProduct(previewName.innerText, container)
+            }
+            previewDrawer.hide();
+        })
+    }
+});
+
+const previewName = document.getElementById("read-drawer-label") as HTMLHeadingElement;
+const previewCategory = document.getElementById("preview-category") as HTMLElement;
+const previewPrice = document.getElementById("preview-price") as HTMLHeadingElement;
+const previewDescription = document.getElementById("preview-description") as HTMLElement;
+const previewImage = document.getElementById("preview-image") as HTMLImageElement;
+
 function updatePreviewButtons() {
-    const previewBtns = document.getElementsByName("preview-product");
-    previewBtns.forEach((element) => {
-        element.addEventListener("click", () => {
-            previewDrawer.show();
-        });
-    });
+    const productContainers = document.querySelectorAll(
+        `tr[name="product-container"]`
+    );
+    for (const container of productContainers) {
+        const previewBtn = container.querySelector(`button[name="preview-product"]`);
+        if (previewBtn instanceof HTMLButtonElement) {
+            previewBtn.addEventListener("click", async () => {
+                previewDrawer.show();
+                if (container instanceof HTMLTableRowElement) {
+                    await updateEditPreviewData(
+                        container,
+                        previewName,
+                        previewImage,
+                        previewCategory,
+                        previewPrice,
+                        previewDescription
+                    );
+                }
+            });
+        }
+    }
 }
 
 export function updateModals() {
