@@ -8,6 +8,7 @@ const price = document.getElementById("price") as HTMLInputElement;
 const description = document.getElementById("description") as HTMLTextAreaElement;
 const category = document.getElementById("category") as HTMLSelectElement;
 const urlimg = document.getElementById("product-img") as HTMLInputElement;
+const stock = document.getElementById("add-product-stock") as HTMLInputElement;
 const discardButton = document.getElementById("discard-button");
 /* const server = "https://d-kanto-backend.onrender.com"; */
 
@@ -22,7 +23,8 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
             price: Number(price.value) + 0.99,
             description: description.value,
             category: category.value,
-            urlimg: urlimg.value
+            urlimg: urlimg.value,
+            stock: Number(stock.value)
         })
     })
     .then(async res => {

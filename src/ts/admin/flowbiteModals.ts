@@ -17,6 +17,7 @@ const drawerPrice = document.getElementById(
 const drawerDescription = document.getElementById(
     "drawer-description"
 ) as HTMLTextAreaElement;
+const drawerStock = document.getElementById("update-product-stock") as HTMLInputElement;
 
 const targetEl = document.getElementById("delete-modal") as HTMLDivElement;
 const deleteModal = new Modal(targetEl);
@@ -71,7 +72,8 @@ function updateEditButtons() {
                         drawerUrlImage,
                         drawerCategory,
                         drawerPrice,
-                        drawerDescription
+                        drawerDescription,
+                        drawerStock
                     );
                 }
             });
@@ -146,7 +148,8 @@ function updatePreviewButtons() {
                         previewImage,
                         previewCategory,
                         previewPrice,
-                        previewDescription
+                        previewDescription,
+                        null
                     );
                 }
             });

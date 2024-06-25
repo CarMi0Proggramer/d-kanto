@@ -27,7 +27,7 @@ export function findCategory(category: string, inverse: boolean) {
                 return CATEGORY_TYPES.TV
                 break;
             default:
-                return "Others"
+                return ""
                 break;
         }
     }else{
@@ -48,7 +48,7 @@ export function findCategory(category: string, inverse: boolean) {
                 return "TV/Monitors"
                 break;
             default:
-                return "Others"
+                return ""
                 break;
         }
     }
@@ -56,7 +56,7 @@ export function findCategory(category: string, inverse: boolean) {
 
 export let currentProductName:string;
 
-export async function updateEditPreviewData(container: HTMLTableRowElement, nameContainer: HTMLInputElement | HTMLHeadingElement, urlImgContainer:HTMLInputElement | HTMLImageElement, categoryContainer: HTMLSelectElement | HTMLElement, priceContainer: HTMLInputElement | HTMLHeadingElement, descriptionContainer: HTMLTextAreaElement | HTMLElement) {
+export async function updateEditPreviewData(container: HTMLTableRowElement, nameContainer: HTMLInputElement | HTMLHeadingElement, urlImgContainer:HTMLInputElement | HTMLImageElement, categoryContainer: HTMLSelectElement | HTMLElement, priceContainer: HTMLInputElement | HTMLHeadingElement, descriptionContainer: HTMLTextAreaElement | HTMLElement, stockContainer: HTMLInputElement | null) {
     const productName = container.querySelector(
         `div[name="product-name"]`
     ) as HTMLDivElement;
@@ -90,6 +90,10 @@ export async function updateEditPreviewData(container: HTMLTableRowElement, name
         descriptionContainer.value = originalProduct.description;
     }else{
         descriptionContainer.innerText = originalProduct.description;
+    }
+
+    if (stockContainer != null) {
+        stockContainer.value = String(originalProduct.stock);
     }
 
     currentProductName = originalProduct.name;

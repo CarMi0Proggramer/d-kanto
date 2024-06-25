@@ -11,6 +11,7 @@ const drawerUrlImage = document.getElementById("update-product-img") as HTMLInpu
 const drawerCategory = document.getElementById("drawer-category") as HTMLSelectElement;
 const drawerPrice = document.getElementById("update-product-price") as HTMLInputElement;
 const drawerDescription = document.getElementById("drawer-description") as HTMLTextAreaElement;
+const drawerStock = document.getElementById("update-product-stock") as HTMLInputElement;
 const drawerDeleteButton = document.getElementById("drawer-delete-button") as HTMLButtonElement;
 const drawerButtonsContainer = document.getElementById("drawer-buttons-container") as HTMLDivElement;
 
@@ -25,7 +26,8 @@ export function updateProduct(form: HTMLFormElement) {
             price: Number(drawerPrice.value) + 0.99,
             description: drawerDescription.value,
             category: drawerCategory.value,
-            urlimg: drawerUrlImage.value
+            urlimg: drawerUrlImage.value,
+            stock: Number(drawerStock.value)
         })
     })
     .then(async res => {
