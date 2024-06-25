@@ -1,4 +1,4 @@
-import { Product } from "../components/product";
+import { Product } from "../../components/product";
 
 const enum CATEGORY_TYPES{
     TV = "TV",

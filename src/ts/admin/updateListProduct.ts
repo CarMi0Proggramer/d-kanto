@@ -1,4 +1,4 @@
-import { Product, createProduct } from "../components/product";
+import { Product, createProduct } from "../../components/product";
 
 const productBox = document.getElementById("product-box") as HTMLTableSectionElement;
 

@@ -6,17 +6,8 @@ export const confirmDeleteButton = document.getElementById(
 );
 const checkboxAll = document.getElementById("checkbox-all");
 
-if (confirmDeleteButton instanceof HTMLButtonElement) {
-    confirmDeleteButton.addEventListener("click", () => {
-        const productContainers = document.querySelectorAll(
-            `tr[name="product-container"]`
-        );
-        validateDelete(productContainers);
-    });
-}
-
 /* Validate PRODUCT FUNCTION */
-function validateDelete(containers: NodeListOf<Element>) {
+export function validateDelete(containers: NodeListOf<Element>) {
     let validElements: string[] = [];
 
     /* getting valid elements */
@@ -90,7 +81,6 @@ export function deleteProduct(name: string) {
                     `tr[name="product-container"]`
                 );
                 const containers = getProductContainers(productContainers, name);
-                console.log(containers)
                 for (const container of containers) {
                     if (container instanceof HTMLTableRowElement) {
                         container.remove();

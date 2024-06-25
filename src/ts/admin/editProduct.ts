@@ -1,11 +1,11 @@
-import { Product } from "../components/product";
-import { showUpdateSuccessMessage } from "../ts/successMessages";
+import { Product } from "../../components/product";
+import { showUpdateSuccessMessage } from "./successMessages";
 import { clearErrors, showErrors } from "./addProduct";
 import { xBtn, editDrawer } from "./flowbiteModals";
 import { currentProductName } from "./updateEditPreviewData";
 import { confirmDeleteButton, deleteProduct } from "./deleteProduct";
 
-const editForm = document.getElementById("drawer-update-product") as HTMLFormElement;
+
 const drawerName = document.getElementById("drawer-name") as HTMLInputElement;
 const drawerUrlImage = document.getElementById("update-product-img") as HTMLInputElement;
 const drawerCategory = document.getElementById("drawer-category") as HTMLSelectElement;
@@ -14,12 +14,7 @@ const drawerDescription = document.getElementById("drawer-description") as HTMLT
 const drawerDeleteButton = document.getElementById("drawer-delete-button") as HTMLButtonElement;
 const drawerButtonsContainer = document.getElementById("drawer-buttons-container") as HTMLDivElement;
 
-editForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    updateProduct();
-});
-
-function updateProduct() {
+export function updateProduct(form: HTMLFormElement) {
     fetch(`http://localhost:3000/products/${currentProductName}`,{
         method: "PATCH",
         headers: {
@@ -68,7 +63,7 @@ function updateProduct() {
                 }
 
                 clearErrors("drawer-errors-container");
-                showErrors(err_messages, "drawer-errors-container", editForm, drawerButtonsContainer);
+                showErrors(err_messages, "drawer-errors-container", form, drawerButtonsContainer);
         }
         catch (err) {
             location.href = window.origin + "/src/pages/500.html"
