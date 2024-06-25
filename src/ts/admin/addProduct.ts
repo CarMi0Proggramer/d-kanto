@@ -1,7 +1,6 @@
 import { Product } from "../../components/product";
 import { updateListProduct } from "./updateListProduct";
 import { showAddSuccessMessage } from "./successMessages";
-import { updateModals } from "./flowbiteModals";
 
 const closeModalButton = document.getElementById("close-add-product");
 const inputName = document.getElementById("name") as HTMLInputElement;
@@ -32,7 +31,6 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
             updateListProduct(product);
             clearData();
             showAddSuccessMessage();
-            updateModals();
         }
         else if (res.status === 400 ) {
             return res.json().then(errorData => {
