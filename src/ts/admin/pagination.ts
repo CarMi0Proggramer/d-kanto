@@ -79,6 +79,7 @@ function calculateShowing(index: number, products: Product[]) {
 }
 
 function calculatePagination(index: number, productsLength: number) {
+    console.log(index)
     const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
     const sectionsNumber = calculateSections(productsLength);
     tableNavigation.innerHTML = `${tableNavigation.innerHTML}` + loadPagination(sectionsNumber);
