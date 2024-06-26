@@ -80,9 +80,8 @@ function calculateShowing(index: number, products: Product[]) {
 
 function calculatePagination(index: number, productsLength: number) {
     const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
-    if ((products.length / 6) <= 3) {
-        tableNavigation.innerHTML = `${tableNavigation.innerHTML}` + loadPagination(Math.round(productsLength / 6));
-    }
+    const sectionsNumber = calculateSections(productsLength);
+    tableNavigation.innerHTML = `${tableNavigation.innerHTML}` + loadPagination(sectionsNumber);
 }
 
 function generateCeil(num: number) {
@@ -118,6 +117,15 @@ function loadPagination(num: number) {
     </ul>`;
 
     return ul;
+}
+
+function calculateSections(length: number) {
+    const num = length / 6;
+    if (/\.\d+/.test(String(num))) {
+        return (Math.floor(num) + 1);
+    }else {
+        return num;
+    }
 }
 
 /* ELEMENTS */
