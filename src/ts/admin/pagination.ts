@@ -41,7 +41,8 @@ export function loadProducts() {
     }
 
     calculateShowing(initialIndex, products);
-    calculatePagination(initialIndex, products.length);
+    calculatePagination(products.length);
+    estimateCurrentPage();
 }
 
 /* CALCULATING THE NUMBER OF PRODUCTS THAT IT HAS BEEN SHOWED */
@@ -59,6 +60,7 @@ const showingBelowQuantity = document.getElementById(
     "products-showing-below-quantity"
 ) as HTMLSpanElement;
 
+/* THE NUMBER OF PRODUCTS THAT THE USER IS SEEING */
 function calculateShowing(index: number, products: Product[]) {
     if (index + 5 <= products.length) {
         productsShowing.innerText = `${index}-${index + 5} (${
@@ -78,30 +80,34 @@ function calculateShowing(index: number, products: Product[]) {
     showingBelowQuantity.innerText = String(products.length);
 }
 
-function calculatePagination(index: number, productsLength: number) {
-    console.log(index)
+/* IT ESTIMATES THE FINAL COMPONENTE THAT THE USER IS SEEING */
+function calculatePagination(productsLength: number) {
     const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
     const sectionsNumber = calculateSections(productsLength);
     tableNavigation.innerHTML = `${tableNavigation.innerHTML}` + loadPagination(sectionsNumber);
 }
 
+/* GENERATING A CONTAINER WITH ITS CORRECT NUMBER */
 function generateCeil(num: number) {
     const ceilNumber = `<li>
-                            <a href="#"
+                            <a href="#" name="pagination-ceil"
                             class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">${num}</a>
                         </li>`;
     return ceilNumber;
 }
 
+/* ESTIMATING ALL THE CONTAINERS IT WOULD BE SHOWN */
 function generateMultipleCeils(num: number) {
     let finalString = ``;
     for (let i = 1; i <= num; i++) {
         if (num <= 4) {
             finalString+= generateCeil(i);
         }else{
-            if (i == (num - 1)) {
-                finalString+= dots;
-            }else{
+            if (i <=3) {
+                finalString+= generateCeil(i);
+            }else if(i == 4){
+                finalString += dots;
+            }else if (i == num) {
                 finalString+= generateCeil(i);
             }
         }
@@ -150,3 +156,39 @@ const next = `<li>
 const dots = `<li>
                     <a href="#" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
                 </li>`;
+
+function estimateCurrentPage() {
+    const bgColor = getBgColor();
+    const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`);
+    const currentPage = getCurrentPage(ceils, bgColor);
+    
+    if (bgColor == "dark:bg-gray-700") {
+        ceils[currentPage].classList.remove("dark:bg-gray-800");
+        ceils[currentPage].classList.add(bgColor);
+    }else{
+        ceils[currentPage].classList.remove("bg-white");
+        ceils[currentPage].classList.add(bgColor);
+    }
+}
+
+function getBgColor() {
+    const lightMode = "bg-slate-300";
+    const darkMode = "dark:bg-gray-700";
+    const preferences = localStorage.getItem("color-theme");
+    
+    return preferences == "dark" ? darkMode : lightMode;
+}
+
+function getCurrentPage(nodes: NodeListOf<Element>, bgColor: string) {
+    let current = 0;
+    let index = 0;
+    for (let node of nodes) {
+        if (node.classList.contains(bgColor)) {
+            current = index;
+            break;
+        }
+        index++;
+    }
+
+    return current;
+}

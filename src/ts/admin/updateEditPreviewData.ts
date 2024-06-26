@@ -5,7 +5,10 @@ const enum CATEGORY_TYPES{
     PC = "PC",
     GA = "GA",
     CL = "CL",
-    FU = "FU" 
+    FU = "FU",
+    BK = "BK",
+    SF = "SF",
+    TL = "TL"
 }
 
 export function findCategory(category: string, inverse: boolean) {
@@ -25,6 +28,15 @@ export function findCategory(category: string, inverse: boolean) {
                 break;
             case "TV/Monitors":
                 return CATEGORY_TYPES.TV
+                break;
+            case "Books":
+                return CATEGORY_TYPES.BK
+                break;
+            case "Software":
+                return CATEGORY_TYPES.SF
+                break;
+            case "Toiletries":
+                return CATEGORY_TYPES.TL
                 break;
             default:
                 return ""
@@ -46,6 +58,15 @@ export function findCategory(category: string, inverse: boolean) {
                 break;
             case CATEGORY_TYPES.TV:
                 return "TV/Monitors"
+                break;
+            case CATEGORY_TYPES.BK:
+                return "Books"
+                break;
+            case CATEGORY_TYPES.SF:
+                return "Software"
+                break;
+            case CATEGORY_TYPES.TL:
+                return "Toiletries"
                 break;
             default:
                 return ""
