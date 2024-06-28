@@ -20,13 +20,13 @@ function setClasses(element: HTMLTableRowElement) {
 
 function generateColorStock(stock: number) {
     if (stock < 30) {
-        return "bg-red-900";
+        return "bg-red-600";
     } else if (stock >= 30 && stock < 65) {
-        return "bg-orange-500";
+        return "bg-orange-400";
     } else if (stock >= 65 && stock < 100) {
-        return "bg-green-400";
+        return "bg-green-200";
     } else {
-        return "bg-green-700";
+        return "bg-green-600";
     }
 }
 
@@ -62,7 +62,7 @@ function insertData(element: HTMLTableRowElement, data: Product) {
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center mr-3" name="product-name">
                                             <img src="${data.urlimg}"
-                                                alt="Product image" class="h-8 w-auto mr-3">
+                                                alt="Product img" class="h-8 w-auto mr-3">
                                             ${data.name}
                                         </div>
                                     </th>

@@ -1,6 +1,7 @@
-import { Product } from "../../components/product";
-import { updateListProduct } from "./updateListProduct";
+import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
+import { lastIndex, products } from "./pagination";
+import { calculateShowing } from "./productsShowing";
 
 const closeModalButton = document.getElementById("close-add-product");
 const inputName = document.getElementById("name") as HTMLInputElement;
@@ -30,7 +31,8 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
     .then(async res => {
         if (res.ok) {
             const product: Product = await res.json();
-            updateListProduct(product);
+            products.push(product);
+            calculateShowing(lastIndex - 5, products);
             clearData();
             showAddSuccessMessage();
         }
