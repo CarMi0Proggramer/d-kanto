@@ -112,12 +112,9 @@ previewEditButton.addEventListener("click", () => {
 const previewDeleteButton = document.getElementById(
     "preview-delete-button"
 ) as HTMLButtonElement;
-previewDeleteButton.addEventListener("click", () => {
-    deleteModal.show();
-});
-
 /* WHEN YOU WANT TO DELETE FROM PREVIEW DRAWER COMPONENT */
 previewDeleteButton.addEventListener("click", () => {
+    deleteModal.show();
     if (confirmDeleteButton instanceof HTMLButtonElement) {
         confirmDeleteButton.addEventListener("click", () => {
             deleteProduct(previewName.innerText);

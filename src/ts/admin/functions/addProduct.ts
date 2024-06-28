@@ -1,7 +1,8 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
-import { lastIndex, products } from "./pagination";
+import { changeLastIndex, lastIndex, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
+import { updateListProduct } from "./updateListProduct";
 
 const closeModalButton = document.getElementById("close-add-product");
 const inputName = document.getElementById("name") as HTMLInputElement;
@@ -32,8 +33,21 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
         if (res.ok) {
             const product: Product = await res.json();
             products.push(product);
-            calculateShowing(lastIndex - 5, products);
-            clearData();
+            let productContainers = document.querySelectorAll(
+                `tr[name="product-container"]`
+            );
+            if (productContainers.length < 6) {
+                updateListProduct(product);
+                productContainers = document.querySelectorAll(
+                    `tr[name="product-container"]`
+                );
+                calculateShowing(changeLastIndex(1,"plus") - (productContainers.length -1), products);
+            }else{
+                calculateShowing((lastIndex + 1) - productContainers.length, products);
+            }
+            
+            clearData(false);
+            clearErrors(form.id);
             showAddSuccessMessage();
         }
         else if (res.status === 400 ) {
@@ -82,17 +96,25 @@ export function clearErrors(idElement:string) {
 }
 
 if (discardButton instanceof HTMLButtonElement) {
-    discardButton.addEventListener("click", () => clearErrors("errors-container"));
+    discardButton.addEventListener("click", () => {
+        clearErrors("errors-container"); 
+        clearData(true);
+    });
 }
 
-function clearData() {
+function clearData(discard: boolean) {
     inputName.value = '';
     description.value = '';
     urlimg.value = '';
     category.value = '';
     price.value = '';
+    stock.value = '';
 
-    if (closeModalButton instanceof HTMLButtonElement) {
-        closeModalButton.click();
+    if (discard) {
+        return;
+    }else{
+        if (closeModalButton instanceof HTMLButtonElement) {
+            closeModalButton.click();
+        }
     }
 }

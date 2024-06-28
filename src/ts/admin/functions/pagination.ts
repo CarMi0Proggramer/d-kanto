@@ -1,9 +1,10 @@
+import { Product } from "../../../components/product";
 import { getProducts } from "./getProducts";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
 /* LOAD PRODUCTS FUNCTION */
-export let products = await getProducts();
+export let products:Product[];
 export let lastIndex = 0;
 let initialIndex;
 let count = 0;
@@ -180,4 +181,36 @@ function addEvents() {
 
         loadProducts(false);
     }
+}
+
+export async function paginate() {
+    products = await getProducts();
+    loadProducts(false);
+    return;
+}
+
+export function changeProducts(name: string) {
+    products = products.filter(product => product.name != name);
+    return products;
+}
+
+const enum Operations{
+    PLUS = "plus",
+    MINUS = "minus",
+}
+export function changeLastIndex(num: number, operation: string) {
+    if (lastIndex == products.length) {
+        lastIndex-=1;
+    }
+    switch (operation) {
+        case Operations.PLUS:
+            lastIndex += num;
+            break;
+    
+        case Operations.MINUS:
+            lastIndex -= num;
+            break;
+    }
+
+    return lastIndex;
 }

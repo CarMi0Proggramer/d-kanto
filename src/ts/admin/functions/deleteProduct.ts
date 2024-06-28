@@ -1,6 +1,6 @@
-import { getProductContainers } from "./editProduct";/* 
-import { lastIndex, products } from "./pagination";
-import { calculateShowing } from "./productsShowing"; */
+import { getProductContainers } from "./editProduct";
+import { changeLastIndex, changeProducts, lastIndex } from "./pagination";
+import { calculateShowing } from "./productsShowing";
 import { showDeleteSuccessMessage } from "./successMessages";
 
 export const confirmDeleteButton = document.getElementById(
@@ -36,7 +36,7 @@ export function validateDelete(containers: NodeListOf<Element>) {
     });
 
     for (const name of filteredNames) {
-        deleteProduct(name)
+        deleteProduct(name);
     }
 }
 
@@ -73,6 +73,7 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
     return productCheckboxs;
 }
 
+/* DELETING A PRODUCT */
 export function deleteProduct(name: string) {
     fetch(`http://localhost:3000/products/${name}`, {
         method: "DELETE",
@@ -83,12 +84,15 @@ export function deleteProduct(name: string) {
                     `tr[name="product-container"]`
                 );
                 const containers = getProductContainers(productContainers, name);
+                let count = 1;
                 for (const container of containers) {
                     if (container instanceof HTMLTableRowElement) {
                         container.remove();
+                        count++;
                     }
                 }
 
+                calculateShowing(changeLastIndex(count, "minus"), changeProducts(name));
                 showDeleteSuccessMessage();
                 /* IF IT'S A MASSIVVE DELETE */
                 if (checkboxAll instanceof HTMLInputElement) {

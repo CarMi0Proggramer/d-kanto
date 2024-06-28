@@ -1,7 +1,7 @@
 import { createProductForm } from "./functions/addProduct";
 import { confirmDeleteButton, validateDelete } from "./functions/deleteProduct";
 import { updateProduct } from "./functions/editProduct";
-import { loadProducts } from "./functions/pagination";
+import { paginate } from "./functions/pagination";
 
 /* CREATING PRODUCT */
 const buttonsContainer = document.getElementById("buttons-container") as HTMLDivElement;
@@ -33,4 +33,4 @@ editForm.addEventListener("submit", async event => {
 });
 
 /* PRODUCTS PAGINATION */
-loadProducts(false);
+window.addEventListener("load", paginate);
