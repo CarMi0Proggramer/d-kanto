@@ -1,6 +1,6 @@
-import { getProductContainers } from "./editProduct";
+import { getProductContainers } from "./editProduct";/* 
 import { lastIndex, products } from "./pagination";
-import { calculateShowing } from "./productsShowing";
+import { calculateShowing } from "./productsShowing"; */
 import { showDeleteSuccessMessage } from "./successMessages";
 
 export const confirmDeleteButton = document.getElementById(
