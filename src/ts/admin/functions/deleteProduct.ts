@@ -1,5 +1,5 @@
 import { getProductContainers } from "./editProduct";
-import { changeLastIndex, changeProducts, lastIndex } from "./pagination";
+import { changeLastIndex, changeProducts, initialIndex, lastIndex } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { showDeleteSuccessMessage } from "./successMessages";
 
@@ -92,18 +92,15 @@ export function deleteProduct(name: string) {
                         count++;
                     }
                 }
-
-                console.log(lastIndex);
-                changeLastIndex(1,"minus");
-                console.log(lastIndex);
                 
-                calculateShowing(lastIndex,changeProducts(name));
+                changeLastIndex(count,"minus");
+                console.log(lastIndex);
+                calculateShowing(initialIndex,changeProducts(name));
                 showDeleteSuccessMessage();
                 quitChecked();
                 return;
             } else if (res.status === 404) {
-                /* location.href = window.origin + "/src/pages/404.html"; */
-                console.log("404");
+                location.href = window.origin + "/src/pages/404.html";
             } else {
                 const error: {
                     message: string;

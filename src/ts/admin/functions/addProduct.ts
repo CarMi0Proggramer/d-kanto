@@ -1,6 +1,6 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
-import { changeLastIndex, lastIndex, products } from "./pagination";
+import { changeLastIndex, initialIndex, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
@@ -37,17 +37,11 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 `tr[name="product-container"]`
             );
             if (productContainers.length < 6) {
+                changeLastIndex(1, "plus");
                 updateListProduct(product);
-                productContainers = document.querySelectorAll(
-                    `tr[name="product-container"]`
-                );
-                console.log(lastIndex);
-                calculateShowing(changeLastIndex(1,"plus") - (productContainers.length -1), products);
-                console.log(lastIndex);
-            }else{
-                calculateShowing((lastIndex + 1) - productContainers.length, products);
             }
             
+            calculateShowing(initialIndex, products)
             clearData(false);
             clearErrors("errors-container");
             showAddSuccessMessage();

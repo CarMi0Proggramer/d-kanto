@@ -6,7 +6,7 @@ import { updateListProduct } from "./updateListProduct";
 /* LOAD PRODUCTS FUNCTION */
 export let products:Product[];
 export let lastIndex = 0;
-let initialIndex;
+export let initialIndex: any;
 let count = 0;
 
 export function loadProducts(inverse: boolean) {
