@@ -41,13 +41,15 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 productContainers = document.querySelectorAll(
                     `tr[name="product-container"]`
                 );
+                console.log(lastIndex);
                 calculateShowing(changeLastIndex(1,"plus") - (productContainers.length -1), products);
+                console.log(lastIndex);
             }else{
                 calculateShowing((lastIndex + 1) - productContainers.length, products);
             }
             
             clearData(false);
-            clearErrors(form.id);
+            clearErrors("errors-container");
             showAddSuccessMessage();
         }
         else if (res.status === 400 ) {

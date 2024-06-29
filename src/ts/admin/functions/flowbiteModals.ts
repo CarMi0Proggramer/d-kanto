@@ -1,6 +1,6 @@
 /* DELETE MODAL */
 import { Drawer, Modal } from "flowbite";
-import { findCategory, updateEditPreviewData } from "./updateEditPreviewData";
+import { currentProductName, findCategory, updateEditPreviewData } from "./updateEditPreviewData";
 import { clearErrors } from "./addProduct";
 import { confirmDeleteButton, deleteProduct } from "./deleteProduct";
 
@@ -117,7 +117,7 @@ previewDeleteButton.addEventListener("click", () => {
     deleteModal.show();
     if (confirmDeleteButton instanceof HTMLButtonElement) {
         confirmDeleteButton.addEventListener("click", () => {
-            deleteProduct(previewName.innerText);
+            deleteProduct(currentProductName);
             previewDrawer.hide();
         })
     }

@@ -36,6 +36,7 @@ export function validateDelete(containers: NodeListOf<Element>) {
     });
 
     for (const name of filteredNames) {
+        console.log(name);
         deleteProduct(name);
     }
 }
@@ -92,22 +93,17 @@ export function deleteProduct(name: string) {
                     }
                 }
 
-                calculateShowing(changeLastIndex(count, "minus"), changeProducts(name));
+                console.log(lastIndex);
+                changeLastIndex(1,"minus");
+                console.log(lastIndex);
+                
+                calculateShowing(lastIndex,changeProducts(name));
                 showDeleteSuccessMessage();
-                /* IF IT'S A MASSIVVE DELETE */
-                if (checkboxAll instanceof HTMLInputElement) {
-                    checkboxAll.checked = false;
-                    const checkboxs = document.querySelectorAll(
-                        `input[name="product-checkbox"]`
-                    );
-                    checkboxs.forEach((element) => {
-                        if (element instanceof HTMLInputElement) {
-                            element.checked = false;
-                        }
-                    });
-                }
+                quitChecked();
+                return;
             } else if (res.status === 404) {
-                location.href = window.origin + "/src/pages/404.html";
+                /* location.href = window.origin + "/src/pages/404.html"; */
+                console.log("404");
             } else {
                 const error: {
                     message: string;
@@ -120,4 +116,19 @@ export function deleteProduct(name: string) {
                 location.href = window.origin + "/src/pages/500.html";
             }
         });
+}
+
+function quitChecked() {
+    /* IF IT'S A MASSIVVE DELETE */
+    if (checkboxAll instanceof HTMLInputElement) {
+        checkboxAll.checked = false;
+        const checkboxs = document.querySelectorAll(
+            `input[name="product-checkbox"]`
+        );
+        checkboxs.forEach((element) => {
+            if (element instanceof HTMLInputElement) {
+                element.checked = false;
+            }
+        });
+    }
 }
