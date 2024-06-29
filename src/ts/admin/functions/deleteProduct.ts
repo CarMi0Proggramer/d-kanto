@@ -1,5 +1,5 @@
 import { getProductContainers } from "./editProduct";
-import { changeLastIndex, changeProducts, initialIndex, lastIndex } from "./pagination";
+import { changeLastIndex, changeProducts, initialIndex, lastIndex, loadProducts, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { showDeleteSuccessMessage } from "./successMessages";
 
@@ -36,7 +36,6 @@ export function validateDelete(containers: NodeListOf<Element>) {
     });
 
     for (const name of filteredNames) {
-        console.log(name);
         deleteProduct(name);
     }
 }
@@ -81,26 +80,41 @@ export function deleteProduct(name: string) {
     })
         .then(async (res) => {
             if (res.ok) {
-                const productContainers = document.querySelectorAll(
+                let productContainers = document.querySelectorAll(
                     `tr[name="product-container"]`
                 );
-                const containers = getProductContainers(productContainers, name);
-                let count = 1;
-                for (const container of containers) {
-                    if (container instanceof HTMLTableRowElement) {
-                        container.remove();
-                        count++;
+
+                const newProducts = changeProducts(name);
+                if (productContainers.length < 6) {
+                    deleteContainers(productContainers,name);
+
+                    productContainers = document.querySelectorAll(
+                        `tr[name="product-container"]`
+                    );
+                    if (productContainers.length == 0) {
+                        loadProducts(true,true);
                     }
+                    changeLastIndex(true,false)
+                }else{
+                    for (const container of productContainers) {
+                        container.remove();
+                    }
+                    console.log("start:lastIndex",lastIndex);
+                    console.log("start:initialIndex",initialIndex);
+                    console.log("start:products.length",products.length);
+                    changeLastIndex(false,true);
+                    loadProducts(false);
                 }
                 
-                changeLastIndex(count,"minus");
-                console.log(lastIndex);
-                calculateShowing(initialIndex,changeProducts(name));
+                console.log("end:lastIndex",lastIndex);
+                console.log("end:initialIndex",initialIndex);
+                console.log("end:products.length",products.length)
+                calculateShowing(initialIndex,newProducts);
                 showDeleteSuccessMessage();
                 quitChecked();
                 return;
             } else if (res.status === 404) {
-                location.href = window.origin + "/src/pages/404.html";
+                /* location.href = window.origin + "/src/pages/404.html"; */
             } else {
                 const error: {
                     message: string;
@@ -128,4 +142,12 @@ function quitChecked() {
             }
         });
     }
+}
+
+function deleteContainers(productContainers: NodeListOf<Element>, name:string) {
+    const containers = getProductContainers(productContainers, name);
+        for(let container of containers){
+            container.remove();
+        }
+    return containers.length;
 }

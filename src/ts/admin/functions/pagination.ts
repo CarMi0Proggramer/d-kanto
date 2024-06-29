@@ -9,11 +9,14 @@ export let lastIndex = 0;
 export let initialIndex: any;
 let count = 0;
 
-export function loadProducts(inverse: boolean) {
+export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
     if (count == 6) {
         initialIndex = inverse ? lastIndex - 11: lastIndex + 1;
         lastIndex = inverse ? lastIndex - 12: lastIndex;
-    }else {
+    }else if(deleteBackOption){
+        initialIndex = inverse ? products.length - 5 : lastIndex + 1;
+        lastIndex = inverse ? products.length - 6 : lastIndex;
+    }else{
         initialIndex = inverse ? (lastIndex + 1) - (6 + count): lastIndex + 1;
         lastIndex = inverse ? lastIndex - (6 + count): lastIndex;
     }
@@ -198,18 +201,26 @@ const enum Operations{
     PLUS = "plus",
     MINUS = "minus",
 }
-export function changeLastIndex(num: number, operation: string) {
-    if (lastIndex == products.length) {
-        lastIndex-=1;
-    }
-    switch (operation) {
-        case Operations.PLUS:
-            lastIndex += num;
-            break;
-    
-        case Operations.MINUS:
-            lastIndex -= num;
-            break;
+export function changeLastIndex(absolute: boolean,convertInitial:boolean,num?: number, operation?: string) {
+    if (absolute) {
+        lastIndex = products.length;
+    }else if (convertInitial) {
+        lastIndex = initialIndex -1;
+    }else{
+        if (lastIndex == products.length) {
+            lastIndex-=1;
+        }
+        if (num && operation) {
+            switch (operation) {
+                case Operations.PLUS:
+                    lastIndex += num;
+                    break;
+            
+                case Operations.MINUS:
+                    lastIndex -= num;
+                    break;
+            }
+        }
     }
 
     return lastIndex;

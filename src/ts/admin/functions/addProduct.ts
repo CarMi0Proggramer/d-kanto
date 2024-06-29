@@ -37,7 +37,7 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 `tr[name="product-container"]`
             );
             if (productContainers.length < 6) {
-                changeLastIndex(1, "plus");
+                changeLastIndex(false,false,1, "plus");
                 updateListProduct(product);
             }
             
