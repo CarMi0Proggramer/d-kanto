@@ -54,6 +54,12 @@ const drawerDeleteBtn = document.getElementById(
 ) as HTMLButtonElement;
 drawerDeleteBtn.addEventListener("click", () => {
     deleteModal.show();
+    if (confirmDeleteButton instanceof HTMLButtonElement) {
+        confirmDeleteButton.addEventListener("click", () => {
+            deleteProduct(currentProductName);
+            editDrawer.hide();
+        })
+    }
 });
 
 function updateEditButtons() {

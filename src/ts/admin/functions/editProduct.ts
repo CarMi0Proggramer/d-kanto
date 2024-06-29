@@ -45,6 +45,7 @@ export function updateProduct(form: HTMLFormElement) {
             }
             
             xBtn.click();
+            clearErrors("drawer-errors-container");
             showUpdateSuccessMessage();
         }else if(res.status === 400){
             return res.json().then(errorData => {
