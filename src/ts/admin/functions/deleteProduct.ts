@@ -1,5 +1,5 @@
 import { getProductContainers } from "./editProduct";
-import { changeLastIndex, changeProducts, initialIndex, lastIndex, loadProducts, products } from "./pagination";
+import { changeLastIndex, changeProducts, initialIndex, loadProducts } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { showDeleteSuccessMessage } from "./successMessages";
 
@@ -99,16 +99,11 @@ export function deleteProduct(name: string) {
                     for (const container of productContainers) {
                         container.remove();
                     }
-                    console.log("start:lastIndex",lastIndex);
-                    console.log("start:initialIndex",initialIndex);
-                    console.log("start:products.length",products.length);
+
                     changeLastIndex(false,true);
                     loadProducts(false);
                 }
                 
-                console.log("end:lastIndex",lastIndex);
-                console.log("end:initialIndex",initialIndex);
-                console.log("end:products.length",products.length)
                 calculateShowing(initialIndex,newProducts);
                 showDeleteSuccessMessage();
                 quitChecked();
