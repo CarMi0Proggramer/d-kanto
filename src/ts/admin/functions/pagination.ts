@@ -4,7 +4,7 @@ import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
 /* LOAD PRODUCTS FUNCTION */
-export let products:Product[];
+export let products: Product[];
 export let lastIndex = 0;
 export let initialIndex: number;
 let count = 0;
@@ -12,21 +12,21 @@ let one = 0;
 
 export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
     if (count == 6) {
-        initialIndex = inverse ? lastIndex - 11: lastIndex + 1;
-        lastIndex = inverse ? lastIndex - 12: lastIndex;
-    }else if(deleteBackOption){
+        initialIndex = inverse ? lastIndex - 11 : lastIndex + 1;
+        lastIndex = inverse ? lastIndex - 12 : lastIndex;
+    } else if (deleteBackOption) {
         initialIndex = inverse ? products.length - 5 : lastIndex + 1;
         lastIndex = inverse ? products.length - 6 : lastIndex;
-    }else{
-        initialIndex = inverse ? (lastIndex + 1) - (6 + count): lastIndex + 1;
-        lastIndex = inverse ? lastIndex - (6 + count): lastIndex;
+    } else {
+        initialIndex = inverse ? lastIndex + 1 - (6 + count) : lastIndex + 1;
+        lastIndex = inverse ? lastIndex - (6 + count) : lastIndex;
     }
 
     if (initialIndex <= 0) {
         initialIndex = 1;
         lastIndex = 0;
-    } else if(lastIndex == products.length && !inverse) {
-        initialIndex = (lastIndex + 1) - count;
+    } else if (lastIndex == products.length && !inverse) {
+        initialIndex = lastIndex + 1 - count;
         lastIndex = lastIndex - count;
     }
 
@@ -41,7 +41,7 @@ export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
     }
 
     if (one == 0) {
-        calculatePagination(products.length,1);
+        calculatePagination(products.length, 1);
     }
     calculateShowing(initialIndex, products);
     if (one == 0) {
@@ -51,14 +51,19 @@ export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
 }
 
 /* IT ESTIMATES THE FINAL COMPONENTE THAT THE USER IS SEEING */
-const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
+const tableNavigation = document.getElementById(
+    "table-navigation"
+) as HTMLElement;
 const showing = tableNavigation.innerHTML;
 export let sectionsNumber: number;
 
-export function calculatePagination(productsLength: number, pageNumber: number) {
+function calculatePagination(
+    productsLength: number,
+    pageNumber: number
+) {
     sectionsNumber = calculateSections(productsLength);
     tableNavigation.innerHTML =
-        `${showing}` + loadPagination(sectionsNumber,pageNumber);
+        `${showing}` + loadPagination(sectionsNumber, pageNumber);
     addEvents();
 }
 
@@ -72,15 +77,15 @@ function generateCeil(num: number) {
 }
 
 /* ESTIMATING ALL THE CONTAINERS IT WOULD BE SHOWN */
-function generateMultipleCeils(num: number, pageNumber:number) {
+function generateMultipleCeils(num: number, pageNumber: number) {
     let finalString = ``;
     let page = pageNumber;
     let count = 1;
     for (let i = page; i <= num; i++) {
-        if (num < 5 || (num - pageNumber) < 5) {
+        if (num < 5 || num - pageNumber < 5) {
             finalString += generateCeil(page);
         } else {
-            if (count <=3) {
+            if (count <= 3) {
                 finalString += generateCeil(page);
             } else if (count == 4) {
                 finalString += dots;
@@ -144,7 +149,9 @@ let current = 0;
 export function estimateCurrentPage(especificPage?: number) {
     const bgColor = getBgColor();
     const alternateColor = getAlternateColor();
-    const ceils = Array.from(document.querySelectorAll(`a[name="pagination-ceil"]`));
+    const ceils = Array.from(
+        document.querySelectorAll(`a[name="pagination-ceil"]`)
+    );
 
     if (especificPage) {
         for (const ceil of ceils) {
@@ -154,7 +161,7 @@ export function estimateCurrentPage(especificPage?: number) {
                 current = ceils.indexOf(ceil);
             }
         }
-    }else{
+    } else {
         ceils[current].classList.remove(alternateColor);
         ceils[current].classList.add(bgColor);
     }
@@ -168,7 +175,7 @@ function getBgColor() {
     return preferences == "dark" ? darkMode : lightMode;
 }
 
-function getAlternateColor(){
+function getAlternateColor() {
     const lightMode = "bg-white";
     const darkMode = "dark:bg-gray-800";
     const preferences = localStorage.getItem("color-theme");
@@ -191,29 +198,34 @@ export async function paginate() {
 }
 
 export function changeProducts(name: string) {
-    products = products.filter(product => product.name != name);
+    products = products.filter((product) => product.name != name);
     return products;
 }
 
-const enum Operations{
+const enum Operations {
     PLUS = "plus",
     MINUS = "minus",
 }
-export function changeLastIndex(absolute: boolean,convertInitial:boolean,num?: number, operation?: string) {
+export function changeLastIndex(
+    absolute: boolean,
+    convertInitial: boolean,
+    num?: number,
+    operation?: string
+) {
     if (absolute) {
         lastIndex = products.length;
-    }else if (convertInitial) {
-        lastIndex = initialIndex -1;
-    }else{
+    } else if (convertInitial) {
+        lastIndex = initialIndex - 1;
+    } else {
         if (lastIndex == products.length) {
-            lastIndex-=1;
+            lastIndex -= 1;
         }
         if (num && operation) {
             switch (operation) {
                 case Operations.PLUS:
                     lastIndex += num;
                     break;
-            
+
                 case Operations.MINUS:
                     lastIndex -= num;
                     break;
@@ -226,16 +238,20 @@ export function changeLastIndex(absolute: boolean,convertInitial:boolean,num?: n
 
 /* CHANGING NUMBER PAGE */
 function previousPage() {
-    const containers  = document.querySelectorAll(`tr[name="product-container"]`);
-    containers.forEach(el => el.remove());
+    const containers = document.querySelectorAll(
+        `tr[name="product-container"]`
+    );
+    containers.forEach((el) => el.remove());
 
     loadProducts(true);
     changePage(false);
 }
 
 function nextPage() {
-    const containers  = document.querySelectorAll(`tr[name="product-container"]`);
-    containers.forEach(el => el.remove());
+    const containers = document.querySelectorAll(
+        `tr[name="product-container"]`
+    );
+    containers.forEach((el) => el.remove());
 
     loadProducts(false);
     changePage(true);
@@ -243,20 +259,17 @@ function nextPage() {
 
 /* CHANGE PAGE FUNCTION */
 let pages = 0;
-function changePage(next:boolean) {
-    const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`)
+let passed = false;
+function changePage(next: boolean) {
+    const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`);
     const bgColor = getBgColor();
     const alternateColor = getAlternateColor();
     let lastNum = Number(ceils[current].textContent);
 
     ceils[current].classList.remove(bgColor);
     ceils[current].classList.add(alternateColor);
-    current = next ? current + 1: current - 1;
-    current = current == ceils.length ? current - 1: current;
-
-    if (current < 0) {
-        current = 0;
-    }
+    current = next ? current + 1 : current - 1;
+    current = current == ceils.length ? current - 1 : current;
 
     if (current < 3 || !document.getElementById("pagination-dots")) {
         if (next) {
@@ -266,20 +279,30 @@ function changePage(next:boolean) {
                 current = ceils.length - 1;
             }
             estimateCurrentPage();
-        }else{
-            let numPage = Number(ceils[current].textContent);
-            if (current == 0 && numPage > 1) {
+        } else {
+            let numPage = 0;
+
+            if (current == -1) {
+                numPage = Number(ceils[0].textContent);
+            }
+            if (current < 0 && numPage > 1) {
                 let previousPage = getPreviousPage(numPage);
                 calculatePagination(products.length, previousPage);
                 calculateShowing(initialIndex, products);
             }
             if (current < 0) {
-                current +=1;
+                current += 1;
+                estimateCurrentPage(numPage - 1);
+            }else{
+                estimateCurrentPage(numPage);
             }
-            estimateCurrentPage(numPage);
         }
-    } else{
-        pages = (5 - (sectionsNumber - 3));
+    } else {
+        if (sectionsNumber > 5 && sectionsNumber - lastNum  > 5) {
+            pages = lastNum + 1;
+        }else{
+            pages = sectionsNumber - 4;
+        }
         calculatePagination(products.length, pages);
         calculateShowing(initialIndex, products);
         current = 0;
@@ -289,8 +312,41 @@ function changePage(next:boolean) {
 
 function getPreviousPage(page: number) {
     let num = page - 3;
-    if (num <=0 ) {
+    if (num <= 0) {
         num = 1;
     }
     return num;
+}
+
+export function detectPagination(add:boolean) {
+    const ceils = Array.from(
+        document.querySelectorAll(`a[name="pagination-ceil"]`)
+    );
+    let currentPageEl = ceils[current];
+
+    let sections = calculateSections(products.length);
+    let num = Number(currentPageEl?.textContent);
+    if (add) {
+        if (num == sections) {
+            calculatePagination(products.length, num - 4);
+            estimateCurrentPage(num);
+        }else if ((num + 1) == sections) {
+            calculatePagination(products.length, num - 3);
+            estimateCurrentPage(num);
+        }else if((num + 2) == sections){
+            calculatePagination(products.length, num - 2);
+            estimateCurrentPage(num);
+        }else if((num + 3) == sections){
+            calculatePagination(products.length, num - 1);
+            estimateCurrentPage(num);
+        }else if((num + 4) == sections){
+            calculatePagination(products.length, num);
+            estimateCurrentPage(num);
+        }else{
+            calculatePagination(products.length, num);
+            estimateCurrentPage(num);
+        }
+    }else{
+        
+    }
 }

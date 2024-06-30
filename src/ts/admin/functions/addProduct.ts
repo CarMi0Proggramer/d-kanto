@@ -1,6 +1,6 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
-import { calculatePagination, changeLastIndex, estimateCurrentPage, initialIndex, products } from "./pagination";
+import { changeLastIndex, detectPagination, estimateCurrentPage, initialIndex, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
@@ -41,8 +41,7 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 updateListProduct(product);
             }
 
-            calculatePagination(products.length);
-            estimateCurrentPage();
+            detectPagination(true);
             calculateShowing(initialIndex, products);
             clearData(false);
             clearErrors("errors-container");
@@ -54,14 +53,12 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 throw new Error(JSON.stringify(errorData));
             });
         }else {
-            /* location.href = window.origin + "src/pages/500.html"; */
+            location.href = window.origin + "src/pages/500.html";
             console.error(res);
         }
     })
     .catch(errors => {
         try {
-            console.log("error aqui");
-            console.log(errors);
             errors = JSON.parse(errors.message);
             let err_messages = []
             for (const err of errors.message) {
@@ -71,8 +68,7 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
             clearErrors("errors-container");
             showErrors(err_messages, "errors-container", form, buttonsContainer);
         } catch (err) {
-            /* location.href = window.origin + "/src/pages/500.html"; */
-            console.log(err);
+            location.href = window.origin + "/src/pages/500.html";
         }
     });
 }
