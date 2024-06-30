@@ -259,7 +259,6 @@ function nextPage() {
 
 /* CHANGE PAGE FUNCTION */
 let pages = 0;
-let passed = false;
 function changePage(next: boolean) {
     const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`);
     const bgColor = getBgColor();
@@ -294,7 +293,7 @@ function changePage(next: boolean) {
                 current += 1;
                 estimateCurrentPage(numPage - 1);
             }else{
-                estimateCurrentPage(numPage);
+                estimateCurrentPage();
             }
         }
     } else {
@@ -347,6 +346,24 @@ export function detectPagination(add:boolean) {
             estimateCurrentPage(num);
         }
     }else{
-        
+        if (sections == num - 1 || sections == num) {
+            calculatePagination(products.length, sections - 4);
+            estimateCurrentPage(sections);
+        }else{
+            let allow = false;
+            for (let i = 0; i < 3; i++) {
+                if (Number(ceils[i].textContent) == num) {
+                    allow = true;
+                }
+            }
+
+            if (allow) {
+                calculatePagination(products.length, Number(ceils[0].textContent));
+                estimateCurrentPage(num);
+            }else{
+                calculatePagination(products.length, sections - 4);
+                estimateCurrentPage(num);
+            }
+        }
     }
 }

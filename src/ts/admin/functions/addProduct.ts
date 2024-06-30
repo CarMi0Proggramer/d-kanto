@@ -1,6 +1,6 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
-import { changeLastIndex, detectPagination, estimateCurrentPage, initialIndex, products } from "./pagination";
+import { changeLastIndex, changeSections, detectPagination, estimateCurrentPage, initialIndex, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
@@ -43,6 +43,7 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
 
             detectPagination(true);
             calculateShowing(initialIndex, products);
+            changeSections(products.length);
             clearData(false);
             clearErrors("errors-container");
             showAddSuccessMessage();

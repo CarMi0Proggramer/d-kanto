@@ -1,5 +1,5 @@
 import { getProductContainers } from "./editProduct";
-import { detectPagination, changeLastIndex, changeProducts, estimateCurrentPage, initialIndex, loadProducts } from "./pagination";
+import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { showDeleteSuccessMessage } from "./successMessages";
 
@@ -106,6 +106,7 @@ export function deleteProduct(name: string) {
                 
                 detectPagination(false)
                 calculateShowing(initialIndex,newProducts);
+                changeSections(newProducts.length);
                 showDeleteSuccessMessage();
                 quitChecked();
                 return;
