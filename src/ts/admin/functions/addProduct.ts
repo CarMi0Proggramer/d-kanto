@@ -1,6 +1,6 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
-import { changeLastIndex, changeSections, detectPagination, estimateCurrentPage, initialIndex, products } from "./pagination";
+import { changeLastIndex, changeSections, detectPagination, initialIndex, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
