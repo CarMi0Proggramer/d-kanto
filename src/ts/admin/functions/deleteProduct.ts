@@ -75,7 +75,7 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
 
 /* DELETING A PRODUCT */
 export function deleteProduct(name: string) {
-    fetch(`http://localhost:3000/products/${name}`, {
+    fetch(`https://d-kanto-backend.onrender.com/products/${name}`, {
         method: "DELETE",
     })
         .then(async (res) => {

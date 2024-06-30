@@ -121,7 +121,7 @@ export async function updateEditPreviewData(container: HTMLTableRowElement, name
 }
 
 async function getProductByName(name: string) {
-    let product: Product = await fetch(`http://localhost:3000/products/${name}`)
+    let product: Product = await fetch(`https://d-kanto-backend.onrender.com/products/${name}`)
     .then(async res => {
         if (res.ok) {
             const data = await res.json();

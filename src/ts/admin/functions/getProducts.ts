@@ -1,7 +1,7 @@
 import { Product } from "../../../components/product";
 
 export async function getProducts() {
-    let products: Product[] = await fetch("http://localhost:3000/products/")
+    let products: Product[] = await fetch("https://d-kanto-backend.onrender.com/products/")
         .then(async (res) => {
             if (res.ok) {
                 const data = await res.json();

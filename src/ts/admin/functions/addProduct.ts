@@ -15,7 +15,7 @@ const discardButton = document.getElementById("discard-button");
 /* const server = "https://d-kanto-backend.onrender.com"; */
 
 export async function createProductForm(form: HTMLFormElement, buttonsContainer: HTMLDivElement) {
-    await fetch("http://localhost:3000/products/", {
+    await fetch("https://d-kanto-backend.onrender.com/products/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
