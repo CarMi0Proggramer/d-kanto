@@ -1,7 +1,7 @@
 import { createProductForm } from "./functions/addProduct";
 import { confirmDeleteButton, validateDelete } from "./functions/deleteProduct";
 import { updateProduct } from "./functions/editProduct";
-import { estimateCurrentPage, paginate } from "./functions/pagination";
+import { paginate } from "./functions/pagination";
 
 /* CREATING PRODUCT */
 const buttonsContainer = document.getElementById("buttons-container") as HTMLDivElement;
@@ -34,9 +34,3 @@ editForm.addEventListener("submit", async event => {
 
 /* PRODUCTS PAGINATION */
 window.addEventListener("load", paginate);
-
-/* IF THE THEME CHANGES, CHANGE THE COLOR OF THE PAGINATION'S BACKGROUND */
-window.addEventListener("load", () => {
-    const themeBtn = document.getElementById("theme-toggle") as HTMLButtonElement;
-    themeBtn.addEventListener("click", estimateCurrentPage);
-});

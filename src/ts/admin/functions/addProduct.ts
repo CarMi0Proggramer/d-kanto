@@ -1,6 +1,6 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "./successMessages";
-import { changeLastIndex, initialIndex, products } from "./pagination";
+import { calculatePagination, changeLastIndex, estimateCurrentPage, initialIndex, products } from "./pagination";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "./updateListProduct";
 
@@ -40,8 +40,10 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 changeLastIndex(false,false,1, "plus");
                 updateListProduct(product);
             }
-            
-            calculateShowing(initialIndex, products)
+
+            calculatePagination(products.length);
+            estimateCurrentPage();
+            calculateShowing(initialIndex, products);
             clearData(false);
             clearErrors("errors-container");
             showAddSuccessMessage();
@@ -52,11 +54,14 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 throw new Error(JSON.stringify(errorData));
             });
         }else {
-            location.href = window.origin + "src/pages/500.html";
+            /* location.href = window.origin + "src/pages/500.html"; */
+            console.error(res);
         }
     })
     .catch(errors => {
         try {
+            console.log("error aqui");
+            console.log(errors);
             errors = JSON.parse(errors.message);
             let err_messages = []
             for (const err of errors.message) {
@@ -66,11 +71,13 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
             clearErrors("errors-container");
             showErrors(err_messages, "errors-container", form, buttonsContainer);
         } catch (err) {
-            location.href = window.origin + "/src/pages/500.html";
+            /* location.href = window.origin + "/src/pages/500.html"; */
+            console.log(err);
         }
     });
 }
 
+/* SHOW ERRORS ON THE CONTAINER */
 export function showErrors(errors: string[], idElement: string, fatherElement: HTMLElement, beforeElement: HTMLElement) {
     const errorsContainer = document.createElement("div");
     errorsContainer.id = idElement;
@@ -84,6 +91,7 @@ export function showErrors(errors: string[], idElement: string, fatherElement: H
     fatherElement.insertBefore(errorsContainer, beforeElement);
 }
 
+/* DELETE ERRORS CONTAINER */
 export function clearErrors(idElement:string) {
     const errorsContainer = document.getElementById(idElement);
     if (errorsContainer instanceof HTMLDivElement) {
@@ -91,6 +99,7 @@ export function clearErrors(idElement:string) {
     }
 }
 
+/* CLEANING DATA WHEN TOUCHES DISCARD BUTTON */
 if (discardButton instanceof HTMLButtonElement) {
     discardButton.addEventListener("click", () => {
         clearErrors("errors-container"); 
@@ -98,6 +107,7 @@ if (discardButton instanceof HTMLButtonElement) {
     });
 }
 
+//CLEAR DATA FUNCTION
 function clearData(discard: boolean) {
     inputName.value = '';
     description.value = '';

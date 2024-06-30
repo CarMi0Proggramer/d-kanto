@@ -6,8 +6,9 @@ import { updateListProduct } from "./updateListProduct";
 /* LOAD PRODUCTS FUNCTION */
 export let products:Product[];
 export let lastIndex = 0;
-export let initialIndex: any;
+export let initialIndex: number;
 let count = 0;
+let one = 0;
 
 export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
     if (count == 6) {
@@ -39,21 +40,25 @@ export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
         }
     }
 
-    calculatePagination(products.length);
+    if (one == 0) {
+        calculatePagination(products.length,1);
+    }
     calculateShowing(initialIndex, products);
-    estimateCurrentPage();
+    if (one == 0) {
+        estimateCurrentPage();
+        one++;
+    }
 }
 
 /* IT ESTIMATES THE FINAL COMPONENTE THAT THE USER IS SEEING */
-const tableNavigation = document.getElementById(
-    "table-navigation"
-) as HTMLElement;
+const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
 const showing = tableNavigation.innerHTML;
-function calculatePagination(productsLength: number) {
-    const sectionsNumber = calculateSections(productsLength);
-    tableNavigation.replaceChildren();
+export let sectionsNumber: number;
+
+export function calculatePagination(productsLength: number, pageNumber: number) {
+    sectionsNumber = calculateSections(productsLength);
     tableNavigation.innerHTML =
-        `${showing}` + loadPagination(sectionsNumber);
+        `${showing}` + loadPagination(sectionsNumber,pageNumber);
     addEvents();
 }
 
@@ -67,36 +72,40 @@ function generateCeil(num: number) {
 }
 
 /* ESTIMATING ALL THE CONTAINERS IT WOULD BE SHOWN */
-function generateMultipleCeils(num: number) {
+function generateMultipleCeils(num: number, pageNumber:number) {
     let finalString = ``;
-    for (let i = 1; i <= num; i++) {
-        if (num <= 4) {
-            finalString += generateCeil(i);
+    let page = pageNumber;
+    let count = 1;
+    for (let i = page; i <= num; i++) {
+        if (num < 5 || (num - pageNumber) < 5) {
+            finalString += generateCeil(page);
         } else {
-            if (i <= 3) {
-                finalString += generateCeil(i);
-            } else if (i == 4) {
+            if (count <=3) {
+                finalString += generateCeil(page);
+            } else if (count == 4) {
                 finalString += dots;
             } else if (i == num) {
-                finalString += generateCeil(i);
+                finalString += generateCeil(page);
             }
         }
+        count++;
+        page++;
     }
 
     return finalString;
 }
 
-function loadPagination(num: number) {
+function loadPagination(num: number, pageNumber: number) {
     const ul = `<ul class="inline-flex items-stretch -space-x-px">
     ${previous}
-    ${generateMultipleCeils(num)}
+    ${generateMultipleCeils(num, pageNumber)}
     ${next}
     </ul>`;
 
     return ul;
 }
 
-function calculateSections(length: number) {
+export function calculateSections(length: number) {
     const num = length / 6;
     if (/\.\d+/.test(String(num))) {
         return Math.floor(num) + 1;
@@ -105,8 +114,12 @@ function calculateSections(length: number) {
     }
 }
 
-/* ELEMENTS */
+export function changeSections(length: number) {
+    sectionsNumber = calculateSections(length);
+    return sectionsNumber;
+}
 
+/* ELEMENTS */
 const previous = `<li>
                         <a id="previous-page" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">
                             <span class="sr-only">Previous</span>
@@ -124,20 +137,26 @@ const next = `<li>
                     </a>
                 </li>`;
 const dots = `<li>
-                    <a class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">...</a>
+                    <a id="pagination-dots" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">...</a>
                 </li>`;
 
-export function estimateCurrentPage() {
+let current = 0;
+export function estimateCurrentPage(especificPage?: number) {
     const bgColor = getBgColor();
-    const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`);
-    const currentPage = getCurrentPage(ceils, bgColor);
+    const alternateColor = getAlternateColor();
+    const ceils = Array.from(document.querySelectorAll(`a[name="pagination-ceil"]`));
 
-    if (bgColor == "dark:bg-gray-700") {
-        ceils[currentPage].classList.remove("dark:bg-gray-800");
-        ceils[currentPage].classList.add(bgColor);
-    } else {
-        ceils[currentPage].classList.remove("bg-white");
-        ceils[currentPage].classList.add(bgColor);
+    if (especificPage) {
+        for (const ceil of ceils) {
+            if (Number(ceil.textContent) === especificPage) {
+                ceil.classList.remove(alternateColor);
+                ceil.classList.add(bgColor);
+                current = ceils.indexOf(ceil);
+            }
+        }
+    }else{
+        ceils[current].classList.remove(alternateColor);
+        ceils[current].classList.add(bgColor);
     }
 }
 
@@ -149,18 +168,12 @@ function getBgColor() {
     return preferences == "dark" ? darkMode : lightMode;
 }
 
-function getCurrentPage(nodes: NodeListOf<Element>, bgColor: string) {
-    let current = 0;
-    let index = 0;
-    for (let node of nodes) {
-        if (node.classList.contains(bgColor)) {
-            current = index;
-            break;
-        }
-        index++;
-    }
+function getAlternateColor(){
+    const lightMode = "bg-white";
+    const darkMode = "dark:bg-gray-800";
+    const preferences = localStorage.getItem("color-theme");
 
-    return current;
+    return preferences == "dark" ? darkMode : lightMode;
 }
 
 function addEvents() {
@@ -168,22 +181,7 @@ function addEvents() {
     const nextEl = document.getElementById("next-page") as HTMLElement;
 
     previusEl.addEventListener("click", previousPage);
-
     nextEl.addEventListener("click", nextPage);
-
-    function previousPage() {
-        const containers  = document.querySelectorAll(`tr[name="product-container"]`);
-        containers.forEach(el => el.remove());
-
-        loadProducts(true);
-    }
-
-    function nextPage() {
-        const containers  = document.querySelectorAll(`tr[name="product-container"]`);
-        containers.forEach(el => el.remove());
-
-        loadProducts(false);
-    }
 }
 
 export async function paginate() {
@@ -224,4 +222,75 @@ export function changeLastIndex(absolute: boolean,convertInitial:boolean,num?: n
     }
 
     return lastIndex;
+}
+
+/* CHANGING NUMBER PAGE */
+function previousPage() {
+    const containers  = document.querySelectorAll(`tr[name="product-container"]`);
+    containers.forEach(el => el.remove());
+
+    loadProducts(true);
+    changePage(false);
+}
+
+function nextPage() {
+    const containers  = document.querySelectorAll(`tr[name="product-container"]`);
+    containers.forEach(el => el.remove());
+
+    loadProducts(false);
+    changePage(true);
+}
+
+/* CHANGE PAGE FUNCTION */
+let pages = 0;
+function changePage(next:boolean) {
+    const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`)
+    const bgColor = getBgColor();
+    const alternateColor = getAlternateColor();
+    let lastNum = Number(ceils[current].textContent);
+
+    ceils[current].classList.remove(bgColor);
+    ceils[current].classList.add(alternateColor);
+    current = next ? current + 1: current - 1;
+    current = current == ceils.length ? current - 1: current;
+
+    if (current < 0) {
+        current = 0;
+    }
+
+    if (current < 3 || !document.getElementById("pagination-dots")) {
+        if (next) {
+            if (ceils[current].textContent == String(sectionsNumber)) {
+                ceils[current].classList.remove(bgColor);
+                ceils[current].classList.add(alternateColor);
+                current = ceils.length - 1;
+            }
+            estimateCurrentPage();
+        }else{
+            let numPage = Number(ceils[current].textContent);
+            if (current == 0 && numPage > 1) {
+                let previousPage = getPreviousPage(numPage);
+                calculatePagination(products.length, previousPage);
+                calculateShowing(initialIndex, products);
+            }
+            if (current < 0) {
+                current +=1;
+            }
+            estimateCurrentPage(numPage);
+        }
+    } else{
+        pages = (5 - (sectionsNumber - 3));
+        calculatePagination(products.length, pages);
+        calculateShowing(initialIndex, products);
+        current = 0;
+        estimateCurrentPage(lastNum + 1);
+    }
+}
+
+function getPreviousPage(page: number) {
+    let num = page - 3;
+    if (num <=0 ) {
+        num = 1;
+    }
+    return num;
 }
