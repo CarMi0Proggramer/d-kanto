@@ -1,7 +1,7 @@
-import { getProductContainers } from "./editProduct";
-import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections } from "./pagination";
-import { calculateShowing } from "./productsShowing";
-import { showDeleteSuccessMessage } from "./successMessages";
+import { getProductContainers } from "../edit-product/editProduct";
+import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections } from "../pagination/pagination";
+import { calculateShowing } from "../pagination/productsShowing";
+import { showDeleteSuccessMessage } from "../modals/successMessages";
 
 export const confirmDeleteButton = document.getElementById(
     "confirm-delete-button"

@@ -1,7 +1,7 @@
-import { createProductForm } from "./functions/addProduct";
-import { confirmDeleteButton, validateDelete } from "./functions/deleteProduct";
-import { updateProduct } from "./functions/editProduct";
-import { paginate } from "./functions/pagination";
+import { createProductForm } from "./add-product/addProduct";
+import { confirmDeleteButton, validateDelete } from "./delete-product/deleteProduct";
+import { updateProduct } from "./edit-product/editProduct";
+import { paginate } from "./pagination/pagination";
 
 /* CREATING PRODUCT */
 const buttonsContainer = document.getElementById("buttons-container") as HTMLDivElement;

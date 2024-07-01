@@ -1,8 +1,8 @@
 import { Product } from "../../../components/product";
-import { showAddSuccessMessage } from "./successMessages";
-import { changeLastIndex, changeSections, detectPagination, initialIndex, products } from "./pagination";
-import { calculateShowing } from "./productsShowing";
-import { updateListProduct } from "./updateListProduct";
+import { showAddSuccessMessage } from "../modals/successMessages";
+import { changeLastIndex, changeSections, detectPagination, initialIndex, products } from "../pagination/pagination";
+import { calculateShowing } from "../pagination/productsShowing";
+import { updateListProduct } from "../update-product/updateListProduct";
 
 const closeModalButton = document.getElementById("close-add-product");
 const inputName = document.getElementById("name") as HTMLInputElement;

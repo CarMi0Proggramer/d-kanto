@@ -1,7 +1,7 @@
 import { Product } from "../../../components/product";
 import { getProducts } from "./getProducts";
 import { calculateShowing } from "./productsShowing";
-import { updateListProduct } from "./updateListProduct";
+import { updateListProduct } from "../update-product/updateListProduct";
 
 /* LOAD PRODUCTS FUNCTION */
 export let products: Product[];
