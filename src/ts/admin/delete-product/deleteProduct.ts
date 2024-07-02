@@ -1,5 +1,5 @@
 import { getProductContainers } from "../edit-product/editProduct";
-import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections } from "../pagination/pagination";
+import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/productsShowing";
 import { showDeleteSuccessMessage } from "../modals/successMessages";
 
@@ -92,7 +92,7 @@ export function deleteProduct(name: string) {
                         `tr[name="product-container"]`
                     );
                     if (productContainers.length == 0) {
-                        loadProducts(true,true);
+                        loadProducts(newProducts, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true });
                     }
                     changeLastIndex(true,false)
                 }else{
@@ -101,7 +101,7 @@ export function deleteProduct(name: string) {
                     }
 
                     changeLastIndex(false,true);
-                    loadProducts(false);
+                    loadProducts(newProducts, initialIndex, lastIndex, { inverse: false});
                 }
                 
                 detectPagination(false)

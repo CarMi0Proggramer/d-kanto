@@ -2,6 +2,7 @@ import { Product } from "../../../components/product";
 import { getProducts } from "./getProducts";
 import { calculateShowing } from "./productsShowing";
 import { updateListProduct } from "../update-product/updateListProduct";
+import { changeSearchFinalIndex, changeSearchInitIndex } from "../search-box/search";
 
 /* LOAD PRODUCTS FUNCTION */
 export let products: Product[];
@@ -10,43 +11,77 @@ export let initialIndex: number;
 let count = 0;
 let one = 0;
 
-export function loadProducts(inverse: boolean, deleteBackOption?: boolean) {
+function calcInitLastIndex(arrProduct: Product[], initIndex:number, finalIndex:number, counter:number, options:LoadOptions) {
     if (count == 6) {
-        initialIndex = inverse ? lastIndex - 11 : lastIndex + 1;
-        lastIndex = inverse ? lastIndex - 12 : lastIndex;
-    } else if (deleteBackOption) {
-        initialIndex = inverse ? products.length - 5 : lastIndex + 1;
-        lastIndex = inverse ? products.length - 6 : lastIndex;
+        initIndex = options.inverse ? finalIndex - 11 : finalIndex + 1;
+        finalIndex = options.inverse ? finalIndex - 12 : finalIndex;
+    } else if (options.deleteBackOption) {
+        initIndex = options.inverse ? arrProduct.length - 5 : finalIndex + 1;
+        finalIndex = options.inverse ? arrProduct.length  - 6 : finalIndex;
     } else {
-        initialIndex = inverse ? lastIndex + 1 - (6 + count) : lastIndex + 1;
-        lastIndex = inverse ? lastIndex - (6 + count) : lastIndex;
+        initIndex = options.inverse ? finalIndex + 1 - (6 + counter) : finalIndex + 1;
+        finalIndex = options.inverse ? finalIndex - (6 + counter) : finalIndex;
     }
 
-    if (initialIndex <= 0) {
-        initialIndex = 1;
-        lastIndex = 0;
-    } else if (lastIndex == products.length && !inverse) {
-        initialIndex = lastIndex + 1 - count;
-        lastIndex = lastIndex - count;
+    if (initIndex <= 0) {
+        initIndex = 1;
+        finalIndex = 0;
+    } else if (finalIndex == arrProduct.length && !options.inverse) {
+        initIndex = finalIndex + 1 - counter;
+        finalIndex = finalIndex - counter;
     }
 
+    return {
+        initIndex,
+        finalIndex
+    }
+}
+
+type LoadOptions = {
+    inverse: boolean,
+    deleteBackOption?: boolean,
+    searchOptions?: boolean
+}
+export function loadProducts(arrProduct: Product[], initIndex:number, finalIndex: number, options: LoadOptions) {
+    let values = calcInitLastIndex(arrProduct, initIndex, finalIndex, count, options);
+    let init = values.initIndex;
+    let final = values.finalIndex;
+
+    /* IF IT'S SEARCH OPTIONS, CHANGE THE OTHER INDEXS */
+    if (options.searchOptions) {
+        changeSearchInitIndex(init);
+    }else{
+        initialIndex = init;
+    }
+
+    /* RESTARTING COUNTER */
     count = 0;
 
+    /* LOAD SIX PRODUCTS */
     for (let i = 0; i < 6; i++) {
-        if (products[lastIndex]) {
-            updateListProduct(products[lastIndex]);
-            lastIndex++;
+        if (arrProduct[final]) {
+            updateListProduct(arrProduct[final]);
+            final++;
             count++;
         }
     }
 
+    /* FIRST PAGINATION */
     if (one == 0) {
-        calculatePagination(products.length, 1);
+        calculatePagination(arrProduct.length, 1);
     }
-    calculateShowing(initialIndex, products);
+    /* SHOWING RESULTS */
+    calculateShowing(init, arrProduct);
     if (one == 0) {
         estimateCurrentPage();
         one++;
+    }
+
+    /* CHANGING LAST INDEXS */
+    if (options.searchOptions) {
+        changeSearchFinalIndex(final);
+    }else{
+        lastIndex = final;
     }
 }
 
@@ -193,12 +228,12 @@ function addEvents() {
 
 export async function paginate() {
     products = await getProducts();
-    loadProducts(false);
+    loadProducts(products, initialIndex, lastIndex, { inverse: false });
     return;
 }
 
 export function changeProducts(name: string) {
-    products = products.filter((product) => product.name != name);
+    products = products.filter(product => product.name != name);
     return products;
 }
 
@@ -243,7 +278,7 @@ function previousPage() {
     );
     containers.forEach((el) => el.remove());
 
-    loadProducts(true);
+    loadProducts(products, initialIndex, lastIndex, { inverse:true });
     changePage(false);
 }
 
@@ -253,7 +288,7 @@ function nextPage() {
     );
     containers.forEach((el) => el.remove());
 
-    loadProducts(false);
+    loadProducts(products, initialIndex, lastIndex, { inverse:false });
     changePage(true);
 }
 
