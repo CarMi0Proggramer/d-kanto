@@ -1,6 +1,6 @@
-import { createProductForm } from "./add-product/addProduct";
-import { confirmDeleteButton, validateDelete } from "./delete-product/deleteProduct";
-import { updateProduct } from "./edit-product/editProduct";
+import { createProductForm } from "./add-product/add-product";
+import { confirmDeleteButton, validateDelete } from "./delete-product/delete-product";
+import { updateProduct } from "./edit-product/edit-product";
 import { paginate } from "./pagination/pagination";
 import { searchProduct } from "./search-box/search";
 

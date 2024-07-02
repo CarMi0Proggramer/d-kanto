@@ -1,8 +1,8 @@
 /* DELETE MODAL */
 import { Drawer, Modal } from "flowbite";
-import { currentProductName, findCategory, updateEditPreviewData } from "../update-product/updateEditPreviewData";
-import { clearErrors } from "../add-product/addProduct";
-import { confirmDeleteButton, deleteProduct } from "../delete-product/deleteProduct";
+import { currentProductName, findCategory, updateEditPreviewData } from "../update-product/update-edit-preview-data";
+import { clearErrors } from "../add-product/add-product";
+import { confirmDeleteButton, deleteProduct } from "../delete-product/delete-product";
 
 const drawerName = document.getElementById("drawer-name") as HTMLInputElement;
 const drawerUrlImage = document.getElementById(

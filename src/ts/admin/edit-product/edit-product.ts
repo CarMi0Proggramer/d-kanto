@@ -1,9 +1,9 @@
 import { Product } from "../../../components/product";
-import { showUpdateSuccessMessage } from "../modals/successMessages";
-import { clearErrors, showErrors } from "../add-product/addProduct";
-import { xBtn, editDrawer } from "../modals/flowbiteModals";
-import { currentProductName } from "../update-product/updateEditPreviewData";
-import { confirmDeleteButton, deleteProduct } from "../delete-product/deleteProduct";
+import { showUpdateSuccessMessage } from "../modals/success-messages";
+import { clearErrors, showErrors } from "../add-product/add-product";
+import { xBtn, editDrawer } from "../modals/flowbite-modals";
+import { currentProductName } from "../update-product/update-edit-preview-data";
+import { confirmDeleteButton, deleteProduct } from "../delete-product/delete-product";
 
 
 const drawerName = document.getElementById("drawer-name") as HTMLInputElement;

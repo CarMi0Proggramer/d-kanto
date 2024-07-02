@@ -1,47 +1,38 @@
 import { Product } from "../../../components/product";
-import { getProducts } from "./getProducts";
-import { calculateShowing } from "./productsShowing";
-import { updateListProduct } from "../update-product/updateListProduct";
+import { getProducts } from "./get-products";
+import { calculateShowing } from "./products-showing";
+import { updateListProduct } from "../update-product/update-list-product";
 import { changeSearchFinalIndex, changeSearchInitIndex } from "../search-box/search";
+import { LoadOptions, calcInitLastIndex } from "./calculate-indexs";
+
+/* ELEMENT STRINGS */
+const previous = `<li>
+                        <a id="previous-page" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">
+                            <span class="sr-only">Previous</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </li>`;
+const next = `<li>
+                    <a id="next-page" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">
+                        <span class="sr-only">Next</span>
+                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </li>`;
+const dots = `<li>
+                    <a id="pagination-dots" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">...</a>
+                </li>`;
 
 /* LOAD PRODUCTS FUNCTION */
 export let products: Product[];
 export let lastIndex = 0;
 export let initialIndex: number;
-let count = 0;
+export let count = 0;
 let one = 0;
 
-function calcInitLastIndex(arrProduct: Product[], initIndex:number, finalIndex:number, counter:number, options:LoadOptions) {
-    if (count == 6) {
-        initIndex = options.inverse ? finalIndex - 11 : finalIndex + 1;
-        finalIndex = options.inverse ? finalIndex - 12 : finalIndex;
-    } else if (options.deleteBackOption) {
-        initIndex = options.inverse ? arrProduct.length - 5 : finalIndex + 1;
-        finalIndex = options.inverse ? arrProduct.length  - 6 : finalIndex;
-    } else {
-        initIndex = options.inverse ? finalIndex + 1 - (6 + counter) : finalIndex + 1;
-        finalIndex = options.inverse ? finalIndex - (6 + counter) : finalIndex;
-    }
-
-    if (initIndex <= 0) {
-        initIndex = 1;
-        finalIndex = 0;
-    } else if (finalIndex == arrProduct.length && !options.inverse) {
-        initIndex = finalIndex + 1 - counter;
-        finalIndex = finalIndex - counter;
-    }
-
-    return {
-        initIndex,
-        finalIndex
-    }
-}
-
-type LoadOptions = {
-    inverse: boolean,
-    deleteBackOption?: boolean,
-    searchOptions?: boolean
-}
 export function loadProducts(arrProduct: Product[], initIndex:number, finalIndex: number, options: LoadOptions) {
     let values = calcInitLastIndex(arrProduct, initIndex, finalIndex, count, options);
     let init = values.initIndex;
@@ -85,10 +76,8 @@ export function loadProducts(arrProduct: Product[], initIndex:number, finalIndex
     }
 }
 
-/* IT ESTIMATES THE FINAL COMPONENTE THAT THE USER IS SEEING */
-const tableNavigation = document.getElementById(
-    "table-navigation"
-) as HTMLElement;
+/* IT ESTIMATES THE FINAL COMPONENT THAT THE USER IS SEEING */
+const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
 const showing = tableNavigation.innerHTML;
 export let sectionsNumber: number;
 
@@ -135,6 +124,7 @@ function generateMultipleCeils(num: number, pageNumber: number) {
     return finalString;
 }
 
+/* CREATING PAGINATION COMPONENT */
 function loadPagination(num: number, pageNumber: number) {
     const ul = `<ul class="inline-flex items-stretch -space-x-px">
     ${previous}
@@ -145,6 +135,7 @@ function loadPagination(num: number, pageNumber: number) {
     return ul;
 }
 
+/* ESTIMATING THE NUMBER OF SECTIONS THAT THERE WILL BE */
 export function calculateSections(length: number) {
     const num = length / 6;
     if (/\.\d+/.test(String(num))) {
@@ -154,32 +145,13 @@ export function calculateSections(length: number) {
     }
 }
 
+/* CHANGING THE NUMBER OF SECTIONS */
 export function changeSections(length: number) {
     sectionsNumber = calculateSections(length);
     return sectionsNumber;
 }
 
-/* ELEMENTS */
-const previous = `<li>
-                        <a id="previous-page" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">
-                            <span class="sr-only">Previous</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>`;
-const next = `<li>
-                    <a id="next-page" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">
-                        <span class="sr-only">Next</span>
-                        <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </li>`;
-const dots = `<li>
-                    <a id="pagination-dots" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white select-none">...</a>
-                </li>`;
-
+/* ESTIMATING THE CURRENT PAGE AND GIVING IT A BACKGROUND COLOR */
 let current = 0;
 export function estimateCurrentPage(especificPage?: number) {
     const bgColor = getBgColor();
@@ -202,6 +174,7 @@ export function estimateCurrentPage(especificPage?: number) {
     }
 }
 
+/* GETTING BG COLOR */
 function getBgColor() {
     const lightMode = "bg-gray-300";
     const darkMode = "dark:bg-gray-700";
@@ -210,6 +183,7 @@ function getBgColor() {
     return preferences == "dark" ? darkMode : lightMode;
 }
 
+/* GETTING ALTERNATE COLOR */
 function getAlternateColor() {
     const lightMode = "bg-white";
     const darkMode = "dark:bg-gray-800";
@@ -218,6 +192,7 @@ function getAlternateColor() {
     return preferences == "dark" ? darkMode : lightMode;
 }
 
+/* ADDING EVENTS TO PREVIOUS AND NEXT ELEMENT */
 function addEvents() {
     const previusEl = document.getElementById("previous-page") as HTMLElement;
     const nextEl = document.getElementById("next-page") as HTMLElement;
@@ -226,17 +201,20 @@ function addEvents() {
     nextEl.addEventListener("click", nextPage);
 }
 
+/* INITIALIZATING PRODUCT´S ARRAY */
 export async function paginate() {
     products = await getProducts();
     loadProducts(products, initialIndex, lastIndex, { inverse: false });
     return;
 }
 
+/* CHANGING PRODUCT´S ARRAY WHEN THE USER DELETES ONE */
 export function changeProducts(name: string) {
     products = products.filter(product => product.name != name);
     return products;
 }
 
+/* CHANGING LASTINDEX VALUE */
 const enum Operations {
     PLUS = "plus",
     MINUS = "minus",
@@ -271,7 +249,7 @@ export function changeLastIndex(
     return lastIndex;
 }
 
-/* CHANGING NUMBER PAGE */
+/* CHANGING TO A PREVIOUS PAGE */
 function previousPage() {
     const containers = document.querySelectorAll(
         `tr[name="product-container"]`
@@ -282,6 +260,7 @@ function previousPage() {
     changePage(false);
 }
 
+/* CHANGING TO A NEXT PAGE */
 function nextPage() {
     const containers = document.querySelectorAll(
         `tr[name="product-container"]`
@@ -352,6 +331,7 @@ function getPreviousPage(page: number) {
     return num;
 }
 
+/* DETECTING PAGINATION WHEN THE USER ADDS OR DELETES A PRODUCT */
 export function detectPagination(add:boolean) {
     const ceils = Array.from(
         document.querySelectorAll(`a[name="pagination-ceil"]`)

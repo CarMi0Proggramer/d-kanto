@@ -1,5 +1,5 @@
 import { Product, createProduct } from "../../../components/product";
-import { updateModals } from "../modals/flowbiteModals";
+import { updateModals } from "../modals/flowbite-modals";
 
 const productBox = document.getElementById("product-box") as HTMLTableSectionElement;
 

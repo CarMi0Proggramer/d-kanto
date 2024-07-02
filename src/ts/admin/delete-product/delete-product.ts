@@ -1,7 +1,7 @@
-import { getProductContainers } from "../edit-product/editProduct";
+import { getProductContainers } from "../edit-product/edit-product";
 import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex } from "../pagination/pagination";
-import { calculateShowing } from "../pagination/productsShowing";
-import { showDeleteSuccessMessage } from "../modals/successMessages";
+import { calculateShowing } from "../pagination/products-showing";
+import { showDeleteSuccessMessage } from "../modals/success-messages";
 
 export const confirmDeleteButton = document.getElementById(
     "confirm-delete-button"
@@ -126,6 +126,7 @@ export function deleteProduct(name: string) {
         });
 }
 
+/* REMOVING CHECKED FROM CHECKBOX_ALL */
 function quitChecked() {
     /* IF IT'S A MASSIVVE DELETE */
     if (checkboxAll instanceof HTMLInputElement) {
@@ -141,6 +142,7 @@ function quitChecked() {
     }
 }
 
+/* DELETE CONTAINERS FUNCTION */
 function deleteContainers(productContainers: NodeListOf<Element>, name:string) {
     const containers = getProductContainers(productContainers, name);
         for(let container of containers){
