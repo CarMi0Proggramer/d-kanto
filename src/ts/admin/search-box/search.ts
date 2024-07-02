@@ -1,33 +1,46 @@
-import { loadProducts, products } from "../pagination/pagination";
+import { Product } from "../../../components/product";
+import { addEvents, calculatePagination, calculateSections, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
+import { calculateShowing } from "../pagination/products-showing";
 
-let initIndex = 1;
-let finalIndex = 0;
+export let initIndex = 1;
+export let finalIndex = 0;
+export let searchMatches: Product[] = [];
+export let searchSections:number;
+export let searchCurrent = 0;
 
 export function searchProduct(inputElement: HTMLInputElement) {
+    searchMatches = [];
     const searchTerm = inputElement.value.toLowerCase();
-    let matches = [];
 
     for(let product of products){
         const name = product.name.toLowerCase();
         if (name.includes(searchTerm)) {
-            matches.push(product);
+            searchMatches.push(product);
         }
     }
 
-    if (matches) {
+    if (searchMatches) {
         document.querySelectorAll(
             `tr[name="product-container"]`
         ).forEach(el => el.remove());
     }
 
-    loadProducts(matches, initIndex, finalIndex, { inverse:false });
+    loadProducts(searchMatches, initIndex, finalIndex, { inverse:false });
+    calculatePagination(searchMatches.length, 1);
+    searchSections = calculateSections(searchMatches.length);
+    calculateShowing(initIndex, searchMatches);
+    estimateCurrentPage();
+
+    addEvents({ searchOption: true });
 }
 
+/* CHANGING SEARCH INIT-INDEX */
 export function changeSearchInitIndex(value: number) {
     initIndex = value;
     return initIndex;
 }
 
+/* CHANGING SEARCH FINAL-INDEX */
 export function changeSearchFinalIndex(value: number) {
     finalIndex = value;
     return finalIndex;

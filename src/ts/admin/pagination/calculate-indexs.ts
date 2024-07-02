@@ -1,5 +1,4 @@
 import { Product } from "../../../components/product";
-import { count } from "./pagination";
 
 export type LoadOptions = {
     inverse: boolean,
@@ -8,7 +7,7 @@ export type LoadOptions = {
 }
 
 export function calcInitLastIndex(arrProduct: Product[], initIndex:number, finalIndex:number, counter:number, options:LoadOptions) {
-    if (count == 6) {
+    if (counter == 6) {
         initIndex = options.inverse ? finalIndex - 11 : finalIndex + 1;
         finalIndex = options.inverse ? finalIndex - 12 : finalIndex;
     } else if (options.deleteBackOption) {

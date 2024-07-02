@@ -1,7 +1,7 @@
 import { createProductForm } from "./add-product/add-product";
 import { confirmDeleteButton, validateDelete } from "./delete-product/delete-product";
 import { updateProduct } from "./edit-product/edit-product";
-import { paginate } from "./pagination/pagination";
+import { estimateCurrentPage, paginate } from "./pagination/pagination";
 import { searchProduct } from "./search-box/search";
 
 /* CREATING PRODUCT */
@@ -34,7 +34,12 @@ editForm.addEventListener("submit", async event => {
 });
 
 /* PRODUCTS PAGINATION */
-window.addEventListener("load", paginate);
+window.addEventListener("load", () => {
+    paginate();
+    /* CHANGING BG COLOR WHEN TOUCHES THEME ICON */
+    const iconTheme = document.getElementById("theme-toggle") as HTMLButtonElement;
+    iconTheme.addEventListener("click", () => estimateCurrentPage());
+});
 
 /* SEARCH SECTION */
 const searchInput = document.getElementById("simple-search") as HTMLInputElement;

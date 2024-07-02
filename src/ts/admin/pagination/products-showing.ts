@@ -23,6 +23,10 @@ export function calculateShowing(index: number, arrProduct: Product[]) {
 
     totalProductsSpan.innerText = String(products.length);
 
+    if (arrProduct.length == 0) {
+        index = 0;
+    }
+    
     if (index + 5 <= arrProduct.length) {
         productsShowing.innerText = `${index}-${index + 5} (${
             arrProduct.length

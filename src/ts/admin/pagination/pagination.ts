@@ -2,7 +2,15 @@ import { Product } from "../../../components/product";
 import { getProducts } from "./get-products";
 import { calculateShowing } from "./products-showing";
 import { updateListProduct } from "../update-product/update-list-product";
-import { changeSearchFinalIndex, changeSearchInitIndex } from "../search-box/search";
+import {
+    changeSearchFinalIndex,
+    changeSearchInitIndex,
+    finalIndex,
+    initIndex,
+    searchCurrent,
+    searchMatches,
+    searchSections,
+} from "../search-box/search";
 import { LoadOptions, calcInitLastIndex } from "./calculate-indexs";
 
 /* ELEMENT STRINGS */
@@ -33,15 +41,26 @@ export let initialIndex: number;
 export let count = 0;
 let one = 0;
 
-export function loadProducts(arrProduct: Product[], initIndex:number, finalIndex: number, options: LoadOptions) {
-    let values = calcInitLastIndex(arrProduct, initIndex, finalIndex, count, options);
+export function loadProducts(
+    arrProduct: Product[],
+    initIndex: number,
+    finalIndex: number,
+    options: LoadOptions
+) {
+    let values = calcInitLastIndex(
+        arrProduct,
+        initIndex,
+        finalIndex,
+        count,
+        options
+    );
     let init = values.initIndex;
     let final = values.finalIndex;
 
     /* IF IT'S SEARCH OPTIONS, CHANGE THE OTHER INDEXS */
     if (options.searchOptions) {
         changeSearchInitIndex(init);
-    }else{
+    } else {
         initialIndex = init;
     }
 
@@ -71,24 +90,26 @@ export function loadProducts(arrProduct: Product[], initIndex:number, finalIndex
     /* CHANGING LAST INDEXS */
     if (options.searchOptions) {
         changeSearchFinalIndex(final);
-    }else{
+    } else {
         lastIndex = final;
     }
 }
 
 /* IT ESTIMATES THE FINAL COMPONENT THAT THE USER IS SEEING */
-const tableNavigation = document.getElementById("table-navigation") as HTMLElement;
+const tableNavigation = document.getElementById(
+    "table-navigation"
+) as HTMLElement;
 const showing = tableNavigation.innerHTML;
 export let sectionsNumber: number;
 
-function calculatePagination(
+export function calculatePagination(
     productsLength: number,
     pageNumber: number
 ) {
     sectionsNumber = calculateSections(productsLength);
     tableNavigation.innerHTML =
         `${showing}` + loadPagination(sectionsNumber, pageNumber);
-    addEvents();
+    addEvents({});
 }
 
 /* GENERATING A CONTAINER WITH ITS CORRECT NUMBER */
@@ -193,24 +214,31 @@ function getAlternateColor() {
 }
 
 /* ADDING EVENTS TO PREVIOUS AND NEXT ELEMENT */
-function addEvents() {
+type PaginationOptions = {
+    searchOption?: boolean;
+};
+export function addEvents(options: PaginationOptions) {
     const previusEl = document.getElementById("previous-page") as HTMLElement;
     const nextEl = document.getElementById("next-page") as HTMLElement;
 
-    previusEl.addEventListener("click", previousPage);
-    nextEl.addEventListener("click", nextPage);
+    if (options.searchOption) {
+        previusEl.addEventListener("click", () => previousPage(options));
+        nextEl.addEventListener("click", () => nextPage(options));
+    } else {
+        previusEl.addEventListener("click", () => previousPage(options));
+        nextEl.addEventListener("click", () => nextPage(options));
+    }
 }
 
 /* INITIALIZATING PRODUCT´S ARRAY */
 export async function paginate() {
     products = await getProducts();
     loadProducts(products, initialIndex, lastIndex, { inverse: false });
-    return;
 }
 
 /* CHANGING PRODUCT´S ARRAY WHEN THE USER DELETES ONE */
 export function changeProducts(name: string) {
-    products = products.filter(product => product.name != name);
+    products = products.filter((product) => product.name != name);
     return products;
 }
 
@@ -250,30 +278,77 @@ export function changeLastIndex(
 }
 
 /* CHANGING TO A PREVIOUS PAGE */
-function previousPage() {
+function previousPage(options: PaginationOptions) {
     const containers = document.querySelectorAll(
         `tr[name="product-container"]`
     );
     containers.forEach((el) => el.remove());
 
-    loadProducts(products, initialIndex, lastIndex, { inverse:true });
-    changePage(false);
+    if (options.searchOption) {
+        loadProducts(products, initIndex, finalIndex, { inverse: true });
+        changePage({
+            next: false,
+            init: initIndex,
+            final: finalIndex,
+            current: searchCurrent,
+            sectionsNumber: searchSections,
+            arrProduct: searchMatches,
+        });
+    } else {
+        loadProducts(products, initialIndex, lastIndex, { inverse: true });
+        changePage({
+            next: false,
+            init: initialIndex,
+            final: lastIndex,
+            current: current,
+            sectionsNumber: sectionsNumber,
+            arrProduct: products,
+        });
+    }
 }
 
 /* CHANGING TO A NEXT PAGE */
-function nextPage() {
+function nextPage(options: PaginationOptions) {
     const containers = document.querySelectorAll(
         `tr[name="product-container"]`
     );
     containers.forEach((el) => el.remove());
 
-    loadProducts(products, initialIndex, lastIndex, { inverse:false });
-    changePage(true);
+    if (options.searchOption) {
+        loadProducts(products, initIndex, finalIndex, { inverse: false });
+        changePage({
+            next: true,
+            init: initIndex,
+            final: finalIndex,
+            current: searchCurrent,
+            sectionsNumber: searchSections,
+            arrProduct: searchMatches,
+        });
+    } else {
+        loadProducts(products, initialIndex, lastIndex, { inverse: false });
+        changePage({
+            next: true,
+            init: initialIndex,
+            final: lastIndex,
+            current: current,
+            sectionsNumber: sectionsNumber,
+            arrProduct: products,
+        });
+    }
 }
 
 /* CHANGE PAGE FUNCTION */
+type ChangePageOptions = {
+    next: boolean;
+    init: number;
+    final: number;
+    current: number;
+    sectionsNumber: number;
+    arrProduct: Product[];
+    searchOption?: boolean;
+};
 let pages = 0;
-function changePage(next: boolean) {
+function changePage(options: ChangePageOptions) {
     const ceils = document.querySelectorAll(`a[name="pagination-ceil"]`);
     const bgColor = getBgColor();
     const alternateColor = getAlternateColor();
@@ -281,7 +356,7 @@ function changePage(next: boolean) {
 
     ceils[current].classList.remove(bgColor);
     ceils[current].classList.add(alternateColor);
-    current = next ? current + 1 : current - 1;
+    current = options.next ? current + 1 : current - 1;
     current = current == ceils.length ? current - 1 : current;
 
     if (current < 3 || !document.getElementById("pagination-dots")) {
@@ -306,14 +381,14 @@ function changePage(next: boolean) {
             if (current < 0) {
                 current += 1;
                 estimateCurrentPage(numPage - 1);
-            }else{
+            } else {
                 estimateCurrentPage();
             }
         }
     } else {
-        if (sectionsNumber > 5 && sectionsNumber - lastNum  > 5) {
+        if (sectionsNumber > 5 && sectionsNumber - lastNum > 5) {
             pages = lastNum + 1;
-        }else{
+        } else {
             pages = sectionsNumber - 4;
         }
         calculatePagination(products.length, pages);
@@ -332,7 +407,7 @@ function getPreviousPage(page: number) {
 }
 
 /* DETECTING PAGINATION WHEN THE USER ADDS OR DELETES A PRODUCT */
-export function detectPagination(add:boolean) {
+export function detectPagination(add: boolean) {
     const ceils = Array.from(
         document.querySelectorAll(`a[name="pagination-ceil"]`)
     );
@@ -344,27 +419,27 @@ export function detectPagination(add:boolean) {
         if (num == sections) {
             calculatePagination(products.length, num - 4);
             estimateCurrentPage(num);
-        }else if ((num + 1) == sections) {
+        } else if (num + 1 == sections) {
             calculatePagination(products.length, num - 3);
             estimateCurrentPage(num);
-        }else if((num + 2) == sections){
+        } else if (num + 2 == sections) {
             calculatePagination(products.length, num - 2);
             estimateCurrentPage(num);
-        }else if((num + 3) == sections){
+        } else if (num + 3 == sections) {
             calculatePagination(products.length, num - 1);
             estimateCurrentPage(num);
-        }else if((num + 4) == sections){
+        } else if (num + 4 == sections) {
             calculatePagination(products.length, num);
             estimateCurrentPage(num);
-        }else{
+        } else {
             calculatePagination(products.length, num);
             estimateCurrentPage(num);
         }
-    }else{
+    } else {
         if (sections == num - 1 || sections == num) {
             calculatePagination(products.length, sections - 4);
             estimateCurrentPage(sections);
-        }else{
+        } else {
             let allow = false;
             for (let i = 0; i < 3; i++) {
                 if (Number(ceils[i].textContent) == num) {
@@ -373,9 +448,12 @@ export function detectPagination(add:boolean) {
             }
 
             if (allow) {
-                calculatePagination(products.length, Number(ceils[0].textContent));
+                calculatePagination(
+                    products.length,
+                    Number(ceils[0].textContent)
+                );
                 estimateCurrentPage(num);
-            }else{
+            } else {
                 calculatePagination(products.length, sections - 4);
                 estimateCurrentPage(num);
             }
