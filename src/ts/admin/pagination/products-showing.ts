@@ -1,7 +1,8 @@
 import { Product } from "../../../components/product";
+import { products } from "./pagination";
 
 /* THE NUMBER OF PRODUCTS THAT THE USER IS SEEING */
-export function calculateShowing(index: number, products: Product[]) {
+export function calculateShowing(index: number, arrProduct: Product[]) {
     /* CALCULATING THE NUMBER OF PRODUCTS THAT IT HAS BEEN SHOWED */
     const totalProductsSpan = document.getElementById(
         "total-products-quantity"
@@ -22,20 +23,20 @@ export function calculateShowing(index: number, products: Product[]) {
 
     totalProductsSpan.innerText = String(products.length);
 
-    if (index + 5 <= products.length) {
+    if (index + 5 <= arrProduct.length) {
         productsShowing.innerText = `${index}-${index + 5} (${
-            products.length
+            arrProduct.length
         })`;
         showingTooltip.innerText = `Showing ${index}-${index + 5} of ${
-            products.length
+            arrProduct.length
         } results`;
         showingBelowRange.innerText = `${index}-${index + 5}`;
     } else {
-        productsShowing.innerText = `${index}-${products.length} (${products.length})`;
-        showingTooltip.textContent = `Showing ${index}-${products.length} of ${products.length} results`;
-        showingBelowRange.innerText = `${index}-${products.length}`;
+        productsShowing.innerText = `${index}-${arrProduct.length} (${arrProduct.length})`;
+        showingTooltip.textContent = `Showing ${index}-${arrProduct.length} of ${arrProduct.length} results`;
+        showingBelowRange.innerText = `${index}-${arrProduct.length}`;
     }
 
     showingTooltip.appendChild(tooltipArrow);
-    showingBelowQuantity.innerText = String(products.length);
+    showingBelowQuantity.innerText = String(arrProduct.length);
 }
