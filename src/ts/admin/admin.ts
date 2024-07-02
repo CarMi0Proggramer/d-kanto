@@ -2,6 +2,7 @@ import { createProductForm } from "./add-product/addProduct";
 import { confirmDeleteButton, validateDelete } from "./delete-product/deleteProduct";
 import { updateProduct } from "./edit-product/editProduct";
 import { paginate } from "./pagination/pagination";
+import { searchProduct } from "./search-box/search";
 
 /* CREATING PRODUCT */
 const buttonsContainer = document.getElementById("buttons-container") as HTMLDivElement;
@@ -34,3 +35,7 @@ editForm.addEventListener("submit", async event => {
 
 /* PRODUCTS PAGINATION */
 window.addEventListener("load", paginate);
+
+/* SEARCH SECTION */
+const searchInput = document.getElementById("simple-search") as HTMLInputElement;
+searchInput.addEventListener("input", () => searchProduct(searchInput));
