@@ -41,7 +41,7 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
                 updateListProduct(product);
             }
 
-            detectPagination(true);
+            detectPagination({ add: true});
             calculateShowing(initialIndex, products);
             changeSections(products.length);
             clearData(false);

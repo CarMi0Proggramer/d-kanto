@@ -7,11 +7,13 @@ export let finalIndex = 0;
 export let searchMatches: Product[] = [];
 export let searchSections:number;
 export let searchCurrent = 0;
+export let searchPages = 0;
 
 export function searchProduct(inputElement: HTMLInputElement) {
     searchMatches = [];
     const searchTerm = inputElement.value.toLowerCase();
 
+    /* LOOKING FOR SOME COINCIDENCE */
     for(let product of products){
         const name = product.name.toLowerCase();
         if (name.includes(searchTerm)) {
@@ -19,6 +21,7 @@ export function searchProduct(inputElement: HTMLInputElement) {
         }
     }
 
+    /* IF MATCHES A PRODUCT */
     if (searchMatches) {
         document.querySelectorAll(
             `tr[name="product-container"]`
@@ -29,7 +32,7 @@ export function searchProduct(inputElement: HTMLInputElement) {
     calculatePagination(searchMatches.length, 1);
     searchSections = calculateSections(searchMatches.length);
     calculateShowing(initIndex, searchMatches);
-    estimateCurrentPage();
+    estimateCurrentPage({ current: searchCurrent ,searchOption: true });
 
     addEvents({ searchOption: true });
 }
@@ -44,4 +47,22 @@ export function changeSearchInitIndex(value: number) {
 export function changeSearchFinalIndex(value: number) {
     finalIndex = value;
     return finalIndex;
+}
+
+/* CHANGING SEARCH CURRENT PAGE */
+export function changeSearchCurrent(value: number) {
+    searchCurrent = value;
+    return searchCurrent;
+}
+
+/* CHANGING SEARCH SECTIONS NUMBER */
+export function changeSearchSections(value: number) {
+    searchSections = value;
+    return searchSections;
+}
+
+/* CHANGING SEARCH PAGES NUMBER */
+export function changeSearchPagesNumber(value: number) {
+    searchPages = value;
+    return searchPages;
 }

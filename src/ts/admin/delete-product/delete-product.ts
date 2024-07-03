@@ -104,7 +104,7 @@ export function deleteProduct(name: string) {
                     loadProducts(newProducts, initialIndex, lastIndex, { inverse: false});
                 }
                 
-                detectPagination(false)
+                detectPagination({ add: false })
                 calculateShowing(initialIndex,newProducts);
                 changeSections(newProducts.length);
                 showDeleteSuccessMessage();
