@@ -92,7 +92,7 @@ export function deleteProduct(name: string) {
                         `tr[name="product-container"]`
                     );
                     if (productContainers.length == 0) {
-                        loadProducts(newProducts, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true });
+                        loadProducts(newProducts, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true, searchOptions: false });
                     }
                     changeLastIndex(true,false)
                 }else{
@@ -101,10 +101,10 @@ export function deleteProduct(name: string) {
                     }
 
                     changeLastIndex(false,true);
-                    loadProducts(newProducts, initialIndex, lastIndex, { inverse: false});
+                    loadProducts(newProducts, initialIndex, lastIndex, { inverse: false, searchOptions: false});
                 }
                 
-                detectPagination({ add: false })
+                detectPagination({ add: false, arrProduct: newProducts, searchOption: false })
                 calculateShowing(initialIndex,newProducts);
                 changeSections(newProducts.length);
                 showDeleteSuccessMessage();

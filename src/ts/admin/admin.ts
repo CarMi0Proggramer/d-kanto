@@ -1,7 +1,7 @@
 import { createProductForm } from "./add-product/add-product";
 import { confirmDeleteButton, validateDelete } from "./delete-product/delete-product";
 import { updateProduct } from "./edit-product/edit-product";
-import { estimateCurrentPage, paginate } from "./pagination/pagination";
+import { current, estimateCurrentPage, paginate } from "./pagination/pagination";
 import { searchProduct } from "./search-box/search";
 
 /* CREATING PRODUCT */
@@ -38,7 +38,7 @@ window.addEventListener("load", () => {
     paginate();
     /* CHANGING BG COLOR WHEN TOUCHES THEME ICON */
     const iconTheme = document.getElementById("theme-toggle") as HTMLButtonElement;
-    iconTheme.addEventListener("click", () => estimateCurrentPage());
+    iconTheme.addEventListener("click", () => estimateCurrentPage({ current: current, searchOption: false}));
 });
 
 /* SEARCH SECTION */

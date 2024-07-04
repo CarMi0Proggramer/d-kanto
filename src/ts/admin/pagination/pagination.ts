@@ -81,15 +81,19 @@ export function loadProducts(
 
     /* FIRST PAGINATION */
     if (one == 0) {
-        calculatePagination(arrProduct.length, 1);
+        calculatePagination({
+            productsLength: arrProduct.length,
+            pageNumber: 1,
+            searchOption: options.searchOptions,
+        });
     }
     /* SHOWING RESULTS */
     calculateShowing(init, arrProduct);
     if (one == 0) {
         if (options.searchOptions) {
-            estimateCurrentPage({ current: searchPages });
-        }else{
-            estimateCurrentPage({ current: current });
+            estimateCurrentPage({ current: searchPages, searchOption: options.searchOptions });
+        } else {
+            estimateCurrentPage({ current: current, searchOption: options.searchOptions });
         }
         one++;
     }
@@ -109,14 +113,16 @@ const tableNavigation = document.getElementById(
 const showing = tableNavigation.innerHTML;
 export let sectionsNumber: number;
 
-export function calculatePagination(
-    productsLength: number,
-    pageNumber: number
-) {
-    sectionsNumber = calculateSections(productsLength);
+type CalculatePaginationOptions = {
+    productsLength: number;
+    pageNumber: number;
+    searchOption: boolean;
+};
+export function calculatePagination(options: CalculatePaginationOptions) {
+    sectionsNumber = calculateSections(options.productsLength);
     tableNavigation.innerHTML =
-        `${showing}` + loadPagination(sectionsNumber, pageNumber);
-    addEvents({});
+        `${showing}` + loadPagination(sectionsNumber, options.pageNumber);
+    addEvents({ searchOption: options.searchOption });
 }
 
 /* GENERATING A CONTAINER WITH ITS CORRECT NUMBER */
@@ -180,12 +186,12 @@ export function changeSections(length: number) {
 }
 
 /* ESTIMATING THE CURRENT PAGE AND GIVING IT A BACKGROUND COLOR */
-let current = 0;
+export let current = 0;
 type EstimatePageOptions = {
-    current: number,
-    especificPage?: number,
-    searchOption?: boolean
-}
+    current: number;
+    searchOption: boolean;
+    especificPage?: number;
+};
 export function estimateCurrentPage(options: EstimatePageOptions) {
     const bgColor = getBgColor();
     const alternateColor = getAlternateColor();
@@ -208,7 +214,7 @@ export function estimateCurrentPage(options: EstimatePageOptions) {
 
     if (options.searchOption) {
         changeSearchPagesNumber(options.current);
-    }else {
+    } else {
         current = options.current;
     }
 }
@@ -233,7 +239,7 @@ function getAlternateColor() {
 
 /* ADDING EVENTS TO PREVIOUS AND NEXT ELEMENT */
 type PaginationOptions = {
-    searchOption?: boolean;
+    searchOption: boolean;
 };
 export function addEvents(options: PaginationOptions) {
     const previusEl = document.getElementById("previous-page") as HTMLElement;
@@ -251,7 +257,7 @@ export function addEvents(options: PaginationOptions) {
 /* INITIALIZATING PRODUCT´S ARRAY */
 export async function paginate() {
     products = await getProducts();
-    loadProducts(products, initialIndex, lastIndex, { inverse: false });
+    loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false });
 }
 
 /* CHANGING PRODUCT´S ARRAY WHEN THE USER DELETES ONE */
@@ -303,7 +309,7 @@ function previousPage(options: PaginationOptions) {
     containers.forEach((el) => el.remove());
 
     if (options.searchOption) {
-        loadProducts(searchMatches, initIndex, finalIndex, { inverse: true });
+        loadProducts(searchMatches, initIndex, finalIndex, { inverse: true, searchOptions: true });
         changePage({
             next: false,
             init: initIndex,
@@ -312,9 +318,10 @@ function previousPage(options: PaginationOptions) {
             pages: searchPages,
             sectionsNumber: searchSections,
             arrProduct: searchMatches,
+            searchOption: options.searchOption
         });
     } else {
-        loadProducts(products, initialIndex, lastIndex, { inverse: true });
+        loadProducts(products, initialIndex, lastIndex, { inverse: true, searchOptions: false });
         changePage({
             next: false,
             init: initialIndex,
@@ -323,6 +330,7 @@ function previousPage(options: PaginationOptions) {
             pages: pages,
             sectionsNumber: sectionsNumber,
             arrProduct: products,
+            searchOption: options.searchOption
         });
     }
 }
@@ -335,7 +343,7 @@ function nextPage(options: PaginationOptions) {
     containers.forEach((el) => el.remove());
 
     if (options.searchOption) {
-        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false });
+        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true });
         changePage({
             next: true,
             init: initIndex,
@@ -344,9 +352,10 @@ function nextPage(options: PaginationOptions) {
             pages: searchPages,
             sectionsNumber: searchSections,
             arrProduct: searchMatches,
+            searchOption: options.searchOption
         });
     } else {
-        loadProducts(products, initialIndex, lastIndex, { inverse: false });
+        loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false });
         changePage({
             next: true,
             init: initialIndex,
@@ -355,6 +364,7 @@ function nextPage(options: PaginationOptions) {
             pages: pages,
             sectionsNumber: sectionsNumber,
             arrProduct: products,
+            searchOption: options.searchOption
         });
     }
 }
@@ -368,7 +378,7 @@ type ChangePageOptions = {
     pages: number;
     sectionsNumber: number;
     arrProduct: Product[];
-    searchOption?: boolean;
+    searchOption: boolean;
 };
 
 let pages = 0;
@@ -397,11 +407,7 @@ function changePage(options: ChangePageOptions) {
                 ceils[usedPage].classList.add(alternateColor);
                 usedPage = ceils.length - 1;
             }
-            if (options.searchOption) {
-                estimateCurrentPage({current: usedPage, searchOption: true});
-            }else{
-                estimateCurrentPage({current: usedPage });
-            }
+            estimateCurrentPage({ current: usedPage, searchOption: options.searchOption });
         } else {
             /* IF IT'S A PREVIOUS PAGE */
             let numPage = 0;
@@ -411,45 +417,65 @@ function changePage(options: ChangePageOptions) {
             }
             if (usedPage < 0 && numPage > 1) {
                 let previousPage = getPreviousPage(numPage);
-                calculatePagination(options.arrProduct.length, previousPage);
+                calculatePagination({
+                    productsLength: options.arrProduct.length,
+                    pageNumber: previousPage,
+                    searchOption: options.searchOption,
+                });
                 calculateShowing(options.init, options.arrProduct);
             }
             if (usedPage < 0) {
                 usedPage += 1;
-                if (options.searchOption) {
-                    estimateCurrentPage({ current: usedPage ,especificPage: numPage - 1, searchOption: true });
-                }else{
-                    estimateCurrentPage({ current: usedPage ,especificPage: numPage - 1 });
-                }
+                estimateCurrentPage({
+                    current: usedPage,
+                    especificPage: numPage - 1,
+                    searchOption: options.searchOption,
+                });
             } else {
-                if (options.searchOption) {
-                    estimateCurrentPage({ current: usedPage, searchOption: true });
-                }else{
-                    estimateCurrentPage({ current: usedPage });
-                }
+                estimateCurrentPage({
+                    current: usedPage,
+                    searchOption: options.searchOption,
+                });
             }
         }
     } else {
         /* CALCULATING A NEW PAGINATION */
-        if (options.sectionsNumber > 5 && options.sectionsNumber - lastNum > 5) {
+        if (
+            options.sectionsNumber > 5 &&
+            options.sectionsNumber - lastNum > 5
+        ) {
             options.pages = lastNum + 1;
         } else {
             options.pages = options.sectionsNumber - 4;
         }
-        calculatePagination(options.arrProduct.length, options.pages);
+
+        if (options.searchOption) {
+            calculatePagination({
+                productsLength: options.arrProduct.length,
+                pageNumber: options.pages,
+                searchOption: true,
+            });
+        } else {
+            calculatePagination({
+                productsLength: options.arrProduct.length,
+                pageNumber: options.pages,
+                searchOption: false,
+            });
+        }
+
         calculateShowing(options.init, options.arrProduct);
         usedPage = 0;
-        if (options.searchOption) {
-            estimateCurrentPage({ current: usedPage, especificPage: lastNum + 1, searchOption: true });
-        }else{
-            estimateCurrentPage({ current: usedPage, especificPage: lastNum + 1 });
-        }
+        estimateCurrentPage({
+            current: usedPage,
+            especificPage: lastNum + 1,
+            searchOption: options.searchOption,
+        });
     }
 
     /* CHANGING PAGES VALUES */
     if (options.searchOption) {
-        changeSearchPagesNumber(options.pages)
-    }else{
+        changeSearchPagesNumber(options.pages);
+    } else {
         pages = options.pages;
     }
 }
@@ -464,9 +490,10 @@ function getPreviousPage(page: number) {
 
 /* DETECTING PAGINATION WHEN THE USER ADDS OR DELETES A PRODUCT */
 type DetectPaginationOptions = {
-    add: boolean,
-    searchOption?: boolean
-}
+    arrProduct: Product[]
+    add: boolean;
+    searchOption: boolean;
+};
 export function detectPagination(options: DetectPaginationOptions) {
     const ceils = Array.from(
         document.querySelectorAll(`a[name="pagination-ceil"]`)
@@ -476,33 +503,41 @@ export function detectPagination(options: DetectPaginationOptions) {
     let sections = calculateSections(products.length);
     let num = Number(currentPageEl?.textContent);
     if (options.add) {
+        let finalAddNum;
         if (num == sections) {
-            calculatePagination(products.length, num - 4);
+            finalAddNum = num - 4
         } else if (num + 1 == sections) {
-            calculatePagination(products.length, num - 3);
+            finalAddNum = num - 3;
         } else if (num + 2 == sections) {
-            calculatePagination(products.length, num - 2);
+            finalAddNum = num - 2;
         } else if (num + 3 == sections) {
-            calculatePagination(products.length, num - 1);
+            finalAddNum = num - 1;
         } else if (num + 4 == sections) {
-            calculatePagination(products.length, num);
+            finalAddNum = num;
         } else {
-            calculatePagination(products.length, num);
+            finalAddNum = num;
         }
 
-        if (options.searchOption) {
-            estimateCurrentPage({ current: searchCurrent, especificPage: num, searchOption: true });
-        } else{
-            estimateCurrentPage({ current: current, especificPage: num });
-        }
+        calculatePagination({
+            productsLength: options.arrProduct.length, pageNumber: finalAddNum,
+            searchOption: options.searchOption
+        });
+
+        estimateCurrentPage({
+            current: searchCurrent,
+            especificPage: num,
+            searchOption: options.searchOption,
+        });
+
     } else {
         if (sections == num - 1 || sections == num) {
-            calculatePagination(products.length, sections - 4);
-            if (options.searchOption) {
-                estimateCurrentPage({ current: searchCurrent , especificPage: sections , searchOption: true});
-            }else{
-                estimateCurrentPage({ current: current, especificPage: sections })
-            }
+            calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
+
+            estimateCurrentPage({
+                current: searchCurrent,
+                especificPage: sections,
+                searchOption: options.searchOption,
+            });
         } else {
             let allow = false;
             for (let i = 0; i < 3; i++) {
@@ -512,20 +547,20 @@ export function detectPagination(options: DetectPaginationOptions) {
             }
 
             if (allow) {
-                calculatePagination(
-                    products.length,
-                    Number(ceils[0].textContent)
-                );
-                
+                calculatePagination({ 
+                    productsLength: options.arrProduct.length,
+                    pageNumber: Number(ceils[0].textContent),
+                    searchOption: options.searchOption
+                });
             } else {
-                calculatePagination(products.length, sections - 4);
+                calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
             }
 
-            if (options.searchOption) {
-                estimateCurrentPage({ current: searchCurrent, especificPage: num, searchOption: true });
-            } else{
-                estimateCurrentPage({ current: current, especificPage: num });
-            }
+            estimateCurrentPage({
+                current: searchCurrent,
+                especificPage: num,
+                searchOption: options.searchOption,
+            });
         }
     }
 }

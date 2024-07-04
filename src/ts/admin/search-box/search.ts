@@ -28,8 +28,8 @@ export function searchProduct(inputElement: HTMLInputElement) {
         ).forEach(el => el.remove());
     }
 
-    loadProducts(searchMatches, initIndex, finalIndex, { inverse:false });
-    calculatePagination(searchMatches.length, 1);
+    loadProducts(searchMatches, initIndex, finalIndex, { inverse:false, searchOptions: true });
+    calculatePagination({ productsLength: searchMatches.length, pageNumber: 1, searchOption: true});
     searchSections = calculateSections(searchMatches.length);
     calculateShowing(initIndex, searchMatches);
     estimateCurrentPage({ current: searchCurrent ,searchOption: true });

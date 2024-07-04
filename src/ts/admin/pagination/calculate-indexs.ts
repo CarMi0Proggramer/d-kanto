@@ -3,7 +3,7 @@ import { Product } from "../../../components/product";
 export type LoadOptions = {
     inverse: boolean,
     deleteBackOption?: boolean,
-    searchOptions?: boolean
+    searchOptions: boolean
 }
 
 export function calcInitLastIndex(arrProduct: Product[], initIndex:number, finalIndex:number, counter:number, options:LoadOptions) {
