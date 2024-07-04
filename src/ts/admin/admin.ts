@@ -8,12 +8,14 @@ import {
     calculatePagination,
     current,
     estimateCurrentPage,
+    initialIndex,
+    lastIndex,
     loadProducts,
     paginate,
     products,
 } from "./pagination/pagination";
 import { calculateShowing } from "./pagination/products-showing";
-import { searchProduct } from "./search-box/search";
+import { finalIndex, initIndex, searchMatches, searchProduct } from "./search-box/search";
 
 /* CREATING PRODUCT */
 const buttonsContainer = document.getElementById(
@@ -24,7 +26,24 @@ const formAddProduct = document.getElementById("add-product-form");
 if (formAddProduct instanceof HTMLFormElement) {
     formAddProduct.addEventListener("submit", async (event) => {
         event.preventDefault();
-        createProductForm(formAddProduct, buttonsContainer);
+        const searchOption: {
+            option: true
+        } = JSON.parse(localStorage.getItem("search-option") as string);
+        if (searchOption.option) {
+            createProductForm(formAddProduct, buttonsContainer, {
+                searchOption: true,
+                initIndex: initIndex,
+                finalIndex: finalIndex,
+                arrProduct: searchMatches
+            });
+        }else{
+            createProductForm(formAddProduct, buttonsContainer, {
+                searchOption: false,
+                initIndex: initialIndex,
+                finalIndex: lastIndex,
+                arrProduct: products
+            });
+        }
     });
 }
 
@@ -58,6 +77,9 @@ window.addEventListener("load", () => {
     iconTheme.addEventListener("click", () =>
         estimateCurrentPage({ current: current, searchOption: false })
     );
+    localStorage.setItem("search-option", JSON.stringify({
+        'option': false
+    }))
 });
 
 /* SEARCH SECTION */
@@ -69,16 +91,21 @@ searchInput.addEventListener("input", () => {
         searchProduct(searchInput);
     } else {
         restartProducts();
+        localStorage.setItem("search-option", JSON.stringify({
+            'option': false
+        }))
     }
 });
 
 /* IF THE USER DOESN'T SEARCH ANYTHING */
 function restartProducts() {
+    const containers = document.querySelectorAll(`tr[name="product-container"]`);
+    containers.forEach(el => el.remove());
     loadProducts(products, 1, 0, {
         inverse: false,
         searchOptions: false,
     });
     calculatePagination({ productsLength: products.length, pageNumber: 1, searchOption: false});
-    calculateShowing(1 , products);
+    calculateShowing(1, products);
     estimateCurrentPage({ current: 0 ,searchOption: false });
 }

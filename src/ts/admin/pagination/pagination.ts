@@ -500,19 +500,19 @@ export function detectPagination(options: DetectPaginationOptions) {
     );
     let currentPageEl = ceils[current];
 
-    let sections = calculateSections(products.length);
+    let sections = calculateSections(options.arrProduct.length);
     let num = Number(currentPageEl?.textContent);
     if (options.add) {
         let finalAddNum;
-        if (num == sections) {
+        if (num == sections && num > 4) {
             finalAddNum = num - 4
-        } else if (num + 1 == sections) {
+        } else if (num + 1 == sections && num > 3) {
             finalAddNum = num - 3;
-        } else if (num + 2 == sections) {
+        } else if (num + 2 == sections && num > 2) {
             finalAddNum = num - 2;
-        } else if (num + 3 == sections) {
+        } else if (num + 3 == sections && num > 1) {
             finalAddNum = num - 1;
-        } else if (num + 4 == sections) {
+        } else if (num + 4 == sections && num > 0) {
             finalAddNum = num;
         } else {
             finalAddNum = num;
@@ -530,7 +530,7 @@ export function detectPagination(options: DetectPaginationOptions) {
         });
 
     } else {
-        if (sections == num - 1 || sections == num) {
+        if ((sections == num - 1 || sections == num) && num > 4) {
             calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
 
             estimateCurrentPage({
@@ -540,9 +540,11 @@ export function detectPagination(options: DetectPaginationOptions) {
             });
         } else {
             let allow = false;
-            for (let i = 0; i < 3; i++) {
-                if (Number(ceils[i].textContent) == num) {
-                    allow = true;
+            if (ceils.length > 2) {
+                for (let i = 0; i < 3; i++) {
+                    if (Number(ceils[i].textContent) == num) {
+                        allow = true;
+                    }
                 }
             }
 
@@ -553,7 +555,11 @@ export function detectPagination(options: DetectPaginationOptions) {
                     searchOption: options.searchOption
                 });
             } else {
-                calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
+                if (options.searchOption && num - 4 < 0) {
+                    calculatePagination({ productsLength: options.arrProduct.length, pageNumber: 1, searchOption: options.searchOption});
+                }else{
+                    calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
+                }
             }
 
             estimateCurrentPage({

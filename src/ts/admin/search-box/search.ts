@@ -38,6 +38,8 @@ export function searchProduct(inputElement: HTMLInputElement) {
     searchSections = calculateSections(searchMatches.length);
     calculateShowing(initIndex, searchMatches);
     estimateCurrentPage({ current: searchCurrent ,searchOption: true });
+
+    localStorage.setItem("search-option", JSON.stringify({"option": true}));
 }
 
 /* CHANGING SEARCH INIT-INDEX */
@@ -68,4 +70,10 @@ export function changeSearchSections(value: number) {
 export function changeSearchPagesNumber(value: number) {
     searchPages = value;
     return searchPages;
+}
+
+/* CHANGING SEARCH MATCHES */
+export function changeSearchMatches(name: string) {
+    searchMatches = searchMatches.filter((product) => product.name != name);
+    return searchMatches;
 }

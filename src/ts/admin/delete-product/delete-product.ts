@@ -1,7 +1,8 @@
 import { getProductContainers } from "../edit-product/edit-product";
-import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex } from "../pagination/pagination";
+import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex, products, calculateSections } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 import { showDeleteSuccessMessage } from "../modals/success-messages";
+import { changeSearchFinalIndex, changeSearchMatches, changeSearchSections, finalIndex, initIndex, searchMatches } from "../search-box/search";
 
 export const confirmDeleteButton = document.getElementById(
     "confirm-delete-button"
@@ -80,38 +81,67 @@ export function deleteProduct(name: string) {
     })
         .then(async (res) => {
             if (res.ok) {
+
                 let productContainers = document.querySelectorAll(
                     `tr[name="product-container"]`
                 );
 
-                const newProducts = changeProducts(name);
+                changeProducts(name);
+                const searchOption: {
+                    option: true
+                } = JSON.parse(localStorage.getItem("search-option") as string);
+                if (searchOption.option) {
+                    changeSearchMatches(name);
+                }
                 if (productContainers.length < 6) {
                     deleteContainers(productContainers,name);
-
                     productContainers = document.querySelectorAll(
                         `tr[name="product-container"]`
                     );
+
                     if (productContainers.length == 0) {
-                        loadProducts(newProducts, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true, searchOptions: false });
+                        if (searchOption.option) {
+                            loadProducts(searchMatches, initIndex, finalIndex,{ inverse: true, deleteBackOption: true, searchOptions: true });
+                        }else{
+                            loadProducts(products, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true, searchOptions: false });
+                        }
                     }
-                    changeLastIndex(true,false)
+                    changeLastIndex(true,false);
+                    if (searchOption.option) {
+                        changeSearchFinalIndex(searchMatches.length);
+                    }
                 }else{
                     for (const container of productContainers) {
                         container.remove();
                     }
 
                     changeLastIndex(false,true);
-                    loadProducts(newProducts, initialIndex, lastIndex, { inverse: false, searchOptions: false});
+                    if (searchOption.option) {
+                        changeSearchFinalIndex(initIndex - 1);
+                    }
+                    if (searchOption.option) {
+                        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true});
+                    }else{
+                        loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false});
+                    }
                 }
                 
-                detectPagination({ add: false, arrProduct: newProducts, searchOption: false })
-                calculateShowing(initialIndex,newProducts);
-                changeSections(newProducts.length);
+                /* DETECTING PAGINATION */
+                if (searchOption.option) {
+                    detectPagination({ add: false, arrProduct: searchMatches, searchOption: true })
+                    calculateShowing(initIndex,searchMatches);
+                    changeSearchSections(calculateSections(searchMatches.length));
+                }else{
+                    detectPagination({ add: false, arrProduct: products, searchOption: false })
+                    calculateShowing(initialIndex,products);
+                    changeSections(products.length);
+                }
+                /* SHOWING SUCCESS MESSAGE */
                 showDeleteSuccessMessage();
                 quitChecked();
                 return;
             } else if (res.status === 404) {
-                /* location.href = window.origin + "/src/pages/404.html"; */
+                location.href = window.origin + "/src/pages/404.html";
             } else {
                 const error: {
                     message: string;
@@ -121,7 +151,8 @@ export function deleteProduct(name: string) {
         })
         .catch((err) => {
             if (err) {
-                location.href = window.origin + "/src/pages/500.html";
+                /* location.href = window.origin + "/src/pages/500.html"; */
+                console.log(err);
             }
         });
 }

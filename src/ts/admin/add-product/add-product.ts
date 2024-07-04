@@ -1,7 +1,8 @@
 import { Product } from "../../../components/product";
 import { showAddSuccessMessage } from "../modals/success-messages";
-import { changeLastIndex, changeSections, detectPagination, initialIndex, products } from "../pagination/pagination";
+import { calculateSections, changeLastIndex, changeSections, detectPagination, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
+import { changeSearchFinalIndex, changeSearchSections, finalIndex, searchMatches } from "../search-box/search";
 import { updateListProduct } from "../update-product/update-list-product";
 
 const closeModalButton = document.getElementById("close-add-product");
@@ -12,9 +13,14 @@ const category = document.getElementById("category") as HTMLSelectElement;
 const urlimg = document.getElementById("product-img") as HTMLInputElement;
 const stock = document.getElementById("add-product-stock") as HTMLInputElement;
 const discardButton = document.getElementById("discard-button");
-/* const server = "https://d-kanto-backend.onrender.com"; */
 
-export async function createProductForm(form: HTMLFormElement, buttonsContainer: HTMLDivElement) {
+type CreateProductOptions = {
+    searchOption: boolean,
+    arrProduct: Product[],
+    initIndex: number,
+    finalIndex: number,
+}
+export async function createProductForm(form: HTMLFormElement, buttonsContainer: HTMLDivElement, options: CreateProductOptions) {
     await fetch("http://localhost:3000/products/", {
         method: "POST",
         headers: {
@@ -33,17 +39,32 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
         if (res.ok) {
             const product: Product = await res.json();
             products.push(product);
+            if (options.searchOption) {
+                searchMatches.push(product);
+            }
+            
             let productContainers = document.querySelectorAll(
                 `tr[name="product-container"]`
             );
+
             if (productContainers.length < 6) {
-                changeLastIndex(false,false,1, "plus");
+                if (options.searchOption) {
+                    changeSearchFinalIndex(finalIndex + 1);
+                }else{
+                    changeLastIndex(false,false,1, "plus");
+                }
                 updateListProduct(product);
             }
 
-            detectPagination({ add: true, arrProduct: products, searchOption: false });
-            calculateShowing(initialIndex, products);
-            changeSections(products.length);
+            /* SOME CALLS... */
+            if (options.searchOption) {
+                detectPagination({ add: true, arrProduct: options.arrProduct, searchOption: true });
+                changeSearchSections(calculateSections(options.arrProduct.length));
+            }else{
+                detectPagination({ add: true, arrProduct: products, searchOption: false });
+                changeSections(products.length);
+            }
+            calculateShowing(options.initIndex, options.arrProduct);
             clearData(false);
             clearErrors("errors-container");
             showAddSuccessMessage();
@@ -79,6 +100,7 @@ export function showErrors(errors: string[], idElement: string, fatherElement: H
     const errorsContainer = document.createElement("div");
     errorsContainer.id = idElement;
     errorsContainer.classList.add("mb-4", "text-sm", "font-medium", "sm:col-span-2", "text-red-500");
+
     for (const err of errors) {
         const p = document.createElement("p");
         p.classList.add("mb-2");
