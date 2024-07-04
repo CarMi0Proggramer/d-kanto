@@ -1,5 +1,5 @@
 import { Product } from "../../../components/product";
-import { addEvents, calculatePagination, calculateSections, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
+import { calculatePagination, calculateSections, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 
 export let initIndex = 1;
@@ -33,8 +33,6 @@ export function searchProduct(inputElement: HTMLInputElement) {
     searchSections = calculateSections(searchMatches.length);
     calculateShowing(initIndex, searchMatches);
     estimateCurrentPage({ current: searchCurrent ,searchOption: true });
-
-    addEvents({ searchOption: true });
 }
 
 /* CHANGING SEARCH INIT-INDEX */

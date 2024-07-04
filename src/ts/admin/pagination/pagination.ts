@@ -213,7 +213,7 @@ export function estimateCurrentPage(options: EstimatePageOptions) {
     }
 
     if (options.searchOption) {
-        changeSearchPagesNumber(options.current);
+        changeSearchCurrent(options.current);
     } else {
         current = options.current;
     }
@@ -241,7 +241,7 @@ function getAlternateColor() {
 type PaginationOptions = {
     searchOption: boolean;
 };
-export function addEvents(options: PaginationOptions) {
+function addEvents(options: PaginationOptions) {
     const previusEl = document.getElementById("previous-page") as HTMLElement;
     const nextEl = document.getElementById("next-page") as HTMLElement;
 
