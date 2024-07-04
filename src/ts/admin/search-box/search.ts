@@ -2,14 +2,19 @@ import { Product } from "../../../components/product";
 import { calculatePagination, calculateSections, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 
-export let initIndex = 1;
-export let finalIndex = 0;
+export let initIndex: number;
+export let finalIndex: number;
 export let searchMatches: Product[] = [];
 export let searchSections:number;
-export let searchCurrent = 0;
-export let searchPages = 0;
+export let searchCurrent: number;
+export let searchPages: number;
 
 export function searchProduct(inputElement: HTMLInputElement) {
+    /* INITIALIZING SOME VARIABLES */
+    initIndex = 1;
+    finalIndex = 0;
+    searchCurrent = 0;
+    searchPages = 0;
     searchMatches = [];
     const searchTerm = inputElement.value.toLowerCase();
 
