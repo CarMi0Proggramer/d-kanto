@@ -223,18 +223,27 @@ export function estimateCurrentPage(options: EstimatePageOptions) {
 function getBgColor() {
     const lightMode = "bg-gray-300";
     const darkMode = "dark:bg-gray-700";
-    const preferences = localStorage.getItem("color-theme");
-
-    return preferences == "dark" ? darkMode : lightMode;
+    let preferences = localStorage.getItem("color-theme");
+    
+    if (!preferences && document.documentElement.classList.contains("dark")) {
+        console.log(document.documentElement.classList.contains("dark"));
+        return darkMode;
+    }else{
+        return lightMode;
+    }
 }
 
 /* GETTING ALTERNATE COLOR */
 function getAlternateColor() {
     const lightMode = "bg-white";
     const darkMode = "dark:bg-gray-800";
-    const preferences = localStorage.getItem("color-theme");
+    let preferences = localStorage.getItem("color-theme");
 
-    return preferences == "dark" ? darkMode : lightMode;
+    if (!preferences && document.documentElement.classList.contains("dark")){
+        return darkMode;
+    }else{
+        return lightMode
+    }
 }
 
 /* ADDING EVENTS TO PREVIOUS AND NEXT ELEMENT */

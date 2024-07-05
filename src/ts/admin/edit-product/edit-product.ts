@@ -16,7 +16,7 @@ const drawerDeleteButton = document.getElementById("drawer-delete-button") as HT
 const drawerButtonsContainer = document.getElementById("drawer-buttons-container") as HTMLDivElement;
 
 export function updateProduct(form: HTMLFormElement) {
-    fetch(`https://d-kanto-backend.onrender.com/products/${currentProductName}`,{
+    fetch(`http://localhost:3000/products/${currentProductName}`,{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"

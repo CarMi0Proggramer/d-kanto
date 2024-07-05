@@ -1,4 +1,6 @@
+
 export interface Product {
+    readonly id: number;
     name: string;
     price: number;
     description: string;
@@ -8,7 +10,7 @@ export interface Product {
     stock: number;
 }
 
-function setClasses(element: HTMLTableRowElement) {
+function setClasses(element: HTMLTableRowElement, product: Product) {
     element.setAttribute("name", "product-container");
     element.classList.add(
         "border-b",
@@ -16,6 +18,7 @@ function setClasses(element: HTMLTableRowElement) {
         "hover:bg-gray-100",
         "dark:hover:bg-gray-700"
     );
+    element.setAttribute("data-id", String(product.id));
 }
 
 function generateColorStock(stock: number) {
@@ -140,7 +143,7 @@ function insertData(element: HTMLTableRowElement, data: Product) {
 
 export function createProduct(productData: Product) {
     const product = document.createElement("tr");
-    setClasses(product);
+    setClasses(product, productData);
     insertData(product, productData);
 
     return product;
