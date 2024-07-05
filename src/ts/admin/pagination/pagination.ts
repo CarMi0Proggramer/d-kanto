@@ -225,8 +225,7 @@ function getBgColor() {
     const darkMode = "dark:bg-gray-700";
     let preferences = localStorage.getItem("color-theme");
     
-    if (!preferences && document.documentElement.classList.contains("dark")) {
-        console.log(document.documentElement.classList.contains("dark"));
+    if ((!preferences || preferences) && document.documentElement.classList.contains("dark")) {
         return darkMode;
     }else{
         return lightMode;
@@ -239,7 +238,7 @@ function getAlternateColor() {
     const darkMode = "dark:bg-gray-800";
     let preferences = localStorage.getItem("color-theme");
 
-    if (!preferences && document.documentElement.classList.contains("dark")){
+    if ((!preferences || preferences) && document.documentElement.classList.contains("dark")){
         return darkMode;
     }else{
         return lightMode
