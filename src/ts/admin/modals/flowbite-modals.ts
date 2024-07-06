@@ -1,6 +1,6 @@
 /* DELETE MODAL */
 import { Drawer, Modal } from "flowbite";
-import { currentProductName, findCategory, updateEditPreviewData } from "../update-product/update-edit-preview-data";
+import { currentProductId, findCategory, updateEditPreviewData } from "../update-product/update-edit-preview-data";
 import { clearErrors } from "../add-product/add-product";
 import { confirmDeleteButton, deleteProduct } from "../delete-product/delete-product";
 
@@ -55,10 +55,10 @@ const drawerDeleteBtn = document.getElementById(
 drawerDeleteBtn.addEventListener("click", () => {
     deleteModal.show();
     if (confirmDeleteButton instanceof HTMLButtonElement) {
-        confirmDeleteButton.addEventListener("click", () => {
-            deleteProduct(currentProductName);
+        confirmDeleteButton.onclick = () => {
+            deleteProduct(currentProductId);
             editDrawer.hide();
-        })
+        }
     }
 });
 
@@ -122,10 +122,10 @@ const previewDeleteButton = document.getElementById(
 previewDeleteButton.addEventListener("click", () => {
     deleteModal.show();
     if (confirmDeleteButton instanceof HTMLButtonElement) {
-        confirmDeleteButton.addEventListener("click", () => {
-            deleteProduct(currentProductName);
+        confirmDeleteButton.onclick = () => {
+            deleteProduct(currentProductId);
             previewDrawer.hide();
-        })
+        }
     }
 });
 

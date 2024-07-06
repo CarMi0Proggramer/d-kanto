@@ -73,7 +73,7 @@ export function changeSearchPagesNumber(value: number) {
 }
 
 /* CHANGING SEARCH MATCHES */
-export function changeSearchMatches(name: string) {
-    searchMatches = searchMatches.filter((product) => product.name != name);
+export function changeSearchMatches(id: number) {
+    searchMatches = searchMatches.filter((product) => product.id != id);
     return searchMatches;
 }

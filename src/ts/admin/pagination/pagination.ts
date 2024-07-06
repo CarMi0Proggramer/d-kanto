@@ -269,8 +269,8 @@ export async function paginate() {
 }
 
 /* CHANGING PRODUCT´S ARRAY WHEN THE USER DELETES ONE */
-export function changeProducts(name: string) {
-    products = products.filter((product) => product.name != name);
+export function changeProducts(id: number) {
+    products = products.filter((product) => product.id != id);
     return products;
 }
 

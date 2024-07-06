@@ -75,13 +75,10 @@ export function findCategory(category: string, inverse: boolean) {
     }
 }
 
-export let currentProductName:string;
+export let currentProductId: number;
 
 export async function updateEditPreviewData(container: HTMLTableRowElement, nameContainer: HTMLInputElement | HTMLHeadingElement, urlImgContainer:HTMLInputElement | HTMLImageElement, categoryContainer: HTMLSelectElement | HTMLElement, priceContainer: HTMLInputElement | HTMLHeadingElement, descriptionContainer: HTMLTextAreaElement | HTMLElement, stockContainer: HTMLInputElement | null) {
-    const productName = container.querySelector(
-        `div[name="product-name"]`
-    ) as HTMLDivElement;
-    const originalProduct: Product = await getProductByName(productName.innerText);
+    let originalProduct: Product = await getProductById(Number(container.dataset.id));
 
     if (nameContainer instanceof HTMLInputElement) {
         nameContainer.value = originalProduct.name;
@@ -117,11 +114,11 @@ export async function updateEditPreviewData(container: HTMLTableRowElement, name
         stockContainer.value = String(originalProduct.stock);
     }
 
-    currentProductName = originalProduct.name;
+    currentProductId = originalProduct.id;
 }
 
-async function getProductByName(name: string) {
-    let product: Product = await fetch(`http://localhost:3000/products/${name}`)
+async function getProductById(id: number) {
+    let product: Product = await fetch(`http://localhost:3000/products/${id}`)
     .then(async res => {
         if (res.ok) {
             const data = await res.json();

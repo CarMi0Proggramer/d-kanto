@@ -2,7 +2,7 @@ import { Product } from "../../../components/product";
 import { showUpdateSuccessMessage } from "../modals/success-messages";
 import { clearErrors, showErrors } from "../add-product/add-product";
 import { xBtn, editDrawer } from "../modals/flowbite-modals";
-import { currentProductName } from "../update-product/update-edit-preview-data";
+import { currentProductId } from "../update-product/update-edit-preview-data";
 import { confirmDeleteButton, deleteProduct } from "../delete-product/delete-product";
 
 
@@ -16,7 +16,7 @@ const drawerDeleteButton = document.getElementById("drawer-delete-button") as HT
 const drawerButtonsContainer = document.getElementById("drawer-buttons-container") as HTMLDivElement;
 
 export function updateProduct(form: HTMLFormElement) {
-    fetch(`http://localhost:3000/products/${currentProductName}`,{
+    fetch(`http://localhost:3000/products/${currentProductId}`,{
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"
@@ -36,12 +36,9 @@ export function updateProduct(form: HTMLFormElement) {
             const productContainers = document.querySelectorAll(
                 `tr[name="product-container"]`
             );
-            const containers = getProductContainers(productContainers, currentProductName);
-
-            for (const productContainer of containers) {
-                if (productContainer instanceof HTMLTableRowElement) {
-                    updateProductContainer(productContainer, data);
-                }
+            const container = getProductContainer(productContainers, currentProductId);
+            if (container instanceof HTMLTableRowElement) {
+                updateProductContainer(container, data);
             }
             
             xBtn.click();
@@ -74,17 +71,12 @@ export function updateProduct(form: HTMLFormElement) {
     });
 }
 
-export function getProductContainers(containers: NodeListOf<Element>, name:string) {
-    let productContainers = [];
+export function getProductContainer(containers: NodeListOf<Element>, id: number) {
     for (const container of containers) {
-        const productNameEl = container.querySelector(
-        `div[name="product-name"]`)
-        if (productNameEl instanceof HTMLDivElement && productNameEl.innerText === name) {
-            productContainers.push(container);
+        if (container instanceof HTMLTableRowElement && Number(container.dataset.id) === id) {
+            return container;
         }
     }
-
-    return productContainers;
 }
 
 function updateProductContainer(container: HTMLTableRowElement, newData: Product) {
@@ -101,7 +93,7 @@ function updateProductContainer(container: HTMLTableRowElement, newData: Product
 drawerDeleteButton.addEventListener("click", () => {
     if (confirmDeleteButton instanceof HTMLButtonElement) {
         confirmDeleteButton.addEventListener("click", () => {
-            deleteProduct(currentProductName);
+            deleteProduct(currentProductId);
             editDrawer.hide();
         })
     }

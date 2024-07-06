@@ -1,8 +1,8 @@
-import { getProductContainers } from "../edit-product/edit-product";
 import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex, products, calculateSections } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 import { showDeleteSuccessMessage } from "../modals/success-messages";
 import { changeSearchFinalIndex, changeSearchMatches, changeSearchSections, finalIndex, initIndex, searchMatches } from "../search-box/search";
+import { getProductContainer } from "../edit-product/edit-product";
 
 export const confirmDeleteButton = document.getElementById(
     "confirm-delete-button"
@@ -11,7 +11,7 @@ const checkboxAll = document.getElementById("checkbox-all");
 
 /* Validate PRODUCT FUNCTION */
 export function validateDelete(containers: NodeListOf<Element>) {
-    let validElements: string[] = [];
+    let validElements: number[] = [];
 
     /* getting valid elements */
     for (const container of containers) {
@@ -20,24 +20,16 @@ export function validateDelete(containers: NodeListOf<Element>) {
             const checkbox = container.querySelector(
                 `input[name="product-checkbox"]`
             );
-            /* getting names */
-            const productName = container.querySelector(
-                `div[name="product-name"]`
-            ) as HTMLDivElement;
 
             if (checkbox instanceof HTMLInputElement && checkbox.checked) {
-                const validElement = productName.innerText
+                const validElement = Number(container.dataset.id);
                 validElements.push(validElement);
             }
         }
     }
 
-    const filteredNames = validElements.filter((item, index) => {
-        return validElements.indexOf(item) === index
-    });
-
-    for (const name of filteredNames) {
-        deleteProduct(name);
+    for (const id of validElements) {
+        deleteProduct(id);
     }
 }
 
@@ -75,8 +67,8 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
 }
 
 /* DELETING A PRODUCT */
-export function deleteProduct(name: string) {
-    fetch(`http://localhost:3000/products/${name}`, {
+export function deleteProduct(id: number) {
+    fetch(`http://localhost:3000/products/${id}`, {
         method: "DELETE",
     })
         .then(async (res) => {
@@ -86,15 +78,15 @@ export function deleteProduct(name: string) {
                     `tr[name="product-container"]`
                 );
 
-                changeProducts(name);
+                changeProducts(id);
                 const searchOption: {
                     option: true
                 } = JSON.parse(localStorage.getItem("search-option") as string);
                 if (searchOption.option) {
-                    changeSearchMatches(name);
+                    changeSearchMatches(id);
                 }
                 if (productContainers.length < 6) {
-                    deleteContainers(productContainers,name);
+                    deleteContainer(productContainers, id);
                     productContainers = document.querySelectorAll(
                         `tr[name="product-container"]`
                     );
@@ -174,10 +166,9 @@ function quitChecked() {
 }
 
 /* DELETE CONTAINERS FUNCTION */
-function deleteContainers(productContainers: NodeListOf<Element>, name:string) {
-    const containers = getProductContainers(productContainers, name);
-        for(let container of containers){
-            container.remove();
-        }
-    return containers.length;
+function deleteContainer(productContainers: NodeListOf<Element>, id:number) {
+    const container = getProductContainer(productContainers, id);
+    if (container instanceof HTMLTableRowElement) {
+        container.remove();
+    }
 }
