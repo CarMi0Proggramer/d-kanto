@@ -223,9 +223,8 @@ export function estimateCurrentPage(options: EstimatePageOptions) {
 function getBgColor() {
     const lightMode = "bg-gray-300";
     const darkMode = "dark:bg-gray-700";
-    let preferences = localStorage.getItem("color-theme");
     
-    if ((!preferences || preferences) && document.documentElement.classList.contains("dark")) {
+    if (document.documentElement.classList.contains("dark")) {
         return darkMode;
     }else{
         return lightMode;
@@ -236,9 +235,8 @@ function getBgColor() {
 function getAlternateColor() {
     const lightMode = "bg-white";
     const darkMode = "dark:bg-gray-800";
-    let preferences = localStorage.getItem("color-theme");
 
-    if ((!preferences || preferences) && document.documentElement.classList.contains("dark")){
+    if (document.documentElement.classList.contains("dark")){
         return darkMode;
     }else{
         return lightMode
