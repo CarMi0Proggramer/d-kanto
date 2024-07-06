@@ -1,4 +1,4 @@
-import { Product } from "../../../components/product";
+import { Product, generateRating } from "../../../components/product";
 
 const enum CATEGORY_TYPES{
     TV = "TV",
@@ -77,7 +77,7 @@ export function findCategory(category: string, inverse: boolean) {
 
 export let currentProductId: number;
 
-export async function updateEditPreviewData(container: HTMLTableRowElement, nameContainer: HTMLInputElement | HTMLHeadingElement, urlImgContainer:HTMLInputElement | HTMLImageElement, categoryContainer: HTMLSelectElement | HTMLElement, priceContainer: HTMLInputElement | HTMLHeadingElement, descriptionContainer: HTMLTextAreaElement | HTMLElement, stockContainer: HTMLInputElement | null) {
+export async function updateEditPreviewData(container: HTMLTableRowElement, nameContainer: HTMLInputElement | HTMLHeadingElement, urlImgContainer:HTMLInputElement | HTMLImageElement, categoryContainer: HTMLSelectElement | HTMLElement, priceContainer: HTMLInputElement | HTMLHeadingElement, descriptionContainer: HTMLTextAreaElement | HTMLElement, stockContainer: HTMLInputElement | null, ratingContainer?: HTMLElement) {
     let originalProduct: Product = await getProductById(Number(container.dataset.id));
 
     if (nameContainer instanceof HTMLInputElement) {
@@ -112,6 +112,10 @@ export async function updateEditPreviewData(container: HTMLTableRowElement, name
 
     if (stockContainer != null) {
         stockContainer.value = String(originalProduct.stock);
+    }
+
+    if (ratingContainer) {
+        ratingContainer.innerHTML = generateRating(originalProduct.rating, { preview: true });
     }
 
     currentProductId = originalProduct.id;

@@ -134,6 +134,7 @@ const previewCategory = document.getElementById("preview-category") as HTMLEleme
 const previewPrice = document.getElementById("preview-price") as HTMLHeadingElement;
 const previewDescription = document.getElementById("preview-description") as HTMLElement;
 const previewImage = document.getElementById("preview-image") as HTMLImageElement;
+const previewRating = document.getElementById("edit-rating") as HTMLElement;
 
 function updatePreviewButtons() {
     const productContainers = document.querySelectorAll(
@@ -152,7 +153,8 @@ function updatePreviewButtons() {
                         previewCategory,
                         previewPrice,
                         previewDescription,
-                        null
+                        null,
+                        previewRating
                     );
                 }
             });
