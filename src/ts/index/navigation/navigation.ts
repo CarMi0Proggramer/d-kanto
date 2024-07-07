@@ -1,16 +1,19 @@
-/* ELEMENTS */
-let navigationElements = document.getElementsByClassName("navigation-element") as HTMLCollectionOf<HTMLAnchorElement>;
-
 /* NAVIGATE FUNCTION */
 export function navigate() {
+    /* ELEMENTS */
+    let navigationElements = document.getElementsByClassName("navigation-element") as HTMLCollectionOf<HTMLAnchorElement>;
+
+    /* REMOVING DEFAULT CLASSES FROM DEFAULT ELEMENT */
     navigationElements[0].className = commonClases;
 
+    /* LOADING NEW PAGE */
     let current = Number(localStorage.getItem("navigation-current"));
     navigationElements[current].className = focusClases;
 
+    /* ADDING EVENTS */
     for (let el of navigationElements) {
         el.addEventListener("click", () => {
-            focusPage(el);
+            focusPage(navigationElements, el);
         });
     }
 }
@@ -21,7 +24,7 @@ let focusClases = "navigation-element block py-2 px-3 text-white bg-blue-700 rou
 /* COMMON CLASSES */
 let commonClases = "navigation-element block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700";
 
-function focusPage(element: HTMLAnchorElement) {
+function focusPage(navigationElements: HTMLCollectionOf<HTMLAnchorElement> ,element: HTMLAnchorElement) {
 
     /* REMOVING CLASSES FROM PREVIOUS FOCUSED ELEMENT */
     for (let item of navigationElements) {
