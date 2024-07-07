@@ -4,10 +4,12 @@ import { updateModals } from "../modals/flowbite-modals";
 
 const productBox = document.getElementById("product-box") as HTMLTableSectionElement;
 
+/* UPDATING PRODUCT LIST */
 export function updateListProduct(product: Product) {
     const firstProduct = productBox.firstChild;
     const newProduct = createProduct(product);
 
+    /* ADDING DELETE EVENT */
     let deleteBtn = newProduct.querySelector(`button[name="delete-product"]`);
     if (deleteBtn instanceof HTMLButtonElement) {
         deleteBtn.addEventListener("click", () => {

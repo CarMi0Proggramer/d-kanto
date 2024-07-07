@@ -2,6 +2,7 @@ import { Product } from "../../../components/product";
 import { calculatePagination, calculateSections, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 
+/* SOME VARIABLES */
 export let initIndex: number;
 export let finalIndex: number;
 export let searchMatches: Product[] = [];
@@ -33,12 +34,14 @@ export function searchProduct(inputElement: HTMLInputElement) {
         ).forEach(el => el.remove());
     }
 
+    /* LOADING MATCHES */
     loadProducts(searchMatches, initIndex, finalIndex, { inverse:false, searchOptions: true, filterOption: false });
     calculatePagination({ productsLength: searchMatches.length, pageNumber: 1, searchOption: true, filterOption: false});
     searchSections = calculateSections(searchMatches.length);
     calculateShowing(initIndex, searchMatches);
     estimateCurrentPage({ current: searchCurrent ,searchOption: true, filterOption: false });
 
+    /* SETTING OPTION */
     localStorage.setItem("search-option", JSON.stringify({"option": true}));
 }
 

@@ -3,7 +3,7 @@ import { products } from "./pagination";
 
 /* THE NUMBER OF PRODUCTS THAT THE USER IS SEEING */
 export function calculateShowing(index: number, arrProduct: Product[]) {
-    /* CALCULATING THE NUMBER OF PRODUCTS THAT IT HAS BEEN SHOWED */
+    /* BASIC ELEMENTS */
     const totalProductsSpan = document.getElementById(
         "total-products-quantity"
     ) as HTMLSpanElement;
@@ -21,12 +21,14 @@ export function calculateShowing(index: number, arrProduct: Product[]) {
         "products-showing-below-quantity"
     ) as HTMLSpanElement;
 
+    /* IT'S SHOWING THE TOTAL NUMBER OF PRODUCTS ON THE ORIGINAL ARRAY */
     totalProductsSpan.innerText = String(products.length);
 
     if (arrProduct.length == 0) {
         index = 0;
     }
     
+    /* GETTING THE CURRENT RANGE OF PRODUCTS IT HAS BEEN SHOWN */
     if (index + 5 <= arrProduct.length) {
         productsShowing.innerText = `${index}-${index + 5} (${
             arrProduct.length
@@ -41,6 +43,7 @@ export function calculateShowing(index: number, arrProduct: Product[]) {
         showingBelowRange.innerText = `${index}-${arrProduct.length}`;
     }
 
+    /* ADDING FINAL ELEMENTS */
     showingTooltip.appendChild(tooltipArrow);
     showingBelowQuantity.innerText = String(arrProduct.length);
 }

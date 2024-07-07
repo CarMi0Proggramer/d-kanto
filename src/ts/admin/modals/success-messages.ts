@@ -1,3 +1,4 @@
+/* SHOWING ADD SUCCESS MESSAGE */
 export function showAddSuccessMessage() {
     const successButton = document.getElementById('create-product-success-button');
     if (successButton instanceof HTMLButtonElement) {
@@ -5,6 +6,7 @@ export function showAddSuccessMessage() {
     }
 }
 
+/* SHOWING DELETE SUCCESS MESSAGE */
 export function showDeleteSuccessMessage() {
     const deleteSuccessButton = document.getElementById('delete-product-success-button');
     if (deleteSuccessButton instanceof HTMLButtonElement) {
@@ -12,6 +14,7 @@ export function showDeleteSuccessMessage() {
     }
 }
 
+/* SHOWING UPDATE SUCCESS MESSAGE */
 export function showUpdateSuccessMessage() {
     const updateSuccessButton = document.getElementById('update-product-success-button');
     if (updateSuccessButton instanceof HTMLButtonElement) {

@@ -60,6 +60,7 @@ export function filter() {
         filterOption: true
     });
 
+    /* SETTING OPTION */
     localStorage.setItem("filter-option", JSON.stringify({"option": true}));
 }
 

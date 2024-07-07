@@ -1,3 +1,4 @@
+/* IMPORTS */
 import { createProductForm } from "./add-product/add-product";
 import { updateProduct } from "./edit-product/edit-product";
 import { clearFilters, filter, filterCurrent, filterInit, filterLast, filterMatches } from "./filters/filter";
@@ -23,12 +24,14 @@ const formAddProduct = document.getElementById("add-product-form");
 if (formAddProduct instanceof HTMLFormElement) {
     formAddProduct.addEventListener("submit", async (event) => {
         event.preventDefault();
+        /* OPTIONS IN LOCALSTORAGE */
         const searchOption: {
             option: boolean
         } = JSON.parse(localStorage.getItem("search-option") as string);
         const filterOption: {
             option: boolean
         } = JSON.parse(localStorage.getItem("filter-option") as string);
+        /* ANALYZING OPTIONS */
         if (searchOption.option) {
             createProductForm(formAddProduct, buttonsContainer, {
                 searchOption: true,
@@ -71,6 +74,7 @@ editForm.addEventListener("submit", async (event) => {
 window.addEventListener("load", () => {
     paginate();
 
+    /* SETTING OPTIONS */
     localStorage.setItem("search-option", JSON.stringify({
         'option': false
     }))
@@ -83,12 +87,14 @@ window.addEventListener("load", () => {
         "theme-toggle"
     ) as HTMLButtonElement;
     iconTheme.addEventListener("click", () => {
+        /* GETTING OPTIONS */
         let filterOption: {
             option: boolean
         } = JSON.parse(localStorage.getItem("filter-option") as string);
         let searchOption: {
             option: boolean
         } = JSON.parse(localStorage.getItem("search-option") as string);
+        /* ESTIMATING PER OPTION */
         if (filterOption.option) {
             estimateCurrentPage({ current: filterCurrent, searchOption: false, filterOption: true });
         }else if(searchOption.option) {

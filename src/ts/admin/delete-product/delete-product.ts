@@ -5,6 +5,7 @@ import { changeSearchFinalIndex, changeSearchMatches, changeSearchSections, fina
 import { getProductContainer } from "../edit-product/edit-product";
 import { changeFilterFinalIndex, changeFilterMatches, filterCurrent, filterInit, filterLast, filterMatches } from "../filters/filter";
 
+/* VARS */
 export const confirmDeleteButton = document.getElementById(
     "confirm-delete-button"
 );
@@ -29,6 +30,7 @@ export function validateDelete(containers: NodeListOf<Element>) {
         }
     }
 
+    /* DELETING VALID ELEMENTS */
     for (const id of validElements) {
         deleteProduct(id);
     }
@@ -40,6 +42,7 @@ if (checkboxAll instanceof HTMLInputElement) {
         const productContainers =
             document.getElementsByName("product-container");
         const productCheckboxs = getCheckboxs(productContainers);
+        /* SELECTING ALL OR NOT */
         if (checkboxAll.checked) {
             for (const productCheckbox of productCheckboxs) {
                 productCheckbox.checked = true;
@@ -74,13 +77,15 @@ export function deleteProduct(id: number) {
     })
         .then(async (res) => {
             if (res.ok) {
-
+                /* GETTING CURRENT CONTAINERS */
                 let productContainers = document.querySelectorAll(
                     `tr[name="product-container"]`
                 );
 
+                /* DELETING PRODUCT FROM THE MAIN ARRAY */
                 changeProducts(id);
 
+                /* GETTING OPTIONS */
                 const searchOption: {
                     option: boolean
                 } = JSON.parse(localStorage.getItem("search-option") as string);
@@ -88,19 +93,24 @@ export function deleteProduct(id: number) {
                     option: boolean
                 } = JSON.parse(localStorage.getItem("filter-option") as string);
 
+                /* CHANGING OPTION'S ARRAYS */
                 if (searchOption.option) {
                     changeSearchMatches(id);
                 }else if (filterOption.option) {
                     changeFilterMatches(id);
                 }
 
+                /* IF THE PRPDUCT IS VISIBLE */
                 if (productContainers.length < 6) {
+                    /* DELETING CONTAINER */
                     deleteContainer(productContainers, id);
                     productContainers = document.querySelectorAll(
                         `tr[name="product-container"]`
                     );
 
+                    /* IF THERE'S NO MORE PRODUCTS THEN LOAD THE PREVIOUS PAGE */
                     if (productContainers.length == 0) {
+                        /* ANALIZYNG OPTIONS */
                         if (searchOption.option) {
                             loadProducts(searchMatches, initIndex, finalIndex,{ inverse: true, deleteBackOption: true, searchOptions: true, filterOption: false });
                         }else if(filterOption.option){
@@ -109,6 +119,7 @@ export function deleteProduct(id: number) {
                             loadProducts(products, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true, searchOptions: false, filterOption: false });
                         }
                     }
+                    /* CHANGING LAST INDEXS VALUES */
                     changeLastIndex(true,false);
                     if (searchOption.option) {
                         changeSearchFinalIndex(searchMatches.length);
@@ -116,10 +127,12 @@ export function deleteProduct(id: number) {
                         changeFilterFinalIndex(filterMatches.length);
                     }
                 }else{
+                    /* REMOVING CONTAINERS */
                     for (const container of productContainers) {
                         container.remove();
                     }
 
+                    /* CHANGING LAST INDEXS VALUES */
                     changeLastIndex(false,true);
                     if (searchOption.option) {
                         changeSearchFinalIndex(initIndex - 1);
@@ -127,6 +140,7 @@ export function deleteProduct(id: number) {
                         changeFilterFinalIndex(filterInit - 1);
                     }
 
+                    /* LOADING PRODUCTS */
                     if (searchOption.option) {
                         loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true, filterOption: false});
                     }else if(filterOption.option){
@@ -136,7 +150,7 @@ export function deleteProduct(id: number) {
                     }
                 }
                 
-                /* DETECTING PAGINATION */
+                /* DETECTING PAGINATION PER OPTIONS*/
                 if (searchOption.option) {
                     detectPagination({ add: false, arrProduct: searchMatches, searchOption: true, filterOption: false, current: searchCurrent })
                     calculateShowing(initIndex,searchMatches);

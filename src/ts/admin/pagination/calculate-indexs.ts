@@ -1,5 +1,6 @@
 import { Product } from "../../../components/product";
 
+/* OPTIONS */
 export type LoadOptions = {
     inverse: boolean,
     deleteBackOption?: boolean,
@@ -7,7 +8,9 @@ export type LoadOptions = {
     filterOption: boolean
 }
 
+/* ESTIMATING INIT AND LAST INDEXS */
 export function calcInitLastIndex(arrProduct: Product[], initIndex:number, finalIndex:number, counter:number, options:LoadOptions) {
+    /* GETTING VALUES */
     if (counter == 6) {
         initIndex = options.inverse ? finalIndex - 11 : finalIndex + 1;
         finalIndex = options.inverse ? finalIndex - 12 : finalIndex;
@@ -19,6 +22,7 @@ export function calcInitLastIndex(arrProduct: Product[], initIndex:number, final
         finalIndex = options.inverse ? finalIndex - (6 + counter) : finalIndex;
     }
 
+    /* CHECKING VALUES */
     if (initIndex <= 0) {
         initIndex = 1;
         finalIndex = 0;

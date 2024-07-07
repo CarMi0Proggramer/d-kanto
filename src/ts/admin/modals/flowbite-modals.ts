@@ -4,6 +4,7 @@ import { currentProductId, findCategory, updateEditPreviewData } from "../update
 import { clearErrors } from "../add-product/add-product";
 import { confirmDeleteButton, deleteProduct } from "../delete-product/delete-product";
 
+/* SOME VARS */
 const drawerName = document.getElementById("drawer-name") as HTMLInputElement;
 const drawerUrlImage = document.getElementById(
     "update-product-img"
@@ -22,6 +23,7 @@ const drawerStock = document.getElementById("update-product-stock") as HTMLInput
 const targetEl = document.getElementById("delete-modal") as HTMLDivElement;
 const deleteModal = new Modal(targetEl);
 
+/* ADDING DELETE MODAL EVENT TO THE BUTTONS */
 const deleteModalBtns = targetEl.getElementsByTagName("button");
 for (const btn of deleteModalBtns) {
     btn.addEventListener("click", () => {
@@ -29,6 +31,7 @@ for (const btn of deleteModalBtns) {
     });
 }
 
+/* UPDATING EVENTS ON DELETE MODAL BUTTONS */
 function updateDeleteButtons() {
     const deleteProduct = document.getElementsByName("delete-product");
     deleteProduct.forEach((element) => {
@@ -39,16 +42,20 @@ function updateDeleteButtons() {
 }
 
 /* EDIT MODAL */
+/* EDIT MODAL VARS */
 const drawerEl = document.getElementById(
     "drawer-update-product"
 ) as HTMLFormElement;
 export const editDrawer = new Drawer(drawerEl);
 
+/* CLOSING THE DRAWER WITH XBTN BUTTON */
 export const xBtn = drawerEl.getElementsByTagName("button")[0];
 xBtn.addEventListener("click", () => {
     editDrawer.hide();
     clearErrors("drawer-errors-container");
 });
+
+/* SHOWING DELETE MODAL */
 const drawerDeleteBtn = document.getElementById(
     "drawer-delete-button"
 ) as HTMLButtonElement;
@@ -62,6 +69,7 @@ drawerDeleteBtn.addEventListener("click", () => {
     }
 });
 
+/* UPDATING EDIT EVENT TO THE BUTTONS */
 function updateEditButtons() {
     const productContainers = document.querySelectorAll(
         `tr[name="product-container"]`
@@ -88,7 +96,7 @@ function updateEditButtons() {
 }
 
 /* PREVIEW MODAL */
-
+/* VARS */
 const previewDrawerEl = document.getElementById(
     "drawer-read-product-advanced"
 ) as HTMLDivElement;
@@ -101,6 +109,7 @@ previewDrawerCloseBtn.addEventListener("click", () => {
     previewDrawer.hide();
 });
 
+/* ADDING DELETE EVENT */
 const previewEditButton = document.getElementById(
     "preview-edit-button"
 ) as HTMLButtonElement;
@@ -129,6 +138,7 @@ previewDeleteButton.addEventListener("click", () => {
     }
 });
 
+/* VARS */
 const previewName = document.getElementById("read-drawer-label") as HTMLHeadingElement;
 const previewCategory = document.getElementById("preview-category") as HTMLElement;
 const previewPrice = document.getElementById("preview-price") as HTMLHeadingElement;
@@ -136,6 +146,7 @@ const previewDescription = document.getElementById("preview-description") as HTM
 const previewImage = document.getElementById("preview-image") as HTMLImageElement;
 const previewRating = document.getElementById("edit-rating") as HTMLElement;
 
+/* UPDATING PREVIEW EVENT TO THE BUTTONS */
 function updatePreviewButtons() {
     const productContainers = document.querySelectorAll(
         `tr[name="product-container"]`
@@ -162,10 +173,12 @@ function updatePreviewButtons() {
     }
 }
 
+/* UPDATING ALL MODALS EVENTS */
 export function updateModals() {
     updateDeleteButtons();
     updateEditButtons();
     updatePreviewButtons();
 }
 
+/* UPDATING FIRST EVENTS */
 updateModals();
