@@ -1,5 +1,5 @@
 import { Product } from "../../../components/product";
-import { calculatePagination, calculateSections, current, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
+import { calculatePagination, calculateSections, estimateCurrentPage, loadProducts, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 
 /* SOME VARIABLES */
@@ -100,7 +100,7 @@ export function clearFilters() {
     })
     calculateShowing(1, products)
     estimateCurrentPage({
-        current: current,
+        current: 0,
         searchOption: false,
         filterOption: false
     })
