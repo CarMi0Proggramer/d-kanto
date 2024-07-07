@@ -33,11 +33,11 @@ export function searchProduct(inputElement: HTMLInputElement) {
         ).forEach(el => el.remove());
     }
 
-    loadProducts(searchMatches, initIndex, finalIndex, { inverse:false, searchOptions: true });
-    calculatePagination({ productsLength: searchMatches.length, pageNumber: 1, searchOption: true});
+    loadProducts(searchMatches, initIndex, finalIndex, { inverse:false, searchOptions: true, filterOption: false });
+    calculatePagination({ productsLength: searchMatches.length, pageNumber: 1, searchOption: true, filterOption: false});
     searchSections = calculateSections(searchMatches.length);
     calculateShowing(initIndex, searchMatches);
-    estimateCurrentPage({ current: searchCurrent ,searchOption: true });
+    estimateCurrentPage({ current: searchCurrent ,searchOption: true, filterOption: false });
 
     localStorage.setItem("search-option", JSON.stringify({"option": true}));
 }

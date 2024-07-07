@@ -1,8 +1,9 @@
-import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex, products, calculateSections } from "../pagination/pagination";
+import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex, products, calculateSections, current } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 import { showDeleteSuccessMessage } from "../modals/success-messages";
-import { changeSearchFinalIndex, changeSearchMatches, changeSearchSections, finalIndex, initIndex, searchMatches } from "../search-box/search";
+import { changeSearchFinalIndex, changeSearchMatches, changeSearchSections, finalIndex, initIndex, searchCurrent, searchMatches } from "../search-box/search";
 import { getProductContainer } from "../edit-product/edit-product";
+import { changeFilterFinalIndex, changeFilterMatches, filterCurrent, filterInit, filterLast, filterMatches } from "../filters/filter";
 
 export const confirmDeleteButton = document.getElementById(
     "confirm-delete-button"
@@ -79,12 +80,20 @@ export function deleteProduct(id: number) {
                 );
 
                 changeProducts(id);
+
                 const searchOption: {
-                    option: true
+                    option: boolean
                 } = JSON.parse(localStorage.getItem("search-option") as string);
+                const filterOption: {
+                    option: boolean
+                } = JSON.parse(localStorage.getItem("filter-option") as string);
+
                 if (searchOption.option) {
                     changeSearchMatches(id);
+                }else if (filterOption.option) {
+                    changeFilterMatches(id);
                 }
+
                 if (productContainers.length < 6) {
                     deleteContainer(productContainers, id);
                     productContainers = document.querySelectorAll(
@@ -93,14 +102,18 @@ export function deleteProduct(id: number) {
 
                     if (productContainers.length == 0) {
                         if (searchOption.option) {
-                            loadProducts(searchMatches, initIndex, finalIndex,{ inverse: true, deleteBackOption: true, searchOptions: true });
-                        }else{
-                            loadProducts(products, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true, searchOptions: false });
+                            loadProducts(searchMatches, initIndex, finalIndex,{ inverse: true, deleteBackOption: true, searchOptions: true, filterOption: false });
+                        }else if(filterOption.option){
+                            loadProducts(filterMatches, filterInit, filterLast,{ inverse: true, deleteBackOption: true, searchOptions: false, filterOption: true });
+                        } else{
+                            loadProducts(products, initialIndex, lastIndex,{ inverse: true, deleteBackOption: true, searchOptions: false, filterOption: false });
                         }
                     }
                     changeLastIndex(true,false);
                     if (searchOption.option) {
                         changeSearchFinalIndex(searchMatches.length);
+                    }else if(filterOption.option){
+                        changeFilterFinalIndex(filterMatches.length);
                     }
                 }else{
                     for (const container of productContainers) {
@@ -110,21 +123,30 @@ export function deleteProduct(id: number) {
                     changeLastIndex(false,true);
                     if (searchOption.option) {
                         changeSearchFinalIndex(initIndex - 1);
+                    }else if(filterOption.option){
+                        changeFilterFinalIndex(filterInit - 1);
                     }
+
                     if (searchOption.option) {
-                        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true});
-                    }else{
-                        loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false});
+                        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true, filterOption: false});
+                    }else if(filterOption.option){
+                        loadProducts(filterMatches, filterInit, filterLast, { inverse: false, searchOptions: false, filterOption: true});
+                    } else{
+                        loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false, filterOption: false});
                     }
                 }
                 
                 /* DETECTING PAGINATION */
                 if (searchOption.option) {
-                    detectPagination({ add: false, arrProduct: searchMatches, searchOption: true })
+                    detectPagination({ add: false, arrProduct: searchMatches, searchOption: true, filterOption: false, current: searchCurrent })
                     calculateShowing(initIndex,searchMatches);
                     changeSearchSections(calculateSections(searchMatches.length));
-                }else{
-                    detectPagination({ add: false, arrProduct: products, searchOption: false })
+                }else if(filterOption.option){
+                    detectPagination({ add: false, arrProduct: filterMatches, searchOption: false, filterOption: true, current: filterCurrent })
+                    calculateShowing(filterInit,filterMatches);
+                    changeSearchSections(calculateSections(filterMatches.length));
+                } else{
+                    detectPagination({ add: false, arrProduct: products, searchOption: false, filterOption: false, current: current })
                     calculateShowing(initialIndex,products);
                     changeSections(products.length);
                 }

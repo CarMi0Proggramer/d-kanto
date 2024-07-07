@@ -1,8 +1,9 @@
 import { Product } from "../../../components/product";
+import { changeFilterFinalIndex, changeFilterSections, filterCurrent, filterMatches } from "../filters/filter";
 import { showAddSuccessMessage } from "../modals/success-messages";
-import { calculateSections, changeLastIndex, changeSections, detectPagination, products } from "../pagination/pagination";
+import { calculateSections, changeLastIndex, changeSections, current, detectPagination, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
-import { changeSearchFinalIndex, changeSearchSections, finalIndex, searchMatches } from "../search-box/search";
+import { changeSearchFinalIndex, changeSearchSections, finalIndex, searchCurrent, searchMatches } from "../search-box/search";
 import { updateListProduct } from "../update-product/update-list-product";
 
 const closeModalButton = document.getElementById("close-add-product");
@@ -15,6 +16,7 @@ const stock = document.getElementById("add-product-stock") as HTMLInputElement;
 const discardButton = document.getElementById("discard-button");
 
 type CreateProductOptions = {
+    filterOption: boolean,
     searchOption: boolean,
     arrProduct: Product[],
     initIndex: number,
@@ -39,8 +41,11 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
         if (res.ok) {
             const product: Product = await res.json();
             products.push(product);
+
             if (options.searchOption) {
                 searchMatches.push(product);
+            }else if(options.filterOption){
+                filterMatches.push(product);
             }
             
             let productContainers = document.querySelectorAll(
@@ -50,7 +55,9 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
             if (productContainers.length < 6) {
                 if (options.searchOption) {
                     changeSearchFinalIndex(finalIndex + 1);
-                }else{
+                }else if(options.filterOption){
+                    changeFilterFinalIndex(finalIndex + 1);
+                } else{
                     changeLastIndex(false,false,1, "plus");
                 }
                 updateListProduct(product);
@@ -58,10 +65,13 @@ export async function createProductForm(form: HTMLFormElement, buttonsContainer:
 
             /* SOME CALLS... */
             if (options.searchOption) {
-                detectPagination({ add: true, arrProduct: options.arrProduct, searchOption: true });
+                detectPagination({ add: true, arrProduct: options.arrProduct, searchOption: true, filterOption: false, current: searchCurrent });
                 changeSearchSections(calculateSections(options.arrProduct.length));
-            }else{
-                detectPagination({ add: true, arrProduct: products, searchOption: false });
+            }else if(options.filterOption){
+                detectPagination({ add: true, arrProduct: options.arrProduct, searchOption: false, filterOption: true, current: filterCurrent });
+                changeFilterSections(calculateSections(options.arrProduct.length));
+            } else{
+                detectPagination({ add: true, arrProduct: products, searchOption: false, filterOption: false, current: current });
                 changeSections(products.length);
             }
             calculateShowing(options.initIndex, options.arrProduct);

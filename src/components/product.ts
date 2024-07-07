@@ -60,10 +60,10 @@ function insertData(element: HTMLTableRowElement, data: Product) {
     const colorStock = generateColorStock(data.stock);
     element.innerHTML = `<td class="p-4 w-4">
                                         <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" name="product-checkbox" type="checkbox"
+                                            <input id="checkbox-table-search-${data.id}" name="product-checkbox" type="checkbox"
                                                 onclick="event.stopPropagation()"
                                                 class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                            <label for="checkbox-table-search-${data.id}" class="sr-only">checkbox</label>
                                         </div>
                                     </td>
                                     <th scope="row"

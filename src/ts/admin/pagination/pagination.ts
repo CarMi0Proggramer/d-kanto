@@ -15,6 +15,7 @@ import {
     searchSections,
 } from "../search-box/search";
 import { LoadOptions, calcInitLastIndex } from "./calculate-indexs";
+import { changeFilterCurrent, changeFilterFinalIndex, changeFilterInitIndex, changeFilterPagesNumber, filterCurrent, filterInit, filterLast, filterMatches, filterPages, filterSections } from "../filters/filter";
 
 /* ELEMENT STRINGS */
 const previous = `<li>
@@ -63,6 +64,8 @@ export function loadProducts(
     /* IF IT'S SEARCH OPTIONS, CHANGE THE OTHER INDEXS */
     if (options.searchOptions) {
         changeSearchInitIndex(init);
+    }else if(options.filterOption){
+        changeFilterInitIndex(init);
     } else {
         initialIndex = init;
     }
@@ -85,15 +88,18 @@ export function loadProducts(
             productsLength: arrProduct.length,
             pageNumber: 1,
             searchOption: options.searchOptions,
+            filterOption: options.filterOption
         });
     }
     /* SHOWING RESULTS */
     calculateShowing(init, arrProduct);
     if (one == 0) {
         if (options.searchOptions) {
-            estimateCurrentPage({ current: searchPages, searchOption: options.searchOptions });
+            estimateCurrentPage({ current: searchPages, searchOption: options.searchOptions, filterOption: options.filterOption });
+        }else if(options.filterOption){
+            estimateCurrentPage({ current: filterCurrent, searchOption: options.searchOptions, filterOption: options.filterOption})
         } else {
-            estimateCurrentPage({ current: current, searchOption: options.searchOptions });
+            estimateCurrentPage({ current: current, searchOption: options.searchOptions, filterOption: options.filterOption });
         }
         one++;
     }
@@ -101,6 +107,8 @@ export function loadProducts(
     /* CHANGING LAST INDEXS */
     if (options.searchOptions) {
         changeSearchFinalIndex(final);
+    }else if(options.filterOption){
+        changeFilterFinalIndex(final);
     } else {
         lastIndex = final;
     }
@@ -117,12 +125,13 @@ type CalculatePaginationOptions = {
     productsLength: number;
     pageNumber: number;
     searchOption: boolean;
+    filterOption: boolean
 };
 export function calculatePagination(options: CalculatePaginationOptions) {
     sectionsNumber = calculateSections(options.productsLength);
     tableNavigation.innerHTML =
         `${showing}` + loadPagination(sectionsNumber, options.pageNumber);
-    addEvents({ searchOption: options.searchOption });
+    addEvents({ searchOption: options.searchOption, filterOption: options.filterOption });
 }
 
 /* GENERATING A CONTAINER WITH ITS CORRECT NUMBER */
@@ -190,6 +199,7 @@ export let current = 0;
 type EstimatePageOptions = {
     current: number;
     searchOption: boolean;
+    filterOption: boolean;
     especificPage?: number;
 };
 export function estimateCurrentPage(options: EstimatePageOptions) {
@@ -214,6 +224,8 @@ export function estimateCurrentPage(options: EstimatePageOptions) {
 
     if (options.searchOption) {
         changeSearchCurrent(options.current);
+    } else if(options.filterOption) {
+        changeFilterCurrent(options.current);
     } else {
         current = options.current;
     }
@@ -246,12 +258,17 @@ function getAlternateColor() {
 /* ADDING EVENTS TO PREVIOUS AND NEXT ELEMENT */
 type PaginationOptions = {
     searchOption: boolean;
+    filterOption: boolean;
 };
 function addEvents(options: PaginationOptions) {
     const previusEl = document.getElementById("previous-page") as HTMLElement;
     const nextEl = document.getElementById("next-page") as HTMLElement;
 
+    /* DUE TO THE PAGINATION COMPONENT IT'S CREATED AGAIN WHEN THERE'S ANY OF THIS OPTIONS, I NEED TO ADD THE EVENTS AGAIN */
     if (options.searchOption) {
+        previusEl.addEventListener("click", () => previousPage(options));
+        nextEl.addEventListener("click", () => nextPage(options));
+    } else if(options.filterOption) {
         previusEl.addEventListener("click", () => previousPage(options));
         nextEl.addEventListener("click", () => nextPage(options));
     } else {
@@ -263,7 +280,7 @@ function addEvents(options: PaginationOptions) {
 /* INITIALIZATING PRODUCT´S ARRAY */
 export async function paginate() {
     products = await getProducts();
-    loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false });
+    loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false, filterOption: false });
 }
 
 /* CHANGING PRODUCT´S ARRAY WHEN THE USER DELETES ONE */
@@ -315,7 +332,7 @@ function previousPage(options: PaginationOptions) {
     containers.forEach((el) => el.remove());
 
     if (options.searchOption) {
-        loadProducts(searchMatches, initIndex, finalIndex, { inverse: true, searchOptions: true });
+        loadProducts(searchMatches, initIndex, finalIndex, { inverse: true, searchOptions: true, filterOption: false });
         changePage({
             next: false,
             init: initIndex,
@@ -324,10 +341,24 @@ function previousPage(options: PaginationOptions) {
             pages: searchPages,
             sectionsNumber: searchSections,
             arrProduct: searchMatches,
-            searchOption: options.searchOption
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
+        });
+    } else if(options.filterOption) {
+        loadProducts(filterMatches, filterInit, filterLast, { inverse: true, searchOptions: false, filterOption: true });
+        changePage({
+            next: false,
+            init: filterInit,
+            final: filterLast,
+            current: filterCurrent,
+            pages: filterPages,
+            sectionsNumber: filterSections,
+            arrProduct: filterMatches,
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
         });
     } else {
-        loadProducts(products, initialIndex, lastIndex, { inverse: true, searchOptions: false });
+        loadProducts(products, initialIndex, lastIndex, { inverse: true, searchOptions: false, filterOption: false });
         changePage({
             next: false,
             init: initialIndex,
@@ -336,7 +367,8 @@ function previousPage(options: PaginationOptions) {
             pages: pages,
             sectionsNumber: sectionsNumber,
             arrProduct: products,
-            searchOption: options.searchOption
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
         });
     }
 }
@@ -349,7 +381,7 @@ function nextPage(options: PaginationOptions) {
     containers.forEach((el) => el.remove());
 
     if (options.searchOption) {
-        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true });
+        loadProducts(searchMatches, initIndex, finalIndex, { inverse: false, searchOptions: true, filterOption: false });
         changePage({
             next: true,
             init: initIndex,
@@ -358,10 +390,24 @@ function nextPage(options: PaginationOptions) {
             pages: searchPages,
             sectionsNumber: searchSections,
             arrProduct: searchMatches,
-            searchOption: options.searchOption
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
+        });
+    } else if(options.filterOption){
+        loadProducts(filterMatches, filterInit, filterLast, { inverse: false, searchOptions: false, filterOption: true });
+        changePage({
+            next: true,
+            init: filterInit,
+            final: filterLast,
+            current: filterCurrent,
+            pages: filterPages,
+            sectionsNumber: filterSections,
+            arrProduct: filterMatches,
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
         });
     } else {
-        loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false });
+        loadProducts(products, initialIndex, lastIndex, { inverse: false, searchOptions: false, filterOption: false });
         changePage({
             next: true,
             init: initialIndex,
@@ -370,7 +416,8 @@ function nextPage(options: PaginationOptions) {
             pages: pages,
             sectionsNumber: sectionsNumber,
             arrProduct: products,
-            searchOption: options.searchOption
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
         });
     }
 }
@@ -385,6 +432,7 @@ type ChangePageOptions = {
     sectionsNumber: number;
     arrProduct: Product[];
     searchOption: boolean;
+    filterOption: boolean;
 };
 
 let pages = 0;
@@ -413,7 +461,7 @@ function changePage(options: ChangePageOptions) {
                 ceils[usedPage].classList.add(alternateColor);
                 usedPage = ceils.length - 1;
             }
-            estimateCurrentPage({ current: usedPage, searchOption: options.searchOption });
+            estimateCurrentPage({ current: usedPage, searchOption: options.searchOption, filterOption: options.filterOption });
         } else {
             /* IF IT'S A PREVIOUS PAGE */
             let numPage = 0;
@@ -427,6 +475,7 @@ function changePage(options: ChangePageOptions) {
                     productsLength: options.arrProduct.length,
                     pageNumber: previousPage,
                     searchOption: options.searchOption,
+                    filterOption: options.filterOption
                 });
                 calculateShowing(options.init, options.arrProduct);
             }
@@ -436,11 +485,13 @@ function changePage(options: ChangePageOptions) {
                     current: usedPage,
                     especificPage: numPage - 1,
                     searchOption: options.searchOption,
+                    filterOption: options.filterOption
                 });
             } else {
                 estimateCurrentPage({
                     current: usedPage,
                     searchOption: options.searchOption,
+                    filterOption: options.filterOption
                 });
             }
         }
@@ -460,12 +511,21 @@ function changePage(options: ChangePageOptions) {
                 productsLength: options.arrProduct.length,
                 pageNumber: options.pages,
                 searchOption: true,
+                filterOption: false
+            });
+        }else if(options.filterOption){
+            calculatePagination({
+                productsLength: options.arrProduct.length,
+                pageNumber: options.pages,
+                searchOption: false,
+                filterOption: true
             });
         } else {
             calculatePagination({
                 productsLength: options.arrProduct.length,
                 pageNumber: options.pages,
                 searchOption: false,
+                filterOption: false
             });
         }
 
@@ -475,12 +535,15 @@ function changePage(options: ChangePageOptions) {
             current: usedPage,
             especificPage: lastNum + 1,
             searchOption: options.searchOption,
+            filterOption: options.filterOption
         });
     }
 
     /* CHANGING PAGES VALUES */
     if (options.searchOption) {
         changeSearchPagesNumber(options.pages);
+    }else if(options.filterOption){
+        changeFilterPagesNumber(options.pages);
     } else {
         pages = options.pages;
     }
@@ -499,12 +562,14 @@ type DetectPaginationOptions = {
     arrProduct: Product[]
     add: boolean;
     searchOption: boolean;
+    filterOption: boolean;
+    current: number;
 };
 export function detectPagination(options: DetectPaginationOptions) {
     const ceils = Array.from(
         document.querySelectorAll(`a[name="pagination-ceil"]`)
     );
-    let currentPageEl = ceils[current];
+    let currentPageEl = ceils[options.current];
 
     let sections = calculateSections(options.arrProduct.length);
     let num = Number(currentPageEl?.textContent);
@@ -526,24 +591,17 @@ export function detectPagination(options: DetectPaginationOptions) {
 
         calculatePagination({
             productsLength: options.arrProduct.length, pageNumber: finalAddNum,
-            searchOption: options.searchOption
+            searchOption: options.searchOption,
+            filterOption: options.filterOption
         });
 
-        estimateCurrentPage({
-            current: searchCurrent,
-            especificPage: num,
-            searchOption: options.searchOption,
-        });
+        loadCurrentPage()
 
     } else {
         if ((sections == num - 1 || sections == num) && num > 4) {
-            calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
+            calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption, filterOption: options.filterOption});
 
-            estimateCurrentPage({
-                current: searchCurrent,
-                especificPage: sections,
-                searchOption: options.searchOption,
-            });
+            loadCurrentPage();
         } else {
             let allow = false;
             if (ceils.length > 2) {
@@ -558,20 +616,43 @@ export function detectPagination(options: DetectPaginationOptions) {
                 calculatePagination({ 
                     productsLength: options.arrProduct.length,
                     pageNumber: Number(ceils[0].textContent),
-                    searchOption: options.searchOption
+                    searchOption: options.searchOption,
+                    filterOption: options.filterOption
                 });
             } else {
-                if (options.searchOption && num - 4 < 0) {
-                    calculatePagination({ productsLength: options.arrProduct.length, pageNumber: 1, searchOption: options.searchOption});
+                if ((options.searchOption && num - 4 < 0) || (options.filterOption && num - 4 < 0)) {
+                    calculatePagination({ productsLength: options.arrProduct.length, pageNumber: 1, searchOption: options.searchOption, filterOption: options.filterOption});
                 }else{
-                    calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption});
+                    calculatePagination({ productsLength: options.arrProduct.length, pageNumber: sections - 4, searchOption: options.searchOption, filterOption: options.filterOption});
                 }
             }
 
+            loadCurrentPage();
+        }
+    }
+
+    /* MAKING MORE EASY TO LOAD ESTIMATE CURRENT PAGE IN AN INTERN WAY */
+    function loadCurrentPage() {
+        if (options.searchOption) {
             estimateCurrentPage({
                 current: searchCurrent,
                 especificPage: num,
                 searchOption: options.searchOption,
+                filterOption: options.filterOption
+            });
+        }else if (options.filterOption) {
+            estimateCurrentPage({
+                current: filterCurrent,
+                especificPage: num,
+                searchOption: options.searchOption,
+                filterOption: options.filterOption
+            });
+        }else{
+            estimateCurrentPage({
+                current: current,
+                especificPage: num,
+                searchOption: options.searchOption,
+                filterOption: options.filterOption
             });
         }
     }

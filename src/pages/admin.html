@@ -478,9 +478,9 @@
                                 <div class="flex items-center justify-between pt-2">
                                     <h6 class="text-sm font-medium text-black dark:text-white">Filters</h6>
                                     <div class="flex items-center space-x-3">
-                                        <a class="flex items-center text-sm font-medium text-primary-600 dark:text-primary-500 hover:underline">Save
+                                        <a class="flex items-center text-sm font-medium text-primary-600 dark:text-primary-500 hover:underline" id="filter-save-view">Save
                                             view</a>
-                                        <a class="flex items-center text-sm font-medium text-primary-600 dark:text-primary-500 hover:underline">Clear
+                                        <a class="flex items-center text-sm font-medium text-primary-600 dark:text-primary-500 hover:underline" id="filter-clear-all">Clear
                                             all</a>
                                     </div>
                                 </div>
@@ -505,49 +505,49 @@
                                     <div id="category-body" class="hidden" aria-labelledby="category-heading">
                                         <div class="py-2 font-light border-b border-gray-200 dark:border-gray-600">
                                             <ul class="space-y-2">
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="tv" type="checkbox" value="TV"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="tv"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">TV/Monitors <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="books" type="checkbox" value="BK"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="books"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Books <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="pc" type="checkbox" value="PC"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="pc"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">PC <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="toiletries" type="checkbox" value="TL"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="toiletries"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Toiletries <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="gaming" type="checkbox" value="GA"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="gaming"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Gaming/Console <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="clothes" type="checkbox" value="CL"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="clothes"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Clothes <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="furniture" type="checkbox" value="FU"
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="furniture"
                                                         class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Furniture <span class="product-quantity-per-category"></span></label>
                                                 </li>
-                                                <li class="flex items-center">
+                                                <li class="flex items-center category-li-element">
                                                     <input id="software" type="checkbox" value="SF" 
                                                         class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                                     <label for="software"
@@ -577,15 +577,19 @@
                                             <select id="price-from"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                 <option disabled="" selected="">From</option>
-                                                <option>$500</option>
-                                                <option>$2500</option>
-                                                <option>$5000</option>
+                                                <option value="0">$0</option>
+                                                <option value="100">$100</option>
+                                                <option value="300">$300</option>
+                                                <option value="500">$500</option>
+                                                <option value="1000">$1000</option>
                                             </select><select id="price-to"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                 <option disabled="" selected="">To</option>
-                                                <option>$500</option>
-                                                <option>$2500</option>
-                                                <option>$5000</option>
+                                                <option value="50">$50</option>
+                                                <option value="100">$100</option>
+                                                <option value="300">$300</option>
+                                                <option value="500">$500</option>
+                                                <option value="1000">$1000</option>
                                             </select>
                                         </div>
                                     </div>
@@ -608,8 +612,8 @@
                                         <div
                                             class="py-2 space-y-2 font-light border-b border-gray-200 dark:border-gray-600">
                                             <div class="flex items-center">
-                                                <input id="five-stars" type="radio" value="" name="rating"
-                                                    class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <input id="five-stars" type="radio" value="5" name="rating"
+                                                    class="category-input-star w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                                 <label for="five-stars" class="flex items-center ml-2">
                                                     <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
                                                         fill="currentColor" viewbox="0 0 20 20"
@@ -649,8 +653,8 @@
                                                 </label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input id="four-stars" type="radio" value="" name="rating"
-                                                    class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <input id="four-stars" type="radio" value="4" name="rating"
+                                                    class="category-input-star w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                                 <label for="four-stars" class="flex items-center ml-2">
                                                     <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
                                                         fill="currentColor" viewbox="0 0 20 20"
@@ -691,8 +695,8 @@
                                                 </label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input id="three-stars" type="radio" value="" name="rating" checked=""
-                                                    class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <input id="three-stars" type="radio" value="3" name="rating"
+                                                    class="category-input-star w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                                 <label for="three-stars" class="flex items-center ml-2">
                                                     <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
                                                         fill="currentColor" viewbox="0 0 20 20"
@@ -734,8 +738,8 @@
                                                 </label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input id="two-stars" type="radio" value="" name="rating"
-                                                    class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <input id="two-stars" type="radio" value="2" name="rating"
+                                                    class="category-input-star w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                                 <label for="two-stars" class="flex items-center ml-2">
                                                     <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
                                                         fill="currentColor" viewbox="0 0 20 20"
@@ -778,8 +782,8 @@
                                                 </label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input id="one-star" type="radio" value="" name="rating"
-                                                    class="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <input id="one-star" type="radio" value="1" name="rating"
+                                                    class="category-input-star w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                                 <label for="one-star" class="flex items-center ml-2">
                                                     <svg aria-hidden="true" class="w-5 h-5 text-yellow-400"
                                                         fill="currentColor" viewbox="0 0 20 20"
