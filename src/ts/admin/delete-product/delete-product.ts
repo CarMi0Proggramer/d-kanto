@@ -1,9 +1,10 @@
-import { detectPagination, changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex, products, calculateSections, current } from "../pagination/pagination";
+import { changeLastIndex, changeProducts, initialIndex, loadProducts, changeSections, lastIndex, products, calculateSections, current } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 import { showDeleteSuccessMessage } from "../modals/success-messages";
 import { changeSearchFinalIndex, changeSearchMatches, changeSearchSections, finalIndex, initIndex, searchCurrent, searchMatches } from "../search-box/search";
 import { getProductContainer } from "../edit-product/edit-product";
 import { changeFilterFinalIndex, changeFilterMatches, filterCurrent, filterInit, filterLast, filterMatches } from "../filters/filter";
+import { detectPagination } from "../pagination/detect-pagination";
 
 /* VARS */
 export const confirmDeleteButton = document.getElementById(

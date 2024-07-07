@@ -1,7 +1,8 @@
 import { Product } from "../../../components/product";
 import { changeFilterFinalIndex, changeFilterSections, filterCurrent, filterMatches } from "../filters/filter";
 import { showAddSuccessMessage } from "../modals/success-messages";
-import { calculateSections, changeLastIndex, changeSections, current, detectPagination, products } from "../pagination/pagination";
+import { detectPagination } from "../pagination/detect-pagination";
+import { calculateSections, changeLastIndex, changeSections, current, products } from "../pagination/pagination";
 import { calculateShowing } from "../pagination/products-showing";
 import { changeSearchFinalIndex, changeSearchSections, finalIndex, searchCurrent, searchMatches } from "../search-box/search";
 import { updateListProduct } from "../update-product/update-list-product";
