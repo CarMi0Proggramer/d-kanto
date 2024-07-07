@@ -689,7 +689,7 @@ export function detectPagination(options: DetectPaginationOptions) {
         });
 
         /* LOADING CURRENT PAGE */
-        loadCurrentPage();
+        loadCurrentPage(num);
     }
     /* IF IT´S A DELETE PRODUCT EVENT */ 
     else {
@@ -703,7 +703,7 @@ export function detectPagination(options: DetectPaginationOptions) {
             });
 
             /* LOADING CURRENT PAGE */
-            loadCurrentPage();
+            loadCurrentPage(sections);
         } else {
             /* GETTING IF THE PAGE EXISTS ON THE CURRENT CEILS */
             let allow = false;
@@ -748,31 +748,31 @@ export function detectPagination(options: DetectPaginationOptions) {
             }
 
             /* LOADING CURRENT PAGE */
-            loadCurrentPage();
+            loadCurrentPage(num);
         }
     }
 
     /* MAKING MORE EASY TO LOAD ESTIMATE CURRENT PAGE IN AN INTERN WAY */
-    function loadCurrentPage() {
+    function loadCurrentPage(especific: number) {
         /* LOADING NEW PAGE PER OPTIONS */
         if (options.searchOption) {
             estimateCurrentPage({
                 current: searchCurrent,
-                especificPage: num,
+                especificPage: especific,
                 searchOption: options.searchOption,
                 filterOption: options.filterOption,
             });
         } else if (options.filterOption) {
             estimateCurrentPage({
                 current: filterCurrent,
-                especificPage: num,
+                especificPage: especific,
                 searchOption: options.searchOption,
                 filterOption: options.filterOption,
             });
         } else {
             estimateCurrentPage({
                 current: current,
-                especificPage: num,
+                especificPage: especific,
                 searchOption: options.searchOption,
                 filterOption: options.filterOption,
             });
