@@ -72,7 +72,7 @@ function getCheckboxs(containers: NodeListOf<HTMLElement>) {
 
 /* DELETING A PRODUCT */
 export function deleteProduct(id: number) {
-    fetch(`http://localhost:3000/products/${id}`, {
+    fetch(`https://d-kanto-backend.onrender.com/products/${id}`, {
         method: "DELETE",
     })
         .then(async (res) => {
