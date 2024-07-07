@@ -118,12 +118,17 @@ searchInput.addEventListener("input", () => {
             'option': false
         }))
     }
+
+    /* clearing filters */
+    clearFilters();
 });
 
 /* IF THE USER DOESN'T SEARCH ANYTHING */
 function restartProducts() {
+    /* deleting elements */
     const containers = document.querySelectorAll(`tr[name="product-container"]`);
     containers.forEach(el => el.remove());
+    /* loading products */
     loadProducts(products, 1, 0, {
         inverse: false,
         searchOptions: false,
