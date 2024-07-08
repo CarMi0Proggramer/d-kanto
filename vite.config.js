@@ -14,7 +14,6 @@ export default defineConfig({
                 not_found: resolve(__dirname, "src/pages/404.html"),
                 internal_error: resolve(__dirname, "src/pages/500.html"),
                 privacy: resolve(__dirname, "src/pages/privacy.html"),
-                admin: resolve(__dirname, "src/pages/admin.html"),
             },
         },
     },
