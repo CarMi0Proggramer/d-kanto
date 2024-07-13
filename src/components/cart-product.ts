@@ -1,14 +1,20 @@
+import { updateInputCounter } from "../ts/cart/flowbite/cart-pickup";
 import { Product } from "./index-product";
 
+export interface CartProduct extends Product {
+    quantity: number
+}
+
 /* CREATING A PRODUCT */
-export function createCartProduct(productData: Product) {
+export function createCartProduct(productData: CartProduct) {
     const product = document.createElement("div");
     insertData(product, productData);
+    updateInputCounter(product);
 
     return product;
 }
 
-function insertData(container: HTMLDivElement, data: Product) {
+function insertData(container: HTMLDivElement, data: CartProduct) {
     /* ADDING DATA */
     container.innerHTML = `<div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                     <a href="#" class="shrink-0 md:order-1">
@@ -24,7 +30,6 @@ function insertData(container: HTMLDivElement, data: Product) {
                                     <div class="flex items-center justify-between md:order-3 md:justify-end">
                                         <div class="flex items-center">
                                             <button type="button" id="decrement-button"
-                                                data-input-counter-decrement="counter-input"
                                                 class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                                 <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white"
                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -33,11 +38,10 @@ function insertData(container: HTMLDivElement, data: Product) {
                                                         stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                 </svg>
                                             </button>
-                                            <input type="text" id="counter-input" data-input-counter
+                                            <input type="text" id="counter-input"
                                                 class="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white"
-                                                placeholder="" value="2" required />
+                                                placeholder="" value="${data.quantity}" required />
                                             <button type="button" id="increment-button"
-                                                data-input-counter-increment="counter-input"
                                                 class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                                                 <svg class="h-2.5 w-2.5 text-gray-900 dark:text-white"
                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -48,7 +52,7 @@ function insertData(container: HTMLDivElement, data: Product) {
                                             </button>
                                         </div>
                                         <div class="text-end md:order-4 md:w-32">
-                                            <p class="text-base font-bold text-gray-900 dark:text-white">$1,499</p>
+                                            <p id="cart-price-container" class="text-base font-bold text-gray-900 dark:text-white">$${ generatePrice(data.price, data.quantity) }</p>
                                         </div>
                                     </div>
 
@@ -87,4 +91,9 @@ function insertData(container: HTMLDivElement, data: Product) {
     /* ADDING CLASSES */
     container.className = "rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6";
     container.dataset.id = String(data.id);
+}
+
+export function generatePrice(price:number, quantity:number) {
+    let total = price * quantity;
+    return Math.round(total * 100) / 100;
 }

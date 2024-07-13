@@ -12,6 +12,7 @@ const indexLocation = [
 /* ADDING NAVIGATE EVENT */
 window.addEventListener("load", () => {
     if (indexLocation.includes(location.href)) {
+        localStorage.setItem("navigation-current", "0");
         paginate();
         setThemeIcon();
     }
