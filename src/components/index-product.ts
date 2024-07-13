@@ -39,13 +39,13 @@ function insertData(container: HTMLDivElement, data: Product) {
     /* SETTING DATA */
     container.innerHTML = `
 				<a href="#">
-					<img class="p-8 rounded-t-lg h-60 mx-auto"
+					<img class="img p-8 rounded-t-lg h-60 mx-auto"
 						src="${data.urlimg}"
 						alt="product image" rel="noopener noreferrer" />
 				</a>
 				<div class="px-5 pb-5">
 					<a href="#">
-						<h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${data.name}</h5>
+						<h5 class="name text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${data.name}</h5>
 					</a>
 					<div class="flex items-center mt-2.5 mb-5">
 						<div class="flex items-center space-x-1 rtl:space-x-reverse">
@@ -55,7 +55,7 @@ function insertData(container: HTMLDivElement, data: Product) {
 							class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">${data.rating}</span>
 					</div>
 					<div class="flex items-center justify-between">
-						<span class="text-3xl font-bold text-gray-900 dark:text-white">$${data.price}</span>
+						<span class="price text-3xl font-bold text-gray-900 dark:text-white">$${data.price}</span>
 						<a class="add-to-cart text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add
 							to cart</a>
 					</div>
