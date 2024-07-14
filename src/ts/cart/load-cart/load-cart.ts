@@ -1,7 +1,7 @@
 import { Product } from "../../../components/index-product";
 import { getProducts } from "../../index/pagination/get-products";
 import { inputCounters } from "../flowbite/cart-pickup";
-import { updateCart } from "../update-cart/update-cart";
+import { updateCart, updateSuggestedProducts } from "../update-cart/update-cart";
 
 type ProductQuantity = {
     id: number;
@@ -31,9 +31,12 @@ export async function loadCartProducts() {
             });
         }
 
+        /* INITIALIZING INPUT COUNTERS */
         for (const counter of inputCounters) {
             counter.init();
         }
+
+        generateSuggestedProducts(items);
     }
 }
 
@@ -62,4 +65,25 @@ function getQuantities(items: number[]) {
     });
 
     return quantities;
+}
+
+function generateSuggestedProducts(items: number[]) {
+    let categories: string[] = [];
+    let matches: string[] = [];
+    let count = 3;
+
+    products.forEach(product => {
+        if (items.includes(product.id) && !categories.includes(product.category)) {
+            categories.push(product.category);
+        }
+    });
+
+    let sortedProducts = products.sort((a,b) => a.id - b.id);
+    sortedProducts.forEach(product => {
+        if (categories.includes(product.category) && count > 0 && !matches.includes(product.category)) {
+            count--;
+            updateSuggestedProducts(product);
+            matches.push(product.category);
+        }
+    })
 }
