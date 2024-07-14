@@ -1,6 +1,7 @@
 import { InputCounter } from "flowbite";
 import { products } from "../load-cart/load-cart";
 import { generatePrice } from "../../../components/cart-product";
+import { loadOrderSummary } from "../order-summary/load-order-summary";
 
 export const inputCounters:InputCounter[] = [];
 
@@ -26,16 +27,14 @@ export function updateInputCounter(container: HTMLDivElement) {
         target.value = String(value);
         updatePrice(container,value);
         updateItems({ add: false, container: container });
+        loadOrderSummary();
     })
 
     inputCounter.updateOnIncrement(() => {
         updatePrice(container, Number(input.value));
         updateItems({ add: true, container: container });
+        loadOrderSummary();
     });
-
-    /* UPDATING DELETE BUTTON */
-    const deleteBtn = container.querySelector("#cart-remove") as HTMLButtonElement;
-    deleteBtn.addEventListener("click", () => deleteContainer(container));
 }
 
 /* UPDATING PRICE */
@@ -93,15 +92,4 @@ function notOnlyItem(items: number[], id: number) {
     }
 
     return false;
-}
-
-/* DELETING A CONTAINER */
-function deleteContainer(container: HTMLDivElement) {
-    let items: number[] = JSON.parse(localStorage.getItem("items") as string);
-    const id = Number( container.dataset.id );
-
-    items = items.filter(item => item != id);
-    localStorage.setItem("items", JSON.stringify(items));
-
-    container.remove();
 }

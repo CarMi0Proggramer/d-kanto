@@ -1,9 +1,12 @@
+import { loadOrderSummary } from "../ts/cart/order-summary/load-order-summary";
+import { updateCart } from "../ts/cart/update-cart/update-cart";
 import { Product } from "./index-product";
 
 /* CREATING A PRODUCT */
 export function createSuggestedCartProduct(productData: Product) {
     const product = document.createElement("div");
     insertData(product, productData);
+    addSuggestedToCartEvent(product, productData);
 
     return product;
 }
@@ -45,7 +48,7 @@ function insertData(container: HTMLDivElement, data: Product) {
                                             Add to favourites
                                             <div class="tooltip-arrow" data-popper-arrow></div>
                                 </div>
-                                <button type="button"
+                                <button type="button" id="add-suggested-to-cart"
                                             class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium  text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                     <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -60,6 +63,33 @@ function insertData(container: HTMLDivElement, data: Product) {
 
     /* SETTING CLASSES */
     container.className =
-        "suggested-product space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800";
+        "suggested-product flex flex-col justify-between space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800";
     container.dataset.id = String(data.id);
+}
+
+/* ADDING ADD SUGGESTED TO CART EVENT */
+function addSuggestedToCartEvent(container: HTMLDivElement, data: Product) {
+    const btn = container.querySelector("#add-suggested-to-cart") as HTMLButtonElement;
+    btn.addEventListener("click", () => {
+        const cartProduct = document.querySelector(`.cart-product[data-id="${data.id}"]`);
+
+        if (!cartProduct) {
+            let newData = {
+                ...data,
+                quantity: 1
+            }
+            updateCart(newData);
+        }else{
+            const input = cartProduct.querySelector("#counter-input") as HTMLInputElement;
+            let quantity = Number(input.value) + 1;
+            input.value = String( quantity );
+        }
+
+        /* UPDATING ITEMS IN LOCALSTORAGE */
+        const items: number[] = JSON.parse(localStorage.getItem("items") as string);
+        items.push(data.id);
+        localStorage.setItem("items", JSON.stringify(items));
+
+        loadOrderSummary();
+    });
 }

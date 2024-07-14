@@ -35,9 +35,9 @@ export async function loadCartProducts() {
         for (const counter of inputCounters) {
             counter.init();
         }
-
-        generateSuggestedProducts(items);
     }
+
+    generateSuggestedProducts(items);
 }
 
 /* GETTING QUANTITIES */
@@ -67,9 +67,9 @@ function getQuantities(items: number[]) {
     return quantities;
 }
 
-function generateSuggestedProducts(items: number[]) {
+/* GENERATING SUGGESTED PRODUCTS */
+export function generateSuggestedProducts(items: number[]) {
     let categories: string[] = [];
-    let matches: string[] = [];
     let count = 3;
 
     products.forEach(product => {
@@ -79,11 +79,17 @@ function generateSuggestedProducts(items: number[]) {
     });
 
     let sortedProducts = products.sort((a,b) => a.id - b.id);
-    sortedProducts.forEach(product => {
-        if (categories.includes(product.category) && count > 0 && !matches.includes(product.category)) {
-            count--;
-            updateSuggestedProducts(product);
-            matches.push(product.category);
+    if (categories.length > 0) {
+        sortedProducts.forEach(product => {
+            if (categories.includes(product.category) && count > 0 && !items.includes(product.id)) {
+                count--;
+                updateSuggestedProducts(product);
+            }
+        })
+    }else{
+        for (let i = 0; i < 3; i++) {
+            const randomIndex = Math.round( Math.random() * (sortedProducts.length - 1) );
+            updateSuggestedProducts(sortedProducts[randomIndex]);
         }
-    })
+    }
 }
