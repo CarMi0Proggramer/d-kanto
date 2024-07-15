@@ -1,3 +1,5 @@
+import { applyDiscountCode } from "./apply-code";
+
 /* VARS */
 const originalPriceElement = document.getElementById("order-original-price") as HTMLElement;
 const savingsElement = document.getElementById("order-savings") as HTMLElement;
@@ -7,6 +9,8 @@ const totalElement = document.getElementById("order-total") as HTMLElement;
 /* LOADING ORDER SUMMARY */
 export function loadOrderSummary() {
     const items: number[] = JSON.parse(localStorage.getItem("items") as string);
+    const applied = localStorage.getItem("applied-code") as string;
+
     let discount = generatePercentOff(items.length);
 
     /* SETTING ORIGINAL pRICE */
@@ -31,6 +35,10 @@ export function loadOrderSummary() {
         tax: tax,
         total: total
     }));
+
+    if (applied == "true") {
+        applyDiscountCode();
+    }
 
 }
 

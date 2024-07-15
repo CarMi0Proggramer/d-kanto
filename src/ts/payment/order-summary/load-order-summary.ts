@@ -4,7 +4,7 @@ const savingsElement = document.getElementById("order-savings") as HTMLElement;
 const taxElement = document.getElementById("order-tax") as HTMLElement;
 const totalElement = document.getElementById("order-total") as HTMLElement;
 
-type OrderSummary = {
+export type OrderSummary = {
     originalPrice: number,
         savings: number,
         tax: number,
