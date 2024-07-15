@@ -37,7 +37,7 @@ export function loadOrderSummary() {
     }));
 
     if (applied == "true") {
-        applyDiscountCode();
+        applyDiscountCode(true);
     }
 
 }

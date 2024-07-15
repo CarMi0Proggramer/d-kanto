@@ -8,8 +8,8 @@ const ACCEPTED_CODES = [
 /* VARS */
 const codeInput = document.getElementById("voucher") as HTMLInputElement;
 
-export function applyDiscountCode() {
-    if (ACCEPTED_CODES.includes(codeInput.value)) {
+export function applyDiscountCode(apply?: boolean) {
+    if (ACCEPTED_CODES.includes(codeInput.value) || apply) {
         const summary: OrderSummary = JSON.parse(localStorage.getItem("order-summary") as string);
 
         /* SAVINGS */
