@@ -26,3 +26,19 @@ export function clearData(elements: HTMLInputElement[]) {
         el.value = '';
     }
 }
+
+export function getErrArray(err: any) {
+    /* TRY READING THE ERRORS */
+    const errors = JSON.parse(err.message);
+    let errArray: string[] = [];
+    
+    if (errors instanceof Array) {
+        for(let err of errors){
+            errArray.push(err.message);
+        }
+    }else{
+        errArray.push(errors.message);
+    }
+
+    return errArray;
+}

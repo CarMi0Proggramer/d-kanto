@@ -1,4 +1,4 @@
-import { clearData, clearErrors, showErrors } from "../errors/show-errors";
+import { clearData, clearErrors, getErrArray, showErrors } from "../errors/show-errors";
 
 const signUpForm = document.getElementById("sign-up-form") as HTMLFormElement;
 
@@ -57,17 +57,7 @@ function signUp() {
     })
     .catch(err => {
         try {
-            /* TRY READING THE ERRORS */
-            const errors = JSON.parse(err.message);
-            let errArray: string[] = [];
-            
-            if (errors instanceof Array) {
-                for(let err of errors){
-                    errArray.push(err.message);
-                }
-            }else{
-                errArray.push(errors.message);
-            }
+            let errArray = getErrArray(err);
 
             /* CLEARING AND SHOWING ERRORS */
             clearErrors("sign-up-errors");
