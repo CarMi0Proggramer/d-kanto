@@ -18,11 +18,8 @@ function insertData(container: HTMLDivElement, data: CartProduct) {
     /* ADDING DATA */
     container.innerHTML = `<div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                     <a href="#" class="shrink-0 md:order-1">
-                                        <img class="h-20 w-20 dark:hidden"
+                                        <img class="h-20 w-20"
                                             src="${data.urlimg}"
-                                            alt="product image" />
-                                        <img class="hidden h-20 w-20 dark:block"
-                                            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
                                             alt="product image" />
                                     </a>
 

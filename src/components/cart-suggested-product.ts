@@ -14,12 +14,9 @@ export function createSuggestedCartProduct(productData: Product) {
 function insertData(container: HTMLDivElement, data: Product) {
     /* SETTING DATA */
     container.innerHTML = `<a href="#" class="overflow-hidden rounded">
-                                    <img class="mx-auto h-44 w-44 dark:hidden"
+                                    <img class="mx-auto h-44 w-44"
                                         src="${data.urlimg}"
-                                        alt="imac image" />
-                                    <img class="mx-auto hidden h-44 w-44 dark:block"
-                                        src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
-                                        alt="imac image" />
+                                        alt="Product image" />
                             </a>
                             <div>
                                 <a href="#"
