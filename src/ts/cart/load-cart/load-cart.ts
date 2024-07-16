@@ -100,13 +100,15 @@ export function generateSuggestedProducts(items: number[]) {
             }
         });
     } else {
-        for (let i = 0; i < 3; i++) {
+        let i = 0;
+        while(i < 3) {
             const randomIndex = Math.round(
                 Math.random() * (sortedProducts.length - 1)
             );
             if (!matches.includes(sortedProducts[randomIndex])) {
                 updateSuggestedProducts(sortedProducts[randomIndex]);
                 matches.push(sortedProducts[randomIndex]);
+                i++;
             }
         }
     }
