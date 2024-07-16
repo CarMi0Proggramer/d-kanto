@@ -14,7 +14,7 @@ export function createSuggestedCartProduct(productData: Product) {
 function insertData(container: HTMLDivElement, data: Product) {
     /* SETTING DATA */
     container.innerHTML = `<a href="#" class="overflow-hidden rounded">
-                                    <img class="mx-auto h-44 w-44"
+                                    <img class="object-contain object-center mx-auto h-44 w-44"
                                         src="${data.urlimg}"
                                         alt="Product image" />
                             </a>
