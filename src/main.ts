@@ -1,6 +1,7 @@
 import { navigate } from "./ts/index/navigation/navigation";
 import { current, estimateCurrentPage } from "./ts/index/pagination/estimate-page";
 import { paginate } from "./ts/index/pagination/paginate";
+import { changeToLogOut } from "./ts/sign-up/change-to-log-out";
 
 const indexLocation = [
     window.origin,
@@ -22,6 +23,10 @@ window.addEventListener("load", () => {
         setThemeIcon();
     }
     navigate();
+
+    if ("session-data" in localStorage) {
+        changeToLogOut();
+    }
 })
 
 /* SET THEME ICON FUNCTION */
