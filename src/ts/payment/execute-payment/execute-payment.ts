@@ -30,9 +30,8 @@ export function executePayment() {
         const data = await res.json();
         if (res.ok) {
             clearErrors("payment-errors");
-            /* clearData([nameInput, cardNumberInput, cardExpirationInput, cvvInput]); */
-
-            /* clearLocalStorage() */;
+            clearData([nameInput, cardNumberInput, cardExpirationInput, cvvInput]);
+            clearLocalStorage();
         } else if(res.status == 403) {
             localStorage.setItem("navigation-current", "3");
             location.href = window.origin + "/src/pages/login.html"
@@ -49,4 +48,10 @@ export function executePayment() {
             location.href = window.origin + "/src/pages/500.html"
         }
     })
+}
+
+function clearLocalStorage() {
+    localStorage.removeItem("items");
+    localStorage.removeItem("order-summary");
+    localStorage.removeItem("line-items");
 }
