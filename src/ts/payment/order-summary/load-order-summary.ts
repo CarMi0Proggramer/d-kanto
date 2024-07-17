@@ -6,9 +6,9 @@ const totalElement = document.getElementById("order-total") as HTMLElement;
 
 export type OrderSummary = {
     originalPrice: number,
-        savings: number,
-        tax: number,
-        total: number
+    savings: number,
+    tax: number,
+    total: number
 }
 export function loadOrderSummary() {
     const summary: OrderSummary = JSON.parse(localStorage.getItem("order-summary") as string);

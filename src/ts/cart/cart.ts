@@ -1,3 +1,4 @@
+import { loadLineItems } from "./line-items/load-line-items";
 import { loadCartProducts } from "./load-cart/load-cart";
 import { applyDiscountCode } from "./order-summary/apply-code";
 import { loadOrderSummary } from "./order-summary/load-order-summary";
@@ -24,4 +25,7 @@ window.addEventListener("load", async () => {
             applyDiscountCode();
         }
     });
+
+    const proceedToCheckout = document.getElementById("proceed-to-checkout") as HTMLButtonElement;
+    proceedToCheckout.addEventListener("click", loadLineItems)
 })

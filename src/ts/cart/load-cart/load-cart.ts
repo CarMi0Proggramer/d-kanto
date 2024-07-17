@@ -6,7 +6,7 @@ import {
     updateSuggestedProducts,
 } from "../update-cart/update-cart";
 
-type ProductQuantity = {
+export type ProductQuantity = {
     id: number;
     quantity: number;
 };
@@ -44,7 +44,7 @@ export async function loadCartProducts() {
 }
 
 /* GETTING QUANTITIES */
-function getQuantities(items: number[]) {
+export function getQuantities(items: number[]) {
     let quantities: ProductQuantity[] = [];
     let match: number[] = [];
 

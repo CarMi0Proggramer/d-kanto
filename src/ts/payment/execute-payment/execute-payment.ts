@@ -9,14 +9,16 @@ const cvvInput = document.getElementById("cvv-input") as HTMLInputElement;
 const payBtn = document.getElementById("pay-now") as HTMLButtonElement;
 
 export function executePayment() {
+    const lineItems = JSON.parse(localStorage.getItem("line-items") as string);
     let data = {
         name: nameInput.value,
         cardNumber: Number( cardNumberInput.value ),
         cardExpiration: cardExpirationInput.value,
-        cvv: Number( cvvInput.value )
+        cvv: Number( cvvInput.value ),
+        lineItems: lineItems
     }
 
-    fetch("http://localhost:3000/payments/checkout", {
+    fetch("http://localhost:3000/purchases/checkout", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -29,6 +31,8 @@ export function executePayment() {
         if (res.ok) {
             clearErrors("payment-errors");
             /* clearData([nameInput, cardNumberInput, cardExpirationInput, cvvInput]); */
+
+            /* clearLocalStorage() */;
         } else if(res.status == 403) {
             localStorage.setItem("navigation-current", "3");
             location.href = window.origin + "/src/pages/login.html"
