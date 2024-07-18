@@ -20,3 +20,10 @@ export function loadOrderSummary() {
         totalElement.innerText = '$' + summary.total;
     }
 }
+
+export function clearOrderSummary() {
+    originalPriceElement.innerText = "$" + 0;
+    savingsElement.innerText = "-$" + 0;
+    taxElement.innerText = "$" + 0;
+    totalElement. innerText = "$" + 0;
+}

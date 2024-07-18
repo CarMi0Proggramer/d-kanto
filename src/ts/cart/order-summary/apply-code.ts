@@ -1,4 +1,4 @@
-import { OrderSummary } from "../../payment/order-summary/load-order-summary";
+import { OrderSummary } from "../../payment/order-summary/order-summary";
 
 /* ACCEPTED DISCOUNT CODES */
 const ACCEPTED_CODES = [

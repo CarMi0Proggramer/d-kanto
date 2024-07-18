@@ -1,4 +1,5 @@
 import { clearData, clearErrors, getErrArray, showErrors } from "../../errors/show-errors";
+import { clearOrderSummary } from "../order-summary/order-summary";
 
 /* VARS */
 export const paymentForm = document.getElementById("payment-form") as HTMLFormElement;
@@ -31,9 +32,10 @@ export function executePayment() {
     .then(async res => {
         const data = await res.json();
         if (res.ok) {
-            /* clearErrors("payment-errors");
+            clearErrors("payment-errors");
             clearData([nameInput, cardNumberInput, cardExpirationInput, cvvInput]);
-            clearLocalStorage(); */
+            clearLocalStorage();
+            clearOrderSummary();
         } else if(res.status == 403) {
             localStorage.setItem("navigation-current", "3");
             location.href = window.origin + "/src/pages/login.html"

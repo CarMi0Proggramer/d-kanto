@@ -1,5 +1,5 @@
 import { executePayment, paymentForm } from "./execute-payment/execute-payment";
-import { loadOrderSummary } from "./order-summary/load-order-summary";
+import { loadOrderSummary } from "./order-summary/order-summary";
 
 window.addEventListener("load", () => {
     loadOrderSummary();
