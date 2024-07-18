@@ -12,6 +12,11 @@ const payBtn = document.getElementById("pay-now") as HTMLButtonElement;
 export function executePayment() {
     const lineItems = JSON.parse(localStorage.getItem("line-items") as string);
     const orderSummary = JSON.parse(localStorage.getItem("order-summary") as string);
+
+    if (orderSummary.total_amount == 0) {
+        return;
+    }
+    
     let data = {
         name: nameInput.value,
         cardNumber: Number( cardNumberInput.value ),
