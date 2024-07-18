@@ -10,20 +10,11 @@ const cvvInput = document.getElementById("cvv-input") as HTMLInputElement;
 const payBtn = document.getElementById("pay-now") as HTMLButtonElement;
 
 export function executePayment() {
-    const lineItems = JSON.parse(localStorage.getItem("line-items") as string);
-    const orderSummary = JSON.parse(localStorage.getItem("order-summary") as string);
+    const data = getPaymentData();
 
-    if (orderSummary.total_amount == 0) {
+    if (!data) {
+        alert("There are no products on your cart");
         return;
-    }
-    
-    let data = {
-        name: nameInput.value,
-        cardNumber: Number( cardNumberInput.value ),
-        cardExpiration: cardExpirationInput.value,
-        cvv: Number( cvvInput.value ),
-        lineItems: lineItems,
-        total_amount: orderSummary.total
     }
     
     fetch("http://localhost:3000/purchases/checkout", {
@@ -36,6 +27,7 @@ export function executePayment() {
     })
     .then(async res => {
         const data = await res.json();
+        
         if (res.ok) {
             clearErrors("payment-errors");
             clearData([nameInput, cardNumberInput, cardExpirationInput, cvvInput]);
@@ -57,6 +49,26 @@ export function executePayment() {
             location.href = window.origin + "/src/pages/500.html"
         }
     })
+}
+
+function getPaymentData() {
+    const lineItems = JSON.parse(localStorage.getItem("line-items") as string);
+    const orderSummary = JSON.parse(localStorage.getItem("order-summary") as string);
+
+    if (orderSummary.total == 0) {
+        return false;
+    }
+    
+    let data = {
+        name: nameInput.value,
+        cardNumber: Number( cardNumberInput.value ),
+        cardExpiration: cardExpirationInput.value,
+        cvv: Number( cvvInput.value ),
+        lineItems: lineItems,
+        total_amount: orderSummary.total
+    }
+
+    return data;
 }
 
 function clearLocalStorage() {
