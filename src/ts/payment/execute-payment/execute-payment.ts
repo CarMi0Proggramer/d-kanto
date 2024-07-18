@@ -10,14 +10,16 @@ const payBtn = document.getElementById("pay-now") as HTMLButtonElement;
 
 export function executePayment() {
     const lineItems = JSON.parse(localStorage.getItem("line-items") as string);
+    const orderSummary = JSON.parse(localStorage.getItem("order-summary") as string);
     let data = {
         name: nameInput.value,
         cardNumber: Number( cardNumberInput.value ),
         cardExpiration: cardExpirationInput.value,
         cvv: Number( cvvInput.value ),
-        lineItems: lineItems
+        lineItems: lineItems,
+        total_amount: orderSummary.total
     }
-
+    
     fetch("http://localhost:3000/purchases/checkout", {
         method: "POST",
         headers: {
@@ -29,9 +31,9 @@ export function executePayment() {
     .then(async res => {
         const data = await res.json();
         if (res.ok) {
-            clearErrors("payment-errors");
+            /* clearErrors("payment-errors");
             clearData([nameInput, cardNumberInput, cardExpirationInput, cvvInput]);
-            clearLocalStorage();
+            clearLocalStorage(); */
         } else if(res.status == 403) {
             localStorage.setItem("navigation-current", "3");
             location.href = window.origin + "/src/pages/login.html"

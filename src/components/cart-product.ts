@@ -18,7 +18,7 @@ function insertData(container: HTMLDivElement, data: CartProduct) {
     /* ADDING DATA */
     container.innerHTML = `<div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                                     <a href="#" class="shrink-0 md:order-1">
-                                        <img class="h-20 w-20"
+                                        <img class="h-20 w-20 object-contain object-center"
                                             src="${data.urlimg}"
                                             alt="product image" />
                                     </a>
