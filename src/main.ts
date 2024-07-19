@@ -1,6 +1,7 @@
 import { navigate } from "./ts/index/navigation/navigation";
 import { current, estimateCurrentPage } from "./ts/index/pagination/estimate-page";
 import { paginate } from "./ts/index/pagination/paginate";
+import { isSignedIn } from "./ts/sign-in/is-signed-in";
 import { changeToLogOut } from "./ts/sign-up/change-to-log-out";
 
 const indexLocation = [
@@ -11,7 +12,7 @@ const indexLocation = [
 ]
 
 /* ADDING NAVIGATE EVENT */
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
     if (indexLocation.includes(location.href)) {
         localStorage.setItem("navigation-current", "0");
         
@@ -24,7 +25,7 @@ window.addEventListener("load", () => {
     }
     navigate();
 
-    if ("session-data" in localStorage) {
+    if (await isSignedIn()) {
         changeToLogOut();
     }
 })
