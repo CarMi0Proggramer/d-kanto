@@ -13,6 +13,8 @@ export default defineConfig({
                 not_found: resolve(__dirname, "src/pages/404.html"),
                 internal_error: resolve(__dirname, "src/pages/500.html"),
                 privacy: resolve(__dirname, "src/pages/privacy.html"),
+                success: resolve(__dirname, "src/pages/success.html"),
+                cancel: resolve(__dirname, "src/pages/cancel.html"),
             },
         },
     },
