@@ -1,7 +1,7 @@
 export function savePayment() {
     const data = JSON.parse(localStorage.getItem("line-items") as string);
     const summary = JSON.parse(localStorage.getItem("order-summary") as string);
-    fetch("http://localhost:3000/purchases/save-payment", {
+    fetch("https://d-kanto-backend.onrender.com/purchases/save-payment", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

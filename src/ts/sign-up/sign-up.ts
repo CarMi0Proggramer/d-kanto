@@ -26,7 +26,7 @@ function signUp() {
         return;
     }
 
-    fetch("http://localhost:3000/users/signUp",{
+    fetch("https://d-kanto-backend.onrender.com/users/signUp",{
         method: "POST",
         headers: {
             "Content-Type": "application/json"

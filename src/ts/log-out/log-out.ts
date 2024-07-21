@@ -1,5 +1,5 @@
 export function logOut() {
-    fetch("http://localhost:3000/users/logOut", {
+    fetch("https://d-kanto-backend.onrender.com/users/logOut", {
         method: "POST",
         credentials: "include"
     }).then(res => {

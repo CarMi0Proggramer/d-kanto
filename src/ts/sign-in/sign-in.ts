@@ -14,7 +14,7 @@ function signIn() {
     let email = emailInput.value;
     let password = passwordInput.value;
 
-    fetch("http://localhost:3000/users/signIn", {
+    fetch("https://d-kanto-backend.onrender.com/users/signIn", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

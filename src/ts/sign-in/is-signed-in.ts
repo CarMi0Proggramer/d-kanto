@@ -3,7 +3,7 @@ export async function isSignedIn() {
         return false;
     }
 
-    const res = await fetch("http://localhost:3000/users/isSignedIn",{
+    const res = await fetch("https://d-kanto-backend.onrender.com/users/isSignedIn",{
         credentials: "include"
     });
 

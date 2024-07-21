@@ -4,7 +4,7 @@ export async function createCheckoutSession() {
     const lineItems = await getLineItems();
     const summary = JSON.parse(localStorage.getItem("order-summary") as string);
 
-    await fetch("http://localhost:3000/purchases/create-checkout-session", {
+    await fetch("https://d-kanto-backend.onrender.com/purchases/create-checkout-session", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
