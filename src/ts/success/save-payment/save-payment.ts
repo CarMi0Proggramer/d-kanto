@@ -1,11 +1,15 @@
 export function savePayment() {
     const data = JSON.parse(localStorage.getItem("line-items") as string);
+    const summary = JSON.parse(localStorage.getItem("order-summary") as string);
     fetch("http://localhost:3000/purchases/save-payment", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
             },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+            lineItems: data,
+            total_amount: summary.total
+        }),
         credentials: "include"
     })
     .then(async res => {
@@ -26,4 +30,5 @@ export function savePayment() {
 function clearLocalStorage() {
     localStorage.removeItem("items");
     localStorage.removeItem("line-items");
+    localStorage.removeItem("order-summary");
 }
