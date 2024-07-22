@@ -1,4 +1,9 @@
-import { OrderSummary } from "../../payment/order-summary/order-summary";
+type OrderSummary = {
+    originalPrice: number,
+    savings:number,
+    tax: number,
+    total: number
+}
 
 /* ACCEPTED DISCOUNT CODES */
 const ACCEPTED_CODES = [
