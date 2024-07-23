@@ -38,7 +38,9 @@ function signIn() {
             location.href = window.origin + "/";
         }else if (res.status == 400) {
             throw new Error(JSON.stringify(data));
-        }else {
+        }else if(res.status == 404) {
+            location.href = window.origin + "/src/pages/register.html";
+        } else {
             location.href = window.origin + "/src/pages/500.html";
         }
     })
