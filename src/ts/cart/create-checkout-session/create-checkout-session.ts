@@ -17,8 +17,6 @@ export async function createCheckoutSession() {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
-        
         location.href = data.url
     })
     .catch(err => {
