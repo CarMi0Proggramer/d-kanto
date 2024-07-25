@@ -12,14 +12,12 @@ export async function getProducts() {
             } else if (res.status === 404) {
                 location.href = window.origin + "/src/pages/404.html";
             } else {
-                /* location.href = window.origin + "/src/pages/500.html"; */
+                location.href = window.origin + "/src/pages/500.html";
             }
         })
         .catch((err) => {
             if (err) {
-                /* location.href = window.origin + "/src/pages/500.html"; */
-                console.log(err);
-                
+                location.href = window.origin + "/src/pages/500.html";
             }
         });
 
